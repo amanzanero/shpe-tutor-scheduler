@@ -4,8 +4,8 @@
   "description": "Webapp for SHPE Students at studynights!",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "./node_modules/.bin/nodemon src/index.js",
+    "start": "node server/index.js",
+    "dev": "./node_modules/.bin/nodemon server/index.js",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
     "postinstall": "cd client && npm install"
