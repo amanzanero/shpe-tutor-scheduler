@@ -1,0 +1,34 @@
+{
+  "name": "shpe-tutor-scheduler",
+  "version": "1.0.0",
+  "description": "Webapp for SHPE Students at studynights!",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "./node_modules/.bin/nodemon src/index.js",
+    "lint": "./node_modules/.bin/eslint **/*.js",
+    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
+    "postinstall": "cd client && npm install"
+  },
+  "author": "Andrew Manzanero",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.4",
+    "express-validation": "^1.0.2",
+    "helmet": "^3.11.0",
+    "http-status": "^1.0.1",
+    "joi": "^13.1.2",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.4.20",
+    "mongoose-error-handler": "^1.0.0",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1"
+  }
+}
