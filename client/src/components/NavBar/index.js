@@ -27,13 +27,13 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton className={classes.menuButton} color="secondary" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            News
+          <Typography variant="h6" color="secondary" className={classes.grow}>
+            SHPE Study Nights Tutors
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="secondary">Login</Button>
         </Toolbar>
       </AppBar>
     </div>

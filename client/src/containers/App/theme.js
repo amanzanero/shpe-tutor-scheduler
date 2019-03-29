@@ -4,8 +4,8 @@ import red from '@material-ui/core/colors/red';
 
 export const theme = createMuiTheme({
   palette: {
-    primary: {main: '#6200EE'},
-    secondary: {main: "#03DAC5"},
+    primary: {main: '#990000'},
+    secondary: {main: "#FFCC00"},
     error: red,
     // Used by `getContrastText()` to maximize the contrast between the background and
     // the text.
