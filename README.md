@@ -1,4 +1,4 @@
-# SHPE Study Nights Tutor Scheduler [![Build Status](https://travis-ci.com/amanzanero/shpe-tutor-shceduler.svg?branch=master)](https://travis-ci.com/amanzanero/shpe-tutor-shceduler)
+# SHPE Study Nights Tutor Scheduler [![Build Status](https://travis-ci.com/amanzanero/shpe-tutor-scheduler.svg?branch=master)](https://travis-ci.com/amanzanero/shpe-tutor-scheduler)
 
 ## Description:
 
