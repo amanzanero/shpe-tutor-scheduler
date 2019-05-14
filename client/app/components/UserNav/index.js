@@ -36,68 +36,72 @@ const styles = {
   },
 };
 
-function UserNav(props) {
-  const { classes } = props;
-  const isMobile = mobile();
-  const [state, setState] = React.useState({
+class UserNav extends React.Component {
+  state = {
     drawerOpen: false,
-  });
-
-  const toggleDrawer = (side, open) => () => {
-    setState({ ...state, [side]: open });
   };
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="secondary"
-            aria-label="Menu"
-            onClick={toggleDrawer('drawerOpen', true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="secondary" className={classes.grow}>
-            {isMobile ? 'SHPE Tutoring' : 'SHPE Tutoring and Academics'}
-          </Typography>
-          {!isMobile && <Button color="secondary">Login</Button>}
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        open={state.drawerOpen}
-        onClose={toggleDrawer('drawerOpen', false)}
-      >
-        <div
-          tabIndex={0}
-          role="button"
-          onClick={toggleDrawer('drawerOpen', false)}
-          onKeyDown={toggleDrawer('drawerOpen', false)}
+  toggleDrawer = open => () => {
+    this.setState({ drawerOpen: open });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const isMobile = mobile();
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="secondary"
+              aria-label="Menu"
+              onClick={this.toggleDrawer('drawerOpen', true)}
+              data-testid="menu-button"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="secondary" className={classes.grow}>
+              {isMobile ? 'SHPE Tutoring' : 'SHPE Tutoring and Academics'}
+            </Typography>
+            {!isMobile && <Button color="secondary">Login</Button>}
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          open={this.state.drawerOpen}
+          onClose={this.toggleDrawer('drawerOpen', false)}
         >
-          <div className={classes.list}>
-            <List>
-              <ListItem button key="messages">
-                <ListItemIcon>
-                  <MailIcon />
-                  <ListItemText primary="Messages" />
-                </ListItemIcon>
-              </ListItem>
-            </List>
-            <Divider />
-            <List>
-              <ListItem button key="Log In">
-                <ListItemIcon>
-                  <ExitToAppIcon />
-                  <ListItemText primary="Log In" />
-                </ListItemIcon>
-              </ListItem>
-            </List>
+          <div
+            tabIndex={0}
+            role="button"
+            onClick={this.toggleDrawer('drawerOpen', false)}
+            onKeyDown={this.toggleDrawer('drawerOpen', false)}
+            data-testid="drawer"
+          >
+            <div className={classes.list}>
+              <List>
+                <ListItem button key="messages">
+                  <ListItemIcon>
+                    <MailIcon />
+                    <ListItemText primary="Messages" />
+                  </ListItemIcon>
+                </ListItem>
+              </List>
+              <Divider />
+              <List>
+                <ListItem button key="Log In">
+                  <ListItemIcon>
+                    <ExitToAppIcon />
+                    <ListItemText primary="Log In" />
+                  </ListItemIcon>
+                </ListItem>
+              </List>
+            </div>
           </div>
-        </div>
-      </Drawer>
-    </div>
-  );
+        </Drawer>
+      </div>
+    );
+  }
 }
 
 UserNav.propTypes = {

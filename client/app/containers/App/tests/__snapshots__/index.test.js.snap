@@ -14,6 +14,7 @@ exports[`<App /> renders and matches the snapshot 1`] = `
         <button
           aria-label="Menu"
           class="MuiButtonBase-root-50 MuiIconButton-root-44 MuiIconButton-colorSecondary-47 UserNav-menuButton-3"
+          data-testid="menu-button"
           tabindex="0"
           type="button"
         >
