@@ -14,6 +14,7 @@ import red from '@material-ui/core/colors/red';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import UserNav from 'components/UserNav';
 
 import GlobalStyle from '../../global-styles';
 
@@ -24,11 +25,14 @@ import GlobalStyle from '../../global-styles';
  */
 const theme = createMuiTheme({
   palette: {
-    primary: '#990000',
-    secondary: '#FFCC00',
+    primary: { main: '#990000' },
+    secondary: { main: '#FFCC00' },
     error: red,
     contrastThreshold: 3,
     tonalOffset: 0.2,
+  },
+  typography: {
+    useNextVariants: true,
   },
 });
 
@@ -37,8 +41,10 @@ export default function App() {
     <div>
       <MuiThemeProvider theme={theme}>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route component={NotFoundPage} />
+          <UserNav>
+            <Route exact path="/" component={HomePage} />
+            <Route component={NotFoundPage} />
+          </UserNav>
         </Switch>
         <GlobalStyle />
       </MuiThemeProvider>
