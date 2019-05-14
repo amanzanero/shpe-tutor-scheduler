@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserNav /> Should render and match the snapshot 1`] = `
+<div
+  class="UserNav-root-145"
+>
+  <header
+    class="MuiPaper-root-157 MuiPaper-elevation4-163 MuiAppBar-root-148 MuiAppBar-positionStatic-152 MuiAppBar-colorPrimary-155"
+  >
+    <div
+      class="MuiToolbar-root-184 MuiToolbar-regular-186 MuiToolbar-gutters-185"
+    >
+      <button
+        aria-label="Menu"
+        class="MuiButtonBase-root-194 MuiIconButton-root-188 MuiIconButton-colorSecondary-191 UserNav-menuButton-147"
+        data-testid="menu-button"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiIconButton-label-193"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root-197"
+            focusable="false"
+            role="presentation"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root-282"
+        />
+      </button>
+      <h6
+        class="MuiTypography-root-206 MuiTypography-h6-223 MuiTypography-colorSecondary-237 UserNav-grow-146"
+      >
+        SHPE Tutoring and Academics
+      </h6>
+      <button
+        class="MuiButtonBase-root-194 MuiButton-root-242 MuiButton-text-244 MuiButton-textSecondary-246 MuiButton-flat-247 MuiButton-flatSecondary-249"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label-243"
+        >
+          Login
+        </span>
+        <span
+          class="MuiTouchRipple-root-282"
+        />
+      </button>
+    </div>
+  </header>
+</div>
+`;

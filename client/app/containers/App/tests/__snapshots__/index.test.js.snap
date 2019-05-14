@@ -1,17 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<App /> should render and match the snapshot 1`] = `
+exports[`<App /> renders and matches the snapshot 1`] = `
 <div>
-  <Switch>
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/"
-    />
-    <Route
-      component={[Function]}
-    />
-  </Switch>
-  <GlobalStyleComponent />
+  <div
+    class="UserNav-root-1"
+  >
+    <header
+      class="MuiPaper-root-13 MuiPaper-elevation4-19 MuiAppBar-root-4 MuiAppBar-positionStatic-8 MuiAppBar-colorPrimary-11"
+    >
+      <div
+        class="MuiToolbar-root-40 MuiToolbar-regular-42 MuiToolbar-gutters-41"
+      >
+        <button
+          aria-label="Menu"
+          class="MuiButtonBase-root-50 MuiIconButton-root-44 MuiIconButton-colorSecondary-47 UserNav-menuButton-3"
+          data-testid="menu-button"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label-49"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root-53"
+              focusable="false"
+              role="presentation"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+              <path
+                d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root-138"
+          />
+        </button>
+        <h6
+          class="MuiTypography-root-62 MuiTypography-h6-79 MuiTypography-colorSecondary-93 UserNav-grow-2"
+        >
+          SHPE Tutoring and Academics
+        </h6>
+        <button
+          class="MuiButtonBase-root-50 MuiButton-root-98 MuiButton-text-100 MuiButton-textSecondary-102 MuiButton-flat-103 MuiButton-flatSecondary-105"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label-99"
+          >
+            Login
+          </span>
+          <span
+            class="MuiTouchRipple-root-138"
+          />
+        </button>
+      </div>
+    </header>
+  </div>
 </div>
 `;
