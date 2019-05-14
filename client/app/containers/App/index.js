@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 
@@ -40,12 +40,14 @@ export default function App() {
   return (
     <div>
       <MuiThemeProvider theme={theme}>
-        <Switch>
-          <UserNav>
-            <Route exact path="/" component={HomePage} />
-            <Route component={NotFoundPage} />
-          </UserNav>
-        </Switch>
+        <BrowserRouter>
+          <Switch>
+            <UserNav>
+              <Route exact path="/" component={HomePage} />
+              <Route component={NotFoundPage} />
+            </UserNav>
+          </Switch>
+        </BrowserRouter>
         <GlobalStyle />
       </MuiThemeProvider>
     </div>
