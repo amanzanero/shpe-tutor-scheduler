@@ -56,7 +56,7 @@ class UserNav extends React.Component {
               className={classes.menuButton}
               color="secondary"
               aria-label="Menu"
-              onClick={this.toggleDrawer('drawerOpen', true)}
+              onClick={this.toggleDrawer(true)}
               data-testid="menu-button"
             >
               <MenuIcon />
@@ -67,15 +67,12 @@ class UserNav extends React.Component {
             {!isMobile && <Button color="secondary">Login</Button>}
           </Toolbar>
         </AppBar>
-        <Drawer
-          open={this.state.drawerOpen}
-          onClose={this.toggleDrawer('drawerOpen', false)}
-        >
+        <Drawer open={this.state.drawerOpen} onClose={this.toggleDrawer(false)}>
           <div
             tabIndex={0}
             role="button"
-            onClick={this.toggleDrawer('drawerOpen', false)}
-            onKeyDown={this.toggleDrawer('drawerOpen', false)}
+            onClick={this.toggleDrawer(false)}
+            onKeyDown={this.toggleDrawer(false)}
             data-testid="drawer"
           >
             <div className={classes.list}>
@@ -83,17 +80,15 @@ class UserNav extends React.Component {
                 <ListItem button key="messages">
                   <ListItemIcon>
                     <MailIcon />
-                    <ListItemText primary="Messages" />
                   </ListItemIcon>
+                  <ListItemText primary="Messages" />
                 </ListItem>
-              </List>
-              <Divider />
-              <List>
+                <Divider />
                 <ListItem button key="Log In">
                   <ListItemIcon>
                     <ExitToAppIcon />
-                    <ListItemText primary="Log In" />
                   </ListItemIcon>
+                  <ListItemText primary="Log In" />
                 </ListItem>
               </List>
             </div>
