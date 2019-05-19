@@ -1,28 +1,27 @@
-'use strict'
+const jwt = require('jsonwebtoken');
+const httpStatus = require('http-status');
+const User = require('../models/user.model');
 
-const User = require('../models/user.model')
-const jwt = require('jsonwebtoken')
-const config = require('../config')
-const httpStatus = require('http-status')
+const config = require('../config');
 
 exports.register = async (req, res, next) => {
   try {
-    const user = new User(req.body)
-    const savedUser = await user.save()
-    res.status(httpStatus.CREATED)
-    res.send(savedUser.transform())
+    const user = new User(req.body);
+    const savedUser = await user.save();
+    res.status(httpStatus.CREATED);
+    return res.send(savedUser.transform());
   } catch (error) {
-    return next(User.checkDuplicateEmailError(error))
+    return next(User.checkDuplicateEmailError(error));
   }
-}
+};
 
 exports.login = async (req, res, next) => {
   try {
-    const user = await User.findAndGenerateToken(req.body)
-    const payload = {sub: user.id}
-    const token = jwt.sign(payload, config.secret)
-    return res.json({ message: 'OK', token: token })
+    const user = await User.findAndGenerateToken(req.body);
+    const payload = { sub: user.id };
+    const token = jwt.sign(payload, config.secret);
+    return res.json({ message: 'OK', token });
   } catch (error) {
-    next(error)
+    return next(error);
   }
-}
+};
