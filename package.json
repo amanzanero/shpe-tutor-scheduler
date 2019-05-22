@@ -10,7 +10,7 @@
     "client": "npm start --prefix client",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "npm run test:server && cd client && npm test",
-    "test:server": "cross-env NODE_ENV=test ./node_modules/.bin/mocha \"./server-tests/*.test.js\" --exit",
+    "test:server": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
     "postinstall": "cd client && npm install"
   },
   "author": "Andrew Manzanero",
