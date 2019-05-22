@@ -29,7 +29,8 @@ const student = {
 
 describe('Appointment module', () => {
     const prefix = '/api/appointment';
-  
+    let appt;
+
     before((done) => {
       // create tutor
       chai
@@ -87,7 +88,7 @@ describe('Appointment module', () => {
         .then(() => done(), done);
     });
     
-    it('It should return HTTP_CREATED_SUCCESSFULLY', done => {
+    it('Create: It should return HTTP_CREATED_SUCCESSFULLY', done => {
       const apptPostBody = {
         "tutor": `${tutor.id}`,
         "student": `${student.id}`,
@@ -100,8 +101,24 @@ describe('Appointment module', () => {
         .send(apptPostBody)
         .set('Authorization', student.token)
         .end((err, res) => {
-          res.should.have.status(httpStatus.CREATED)
-          done()
+          res.should.have.status(httpStatus.CREATED);
+          appt = res.body.data;
+          done();
         });
+    })
+
+    it('Delete: It should return HTTP_OK', done => {
+      const apptDelBody = {
+        "id": `${appt.id}`,
+      }
+      chai
+        .request(app)
+        .delete(prefix)
+        .send(apptDelBody)
+        .set('Authorization', student.token)
+        .end((err, res) => {
+          res.should.have.status(httpStatus.OK);
+          done();
+        })
     })
   })
