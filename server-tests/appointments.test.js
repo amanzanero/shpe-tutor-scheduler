@@ -27,68 +27,66 @@ const student = {
   "token": "",
 }
 
-before((done) => {
-  // create tutor
-  chai
-    .request(app)
-    .post('/api/user/register')
-    .send(tutor)
-    .end((err, res) => {
-      tutor.id = res.body.data.id;
-    });
-
-  chai
-    .request(app)
-    .post('/api/user/register')
-    .send(student)
-    .end((err, res) => {
-      student.id = res.body.data.id;
-    });
-
-  chai
-    .request(app)
-    .post(credRoute)
-    .send({
-      email: student.email,
-      password: student.password,
-    })
-    .end((err, response) => {
-      student.token = `Bearer ${response.body.data.token}`; // save the token!
-    });
-
-  chai
-    .request(app)
-    .post(credRoute)
-    .send({
-      email: tutor.email,
-      password: tutor.password,
-    })
-    .end((err, response) => {
-      tutor.token = `Bearer ${response.body.data.token}`; // save the token!
-      done();
-    });
-});
-
-after((done) => {
-  const logOut = '/api/user/profile';
-  chai
-    .request(app)
-    .delete(logOut)
-    .set('Authorization', student.token)
-    .then(() => done(), done);
-
-  chai
-    .request(app)
-    .delete(logOut)
-    .set('Authorization', tutor.token)
-    .then(() => done(), done);
-});
-
-
 describe('Appointment module', () => {
     const prefix = '/api/appointment';
   
-  
+    before((done) => {
+      // create tutor
+      chai
+        .request(app)
+        .post('/api/user/register')
+        .send(tutor)
+        .end((err, res) => {
+          tutor.id = res.body.data.id;
+        });
+    
+      chai
+        .request(app)
+        .post('/api/user/register')
+        .send(student)
+        .end((err, res) => {
+          student.id = res.body.data.id;
+        });
+    
+      chai
+        .request(app)
+        .post(credRoute)
+        .send({
+          email: student.email,
+          password: student.password,
+        })
+        .end((err, response) => {
+          student.token = `Bearer ${response.body.data.token}`; // save the token!
+        });
+    
+      chai
+        .request(app)
+        .post(credRoute)
+        .send({
+          email: tutor.email,
+          password: tutor.password,
+        })
+        .end((err, response) => {
+          tutor.token = `Bearer ${response.body.data.token}`; // save the token!
+          done();
+        });
+    });
+    
+    after((done) => {
+      const logOut = '/api/user/profile';
+      chai
+        .request(app)
+        .delete(logOut)
+        .set('Authorization', student.token)
+        .then(() => done(), done);
+    
+      chai
+        .request(app)
+        .delete(logOut)
+        .set('Authorization', tutor.token)
+        .then(() => done(), done);
+    });
+    
     it('It should return HTTP_CREATED_SUCCESSFULLY', done => {
       const apptPostBody = {
         "tutor": `${tutor.id}`,
