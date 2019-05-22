@@ -1,4 +1,4 @@
-test/
+server-tests/
 node_modules/
 docs/
 client/

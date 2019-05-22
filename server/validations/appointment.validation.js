@@ -8,10 +8,8 @@ module.exports = {
   create: {
     body: {
       tutor: Joi.string().required(),
-      students: Joi.array()
-        .min(1)
-        .max(5)
-        .required(),
+      student: Joi.string().required(),
+      guests: Joi.string(),
       // courseId: Joi.object().required(),
       phone: Joi.string()
         .min(10)

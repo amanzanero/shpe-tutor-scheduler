@@ -9,14 +9,13 @@ const responseObject = {
   success: 1,
   message: '',
   data: {},
-  status: '',
 };
 
 exports.makeAppointment = async (req, res, next) => {
   try {
     const popQuery = [
       { path: 'tutor', model: 'User', select: 'email name' },
-      { path: 'students', model: 'User', select: 'email name' },
+      { path: 'student', model: 'User', select: 'email name' },
     ];
 
     // save appointment and find in database then populate
@@ -29,8 +28,8 @@ exports.makeAppointment = async (req, res, next) => {
     // build object to respond with
     const succRes = responseObject;
     succRes.message = 'Appointment created.';
-    succRes.status = httpStatus.CREATED;
     succRes.data = await responseAppt.transform();
+    res.status(httpStatus.CREATED);
     return res.json(succRes);
   } catch (err) {
     return next(err);

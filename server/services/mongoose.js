@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-constant-condition */
 const mongoose = require('mongoose');
 const config = require('../config');
@@ -17,9 +18,22 @@ if (config.env === 'dev') {
 }
 
 exports.connect = () => {
-  const mongoURI =
-    config.env === 'prod' || 'dev' ? config.mongo.uri : config.mongo.testURI;
-
+  let mongoURI;
+  switch (config.env) {
+    case 'prod':
+      mongoURI = config.mongo.uri;
+      break;
+    case 'dev':
+      mongoURI = config.mongo.uri;
+      break;
+    case 'test':
+      mongoURI = config.mongo.testURI;
+      break;
+    default:
+      mongoURI = config.mongo.testURI;
+      break;
+  }
+  console.log('Mongo URL:', mongoURI);
   mongoose.connect(mongoURI, {
     useCreateIndex: true,
     useNewUrlParser: true,

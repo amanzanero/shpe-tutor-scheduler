@@ -5,12 +5,13 @@ const { Schema } = mongoose;
 const appointmentSchema = new Schema(
   {
     tutor: { type: Schema.Types.ObjectId, ref: 'User' },
-    students: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    student: { type: Schema.Types.ObjectId, ref: 'User' },
     confirmed: {
       type: Boolean,
       default: false,
     },
     phone: { type: String, required: true },
+    guests: { type: String, default: '0' },
     // courseId: { type: Schema.Types.ObjectId, ref: 'Course', required: true },
   },
   {
@@ -25,7 +26,7 @@ appointmentSchema.method({
     const fields = [
       'id',
       'tutor',
-      'students',
+      'student',
       'createdAt',
       'confirmed',
       'phone',

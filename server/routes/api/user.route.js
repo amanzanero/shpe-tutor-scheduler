@@ -12,5 +12,5 @@ const auth = require('../../middlewares/authorization');
 router.post('/register', validator(create), userController.register); // validate and register
 router.post('/login', userController.login); // login
 router.get('/profile', auth(), userController.getUserProfile);
-
+router.delete('/profile', auth(), userController.deleteUser);
 module.exports = router;
