@@ -1,10 +1,15 @@
-'use strict'
-const express = require('express')
-const router = express.Router()
-const authRouter = require('./auth.route')
+const express = require('express');
 
-router.get('/status', (req, res) => { res.send({status: 'OK'}) }) // api status
+const router = express.Router();
+const userRouter = require('./user.route');
+const apptRouter = require('./appointment.route');
+const authRouter = require('./example-auth.route');
 
-router.use('/auth', authRouter) // mount auth paths
+router.get('/status', (req, res) => {
+  res.send({ status: 'OK' });
+}); // api status
 
-module.exports = router
+router.use('/user', userRouter); // mount user paths
+router.use('/auth', authRouter);
+router.use('/appointment', apptRouter);
+module.exports = router;
