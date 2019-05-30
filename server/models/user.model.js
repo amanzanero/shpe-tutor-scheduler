@@ -1,102 +1,116 @@
-'use strict'
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt-nodejs')
-const httpStatus = require('http-status')
-const APIError = require('../utils/APIError')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+const httpStatus = require('http-status');
+const APIError = require('../utils/APIError');
 
-const roles = [
-  'user', 'admin'
-]
+const { Schema } = mongoose;
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 4,
-    maxlength: 128
-  },
-  name: {
-    type: String,
-    maxlength: 50
-  },
-  role: {
-    type: String,
-    default: 'user',
-    enum: roles
-  }
-}, {
-  timestamps: true
-})
+const roles = ['student', 'tutor'];
 
-userSchema.pre('save', async function save (next) {
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 4,
+      maxlength: 128,
+    },
+    name: {
+      type: String,
+      maxlength: 50,
+    },
+    role: {
+      type: String,
+      default: 'student',
+      enum: roles,
+    },
+    appointments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Appointment',
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  },
+);
+
+userSchema.pre('save', async function save(next) {
   try {
     if (!this.isModified('password')) {
-      return next()
+      return next();
     }
 
-    this.password = bcrypt.hashSync(this.password)
+    this.password = bcrypt.hashSync(this.password);
 
-    return next()
+    return next();
   } catch (error) {
-    return next(error)
+    return next(error);
   }
-})
+});
 
 userSchema.method({
-  transform () {
-    const transformed = {}
-    const fields = ['id', 'name', 'email', 'createdAt', 'role']
+  transform() {
+    const transformed = {};
+    const fields = ['id', 'name', 'email', 'createdAt', 'role', 'appointments'];
 
-    fields.forEach((field) => {
-      transformed[field] = this[field]
-    })
+    fields.forEach(field => {
+      transformed[field] = this[field];
+    });
 
-    return transformed
+    return transformed;
   },
 
-  passwordMatches (password) {
-    return bcrypt.compareSync(password, this.password)
-  }
-})
+  passwordMatches(password) {
+    return bcrypt.compareSync(password, this.password);
+  },
+});
 
 userSchema.statics = {
   roles,
 
-  checkDuplicateEmailError (err) {
+  checkDuplicateEmailError(err) {
     if (err.code === 11000) {
-      var error = new Error('Email already taken')
-      error.errors = [{
-        field: 'email',
-        location: 'body',
-        messages: ['Email already taken']
-      }]
-      error.status = httpStatus.CONFLICT
-      return error
+      const error = new Error('Email already taken');
+      error.errors = [
+        {
+          field: 'email',
+          location: 'body',
+          messages: ['Email already taken'],
+        },
+      ];
+      error.status = httpStatus.CONFLICT;
+      return error;
     }
 
-    return err
+    return err;
   },
 
-  async findAndGenerateToken (payload) {
-    const { email, password } = payload
-    if (!email) throw new APIError('Email must be provided for login')
+  async findAndGenerateToken(payload) {
+    const { email, password } = payload;
+    if (!email) throw new APIError('Email must be provided for login');
 
-    const user = await this.findOne({ email }).exec()
-    if (!user) throw new APIError(`No user associated with ${email}`, httpStatus.NOT_FOUND)
+    const user = await this.findOne({ email }).exec();
+    if (!user)
+      throw new APIError(
+        `No user associated with ${email}`,
+        httpStatus.NOT_FOUND,
+      );
 
-    const passwordOK = await user.passwordMatches(password)
+    const passwordOK = await user.passwordMatches(password);
 
-    if (!passwordOK) throw new APIError(`Password mismatch`, httpStatus.UNAUTHORIZED)
+    if (!passwordOK)
+      throw new APIError(`Password mismatch`, httpStatus.UNAUTHORIZED);
 
-    return user
-  }
-}
+    return user;
+  },
+};
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);
