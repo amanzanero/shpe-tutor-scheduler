@@ -79,13 +79,17 @@ describe('Appointment module', () => {
         .request(app)
         .delete(logOut)
         .set('Authorization', student.token)
-        .then(() => done(), done);
+        .end((err,res) => {
+          done();
+        });
     
       chai
         .request(app)
         .delete(logOut)
         .set('Authorization', tutor.token)
-        .then(() => done(), done);
+        .end((err,res) => {
+          done();
+        });
     });
     
     it('Create: It should return HTTP_CREATED_SUCCESSFULLY', done => {
