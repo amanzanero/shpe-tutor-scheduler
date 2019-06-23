@@ -8,7 +8,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run client\"",
     "dev:server": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon server/index.js",
     "client": "npm start --prefix client",
-    "lint": "./node_modules/.bin/eslint **/*.js",
+    "lint": "npm run lint:server && npm run lint --prefix client",
+    "lint:server": "./node_modules/.bin/eslint server/*.js",
     "test": "npm run test:server && cd client && npm test",
     "test:server": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
     "postinstall": "cd client && npm install"
@@ -41,19 +42,7 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.1.3",
     "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0",
     "mocha": "^6.1.4",
-    "nodemon": "^1.14.12",
-    "prettier": "^1.17.1"
+    "nodemon": "^1.14.12"
   }
 }
