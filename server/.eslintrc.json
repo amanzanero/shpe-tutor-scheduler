@@ -4,7 +4,10 @@
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "prettier",
+        "eslint:recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -12,7 +15,13 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
+    "plugins": [
+        "prettier"
+    ],
     "rules": {
+        "prettier/prettier": [
+            "error"
+        ],
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
         "array-bracket-spacing": [
