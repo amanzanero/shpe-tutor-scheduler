@@ -6,6 +6,7 @@ const chaiHttp = require('chai-http');
 const { app } = require('../server/index');
 const httpStatus = require('http-status');
 const User = require('../server/models/user.model');
+const Course = require('../server/models/course.model');
 const should = chai.should();
 
 chai.use(chaiHttp);
@@ -27,13 +28,22 @@ const student = {
   id: '',
   token: '',
 };
+const coursePostBody = {
+  name: 'Intro to bio',
+  number: '101',
+  school: 'BISC',
+};
 
 describe('Appointment module', () => {
   const prefix = '/api/appointment';
   let appt;
+  let courseId;
 
   before(done => {
     // create tutor
+    const course = new Course(coursePostBody).save().then((res, err) => {
+      courseId = res.id;
+    });
     const tut = new User(tutor).save().then((res, err) => {
       tutor.id = res.id;
     });
@@ -63,10 +73,11 @@ describe('Appointment module', () => {
 
   it('Create: It should return HTTP_CREATED_SUCCESSFULLY', done => {
     const apptPostBody = {
-      tutor: `${tutor.id}`,
-      student: `${student.id}`,
+      tutor: tutor.id,
+      student: student.id,
       guests: '5',
       phone: '1234567890',
+      course: courseId,
     };
     chai
       .request(app)

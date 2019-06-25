@@ -12,7 +12,7 @@ const appointmentSchema = new Schema(
     },
     phone: { type: String, required: true },
     guests: { type: String, default: '0' },
-    // courseId: { type: Schema.Types.ObjectId, ref: 'Course', required: true },
+    course: { type: Schema.Types.ObjectId, ref: 'Course', required: true },
   },
   {
     timestamps: true,
@@ -30,6 +30,7 @@ appointmentSchema.method({
       'createdAt',
       'confirmed',
       'phone',
+      'course',
     ];
 
     fields.forEach(field => {
