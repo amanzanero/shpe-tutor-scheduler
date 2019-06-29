@@ -7,8 +7,15 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
   card: {
     minWidth: 275,
+    maxWidth: '600px',
+    width: '100%',
     margin: '1em'
   },
   content: {
@@ -17,7 +24,7 @@ const styles = theme => ({
     alignItems: 'center'
   },
   header: {
-    display: 'flex',
+    flex: 1,
     color: theme.palette.primary.main
   },
   textField: {
@@ -46,7 +53,7 @@ const FIELDS = ['Name', 'USC Email', 'USCID', 'Password', 'Confirm Password'];
 function RegistrationForm(props) {
   const { classes } = props;
   return (
-    <div>
+    <div className={classes.root}>
       <Card className={classes.card}>
         <CardContent className={classes.content}>
           <Typography className={classes.header} variant="h4">
