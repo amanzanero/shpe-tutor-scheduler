@@ -42,7 +42,7 @@ const styles = theme => ({
 
 function LandingNav(props) {
   const isMobile = mobile.isMobile();
-  const { classes } = props;
+  const { classes, onToggleModal } = props;
   const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
   const buttonText = 'Login';
   return (
@@ -60,6 +60,7 @@ function LandingNav(props) {
             size="medium"
             variant="contained"
             className={`${classes.button} ${classes.margin} ${classes.white}`}
+            onClick={() => onToggleModal()}
           >
             {buttonText}
           </Button>
@@ -71,6 +72,7 @@ function LandingNav(props) {
 
 LandingNav.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  onToggleModal: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(LandingNav);
