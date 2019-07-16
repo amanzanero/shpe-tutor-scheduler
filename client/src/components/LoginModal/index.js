@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -88,7 +88,7 @@ const FormDialog = props => {
 FormDialog.propTypes = {
   onToggleModal: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  classes: PropTypes.objectOf(object).isRequired,
+  classes: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default withStyles(styles)(FormDialog);
