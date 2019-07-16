@@ -1,14 +1,55 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import PropTypes, { object } from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
-export default function FormDialog(props) {
-  const { onToggleModal, open } = props;
+const styles = theme => ({
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  title: {
+    color: theme.palette.primary.main,
+  },
+  formfield: {
+    '& label.Mui-focused': {
+      color: theme.palette.secondary.light,
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: theme.palette.primary.light,
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: theme.palette.primary.main,
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.secondary.main,
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: theme.palette.secondary.main,
+      },
+    },
+  },
+});
+
+const FIELDS = [
+  {
+    label: 'Email Address',
+    type: 'email',
+  },
+  {
+    label: 'Password',
+    type: 'password',
+  },
+];
+const FormDialog = props => {
+  const { onToggleModal, open, classes } = props;
   return (
     <div>
       <Dialog
@@ -16,23 +57,38 @@ export default function FormDialog(props) {
         onClose={() => onToggleModal()}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title" className={classes.titleContainer}>
+          <Typography variant="h4" className={classes.title}>
+            Login
+          </Typography>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
+          {FIELDS.map(cont => (
+            <TextField
+              autoFocus
+              className={classes.formfield}
+              key={cont.label}
+              margin="normal"
+              label={cont.label}
+              type={cont.type}
+              fullWidth
+              id="outlined-dense"
+              variant="outlined"
+            />
+          ))}
         </DialogContent>
-        <DialogActions />
+        <DialogActions>
+          <Button>Login</Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
+
+FormDialog.propTypes = {
+  onToggleModal: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  classes: PropTypes.objectOf(object).isRequired,
+};
+
+export default withStyles(styles)(FormDialog);
