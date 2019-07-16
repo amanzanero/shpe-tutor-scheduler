@@ -4,6 +4,8 @@ import { ThemeProvider } from '@material-ui/styles';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import initStore from '../../config/store';
 
 import HomePage from '../HomePage';
@@ -20,17 +22,30 @@ const styles = {
 
 const App = props => {
   const { classes } = props;
-  const store = initStore();
+  const { store, persistor } = initStore();
   return (
     <Provider store={store}>
-      <div className={classes.root}>
-        <ThemeProvider theme={theme}>
-          <Router>
-            <Route path="/" component={LandingPage} />
-            <Route path="/home" component={HomePage} />
-          </Router>
-        </ThemeProvider>
-      </div>
+      {persistor ? (
+        <PersistGate loading={null} persistor={persistor}>
+          <div className={classes.root}>
+            <ThemeProvider theme={theme}>
+              <Router>
+                <Route path="/" component={LandingPage} />
+                <Route path="/home" component={HomePage} />
+              </Router>
+            </ThemeProvider>
+          </div>
+        </PersistGate>
+      ) : (
+        <div className={classes.root}>
+          <ThemeProvider theme={theme}>
+            <Router>
+              <Route path="/" component={LandingPage} />
+              <Route path="/home" component={HomePage} />
+            </Router>
+          </ThemeProvider>
+        </div>
+      )}
     </Provider>
   );
 };
