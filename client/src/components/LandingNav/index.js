@@ -9,35 +9,35 @@ import mobile from 'is-mobile';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   text: {
     flexGrow: 1,
     fontSize: 26,
-    fontFamily: 'Times'
+    fontFamily: 'Roboto Slab',
   },
   button: {
     backgroundColor: theme.palette.primary.light,
     '&:hover': {
-      background: theme.palette.secondary.main
+      background: theme.palette.secondary.main,
     },
     '&:focus': {
-      background: theme.palette.secondary.main
+      background: theme.palette.secondary.main,
     },
     fontSize: 18,
     textTransform: 'none',
     paddingTop: '.2em',
-    paddingBottom: '.2em'
+    paddingBottom: '.2em',
   },
   margin: {
-    margin: '.5em'
+    margin: '.5em',
   },
   gold: {
-    color: theme.palette.secondary.light
+    color: theme.palette.secondary.light,
   },
   white: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
 function LandingNav(props) {
@@ -70,7 +70,7 @@ function LandingNav(props) {
 }
 
 LandingNav.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(styles)(LandingNav);
