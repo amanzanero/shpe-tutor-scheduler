@@ -9,6 +9,7 @@ const errorHandler = require('../middlewares/error-handler');
 const apiRouter = require('../routes/api');
 const config = require('../config');
 const passportJwt = require('../services/passport');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +21,12 @@ if (config.env !== 'test') app.use(morgan('combined'));
 // passport
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
+if (process.env.NODE_ENV === 'production') {
+  app.get('/', (req, res) =>
+    res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`)),
+  );
+  app.use(express.static(path.resolve(`${__dirname}/../../client/build`)));
+}
 
 app.use('/api', apiRouter);
 app.use(errorHandler.handleNotFound);

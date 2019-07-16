@@ -4,9 +4,9 @@
   "description": "Webapp for SHPE Students at studynights!",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "cross-env NODE_ENV=production npm run build --prefix client && node server",
     "dev": "concurrently \"npm run dev:server\" \"npm run client\"",
-    "dev:server": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon server/index.js",
+    "dev:server": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon server",
     "client": "npm start --prefix client",
     "lint": "npm run lint:server && npm run lint --prefix client",
     "lint:server": "./node_modules/.bin/eslint server/*.js",
