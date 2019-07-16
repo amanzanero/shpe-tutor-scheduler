@@ -12,7 +12,9 @@
     "lint:server": "./node_modules/.bin/eslint server/*.js",
     "test": "npm run test:server && cd client && npm test",
     "test:server": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
-    "postinstall": "cd client && npm install"
+    "postinstall": "cd client && npm install",
+    "predev:deploy": "npm run build --prefix client",
+    "dev:deploy": "gh-pages -d client/build"
   },
   "author": "Andrew Manzanero",
   "license": "ISC",
@@ -44,8 +46,10 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "gh-pages": "^2.0.1",
     "mocha": "^6.1.4",
     "nodemon": "^1.14.12",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "redux-persist": "^5.10.0"
   }
 }
