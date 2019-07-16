@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 
@@ -13,6 +12,7 @@ const styles = theme => ({
   titleContainer: {
     display: 'flex',
     justifyContent: 'center',
+    margin: '1.5em',
   },
   title: {
     color: theme.palette.primary.main,
@@ -57,11 +57,11 @@ const FormDialog = props => {
         onClose={() => onToggleModal()}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title" className={classes.titleContainer}>
+        <div className={classes.titleContainer}>
           <Typography variant="h4" className={classes.title}>
             Login
           </Typography>
-        </DialogTitle>
+        </div>
         <DialogContent>
           {FIELDS.map(cont => (
             <TextField
