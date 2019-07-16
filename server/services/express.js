@@ -21,7 +21,8 @@ if (config.env !== 'test') app.use(morgan('combined'));
 // passport
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
-if (process.env.NODE_ENV === 'production') {
+
+if (config.env === 'production') {
   app.get('/', (req, res) =>
     res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`)),
   );
