@@ -1,8 +1,13 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import LandingNav from '../../components/LandingNav';
+import LoginModal from '../../components/LoginModal';
 import RegistrationForm from './RegistrationForm';
+
+import { toggleModal } from '../../actions';
 
 const styles = {
   root: {
@@ -15,19 +20,35 @@ const styles = {
 };
 
 function LandingPage(props) {
-  const { classes } = props;
+  const { classes, isModalOpen, onToggleModal } = props;
   return (
     <div className={classes.root}>
-      <LandingNav />
+      <LandingNav onToggleModal={onToggleModal} />
+      <LoginModal onToggleModal={onToggleModal} open={isModalOpen} />
       <div className={classes.pageBody}>
-        <RegistrationForm />
+        <RegistrationForm open={isModalOpen} />
       </div>
     </div>
   );
 }
 
-LandingPage.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+const mapStateToProps = state => {
+  return { isModalOpen: state.landingPage.modalOpen };
 };
 
-export default withStyles(styles)(LandingPage);
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleModal: () => dispatch(toggleModal()),
+  };
+};
+
+LandingPage.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  onToggleModal: PropTypes.func.isRequired,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(LandingPage));

@@ -38,6 +38,8 @@ const styles = theme => ({
     textTransform: 'none',
     paddingTop: '.2em',
     paddingBottom: '.2em',
+    marginTop: '.5em',
+    height: '2.5em',
   },
   textField: {
     '& label.Mui-focused': {
