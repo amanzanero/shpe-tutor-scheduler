@@ -72,6 +72,10 @@ const FIELDS = [
     stateSlug: 'email_field',
   },
   {
+    text: 'Username',
+    stateSlug: 'username_field',
+  },
+  {
     text: 'USCID',
     stateSlug: 'id_field',
   },
@@ -106,7 +110,7 @@ class RegistrationForm extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onFormSubmit } = this.props;
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
@@ -136,6 +140,7 @@ class RegistrationForm extends React.Component {
               size="large"
               color="primary"
               className={classes.button}
+              onClick={() => onFormSubmit(this.state)}
             >
               {BUTTON_TEXT}
             </Button>
@@ -148,6 +153,7 @@ class RegistrationForm extends React.Component {
 
 RegistrationForm.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(RegistrationForm);
