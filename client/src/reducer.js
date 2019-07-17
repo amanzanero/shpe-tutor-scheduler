@@ -12,7 +12,7 @@ const globalInitialState = {
   loading: false,
 };
 
-const global = (state = globalInitialState, action) => {
+const globalStore = (state = globalInitialState, action) => {
   switch (action.type) {
     case USER_REGISTER:
       return { ...state, loading: true };
@@ -25,4 +25,4 @@ const global = (state = globalInitialState, action) => {
   }
 };
 
-export default combineReducers({ global, landingPage });
+export default combineReducers({ globalStore, landingPage });
