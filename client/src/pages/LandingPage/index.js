@@ -2,11 +2,14 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import axios from 'axios';
+import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
 import LoginModal from '../../components/LoginModal';
 import RegistrationForm from './RegistrationForm';
+import { baseUrl } from '../../config/config';
 
 import {
   toggleModal,
@@ -14,6 +17,7 @@ import {
   userRegisterSuccess,
   userRegisterError,
   setUser,
+  userRegistrationErrorResolve,
 } from '../../actions';
 
 const styles = {
@@ -23,6 +27,9 @@ const styles = {
   },
   pageBody: {
     padding: '1em',
+  },
+  linearProgress: {
+    margin: '.5em',
   },
 };
 
@@ -35,7 +42,10 @@ function LandingPage(props) {
     onRegisterUser,
     onRegisterUserError,
     onRegisterUserSuccess,
+    onErrResolve,
     onSetUser,
+    hasError,
+    errMessage,
   } = props;
 
   const onFormSubmit = state => {
@@ -46,23 +56,29 @@ function LandingPage(props) {
       password: state.password_field,
     };
     axios
-      .post('http://localhost:4000/api/user/register', data)
+      .post(`${baseUrl}/api/user/register`, data)
       .then(resp => {
         onSetUser(resp);
         onRegisterUserSuccess();
       })
-      .catch(err => onRegisterUserError(err));
+      .catch(err => {
+        onRegisterUserError(err.message);
+      });
   };
 
-  return isLoading ? (
-    <p>Loading</p>
-  ) : (
+  return (
     <div className={classes.root}>
       <LandingNav onToggleModal={onToggleModal} />
+      {isLoading && <LinearProgress className={classes.linearProgress} />}
       <LoginModal onToggleModal={onToggleModal} open={isModalOpen} />
       <div className={classes.pageBody}>
         <RegistrationForm onFormSubmit={onFormSubmit} />
       </div>
+      <ErrorPopUp
+        hasError={hasError}
+        onErrResolve={onErrResolve}
+        errMessage={errMessage}
+      />
     </div>
   );
 }
@@ -71,6 +87,8 @@ const mapStateToProps = state => {
   return {
     isModalOpen: state.landingPage.modalOpen,
     isLoading: state.landingPage.loading,
+    hasError: state.landingPage.registerError.status,
+    errMessage: state.landingPage.registerError.message,
   };
 };
 
@@ -80,8 +98,13 @@ const mapDispatchToProps = dispatch => {
     onRegisterUser: payload => dispatch(userRegister(payload)),
     onRegisterUserSuccess: () => dispatch(userRegisterSuccess()),
     onRegisterUserError: payload => dispatch(userRegisterError(payload)),
+    onErrResolve: () => dispatch(userRegistrationErrorResolve()),
     onSetUser: payload => dispatch(setUser(payload)),
   };
+};
+
+LandingPage.defaultProps = {
+  errMessage: '',
 };
 
 LandingPage.propTypes = {
@@ -92,7 +115,10 @@ LandingPage.propTypes = {
   onRegisterUser: PropTypes.func.isRequired,
   onRegisterUserSuccess: PropTypes.func.isRequired,
   onRegisterUserError: PropTypes.func.isRequired,
+  onErrResolve: PropTypes.func.isRequired,
   onSetUser: PropTypes.func.isRequired,
+  hasError: PropTypes.bool.isRequired,
+  errMessage: PropTypes.string,
 };
 
 export default connect(

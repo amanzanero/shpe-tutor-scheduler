@@ -4,6 +4,7 @@ import {
   USER_REGISTER_ERROR,
   TOGGLE_LOGIN_MODAL,
   SET_USER,
+  USER_REGISTER_ERROR_RESOLVE,
 } from '../types';
 
 export const userRegister = payload => {
@@ -24,6 +25,12 @@ export const userRegisterError = payload => {
   return {
     type: USER_REGISTER_ERROR,
     payload,
+  };
+};
+
+export const userRegistrationErrorResolve = () => {
+  return {
+    type: USER_REGISTER_ERROR_RESOLVE,
   };
 };
 

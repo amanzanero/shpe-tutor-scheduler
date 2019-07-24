@@ -6,13 +6,14 @@ import {
   USER_REGISTER,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_ERROR,
+  USER_REGISTER_ERROR_RESOLVE,
 } from '../../types';
 
 const initState = {
   modalOpen: false,
   loading: false,
   registerError: {
-    status: 0,
+    status: false,
     message: '',
   },
 };
@@ -27,7 +28,15 @@ const landingPage = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        registerError: { status: 1, message: action.payload },
+        registerError: { status: true, message: action.payload },
+      };
+    case USER_REGISTER_ERROR_RESOLVE:
+      return {
+        ...state,
+        registerError: {
+          status: false,
+          message: '',
+        },
       };
     case USER_REGISTER_SUCCESS:
       return {
