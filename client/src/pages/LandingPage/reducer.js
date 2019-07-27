@@ -33,16 +33,13 @@ const landingPage = (state = initState, action) => {
     case USER_REGISTER_ERROR_RESOLVE:
       return {
         ...state,
-        registerError: {
-          status: false,
-          message: '',
-        },
+        registerError: { status: false, message: '' },
       };
     case USER_REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        registerError: { status: 0, message: '' },
+        registerError: { status: false, message: '' },
       };
     default:
       return state;

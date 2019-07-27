@@ -58,7 +58,7 @@ function LandingPage(props) {
     axios
       .post(`${baseUrl}/api/user/register`, data)
       .then(resp => {
-        onSetUser(resp);
+        onSetUser(resp.data.data);
         onRegisterUserSuccess();
       })
       .catch(err => {
