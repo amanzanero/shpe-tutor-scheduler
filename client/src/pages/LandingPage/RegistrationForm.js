@@ -5,7 +5,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
+import { button, textField } from '../../theme';
 import ValidatedTextInput from '../../components/ValidatedTextInput';
 
 const styles = theme => ({
@@ -27,21 +30,8 @@ const styles = theme => ({
     flex: 1,
     color: theme.palette.primary.main,
   },
-  button: {
-    backgroundColor: theme.palette.primary.light,
-    '&:hover': {
-      background: theme.palette.secondary.main,
-    },
-    '&:focus': {
-      background: theme.palette.secondary.main,
-    },
-    fontSize: 18,
-    textTransform: 'none',
-    paddingTop: '.2em',
-    paddingBottom: '.2em',
-    marginTop: '.5em',
-    height: '2.5em',
-  },
+  customButton: button,
+  customTextField: textField,
 });
 
 const FIELDS = [
@@ -52,10 +42,6 @@ const FIELDS = [
   {
     text: 'USC Email',
     stateSlug: 'email_field',
-  },
-  {
-    text: 'Username',
-    stateSlug: 'username_field',
   },
   {
     text: 'USCID',
@@ -71,9 +57,15 @@ const FIELDS = [
   },
 ];
 
+const ROLES = ['student', 'tutor', 'both'];
+
 const BUTTON_TEXT = 'Submit';
 
 class RegistrationForm extends React.Component {
+  state = {
+    dropDown: '',
+  };
+
   componentWillMount() {
     FIELDS.forEach(textContent => {
       this.setState(previousState => {
@@ -91,8 +83,13 @@ class RegistrationForm extends React.Component {
     });
   };
 
+  handleDropDown = event => {
+    this.setState({ dropDown: event.target.value });
+  };
+
   render() {
     const { classes, onFormSubmit } = this.props;
+    const { dropDown } = this.state;
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
@@ -114,11 +111,28 @@ class RegistrationForm extends React.Component {
                 />
               );
             })}
+            <TextField
+              id="outlined-name"
+              className={classes.customTextField}
+              fullWidth
+              select
+              margin="normal"
+              variant="outlined"
+              label="I am a:"
+              value={dropDown}
+              onChange={this.handleDropDown}
+            >
+              {ROLES.map(option => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
             <Button
               variant="contained"
               size="large"
               color="primary"
-              className={classes.button}
+              className={classes.customButton}
               onClick={() => onFormSubmit(this.state)}
             >
               {BUTTON_TEXT}

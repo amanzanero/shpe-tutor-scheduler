@@ -6,28 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-
-const styles = theme => ({
-  textField: {
-    '& label.Mui-focused': {
-      color: theme.palette.secondary.light,
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: theme.palette.primary.light,
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.primary.main,
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-    },
-  },
-});
+import { textField as styles } from '../../theme';
 
 const ValidatedTextField = props => {
   const { classes, textContent, handleChange, val, valid } = props;
