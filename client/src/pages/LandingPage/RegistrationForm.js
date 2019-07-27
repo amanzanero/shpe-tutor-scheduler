@@ -5,11 +5,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import { button, textField } from '../../theme';
 import ValidatedTextInput from '../../components/ValidatedTextInput';
+import DropDown from '../../components/DropDown';
+import MAJORS from './majors';
 
 const styles = theme => ({
   root: {
@@ -44,10 +44,6 @@ const FIELDS = [
     stateSlug: 'email_field',
   },
   {
-    text: 'USCID',
-    stateSlug: 'id_field',
-  },
-  {
     text: 'Password',
     stateSlug: 'password_field',
   },
@@ -55,23 +51,44 @@ const FIELDS = [
     text: 'Confirm Password',
     stateSlug: 'confirm_field',
   },
+  {
+    text: 'Grad Year',
+    stateSlug: 'grad_field',
+  },
 ];
 
 const ROLES = ['student', 'tutor', 'both'];
 
+const DROPDOWNS = [
+  {
+    name: 'major',
+    label: 'Major',
+    options: MAJORS,
+  },
+  {
+    name: 'role',
+    label: 'I am a:',
+    options: ROLES,
+  },
+];
+
 const BUTTON_TEXT = 'Submit';
 
 class RegistrationForm extends React.Component {
-  state = {
-    dropDown: '',
-  };
-
   componentWillMount() {
     FIELDS.forEach(textContent => {
       this.setState(previousState => {
         return {
           ...previousState,
           [textContent.stateSlug]: '',
+        };
+      });
+    });
+    DROPDOWNS.forEach(dropDown => {
+      this.setState(previousState => {
+        return {
+          ...previousState,
+          [dropDown.name]: '',
         };
       });
     });
@@ -84,12 +101,11 @@ class RegistrationForm extends React.Component {
   };
 
   handleDropDown = event => {
-    this.setState({ dropDown: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { classes, onFormSubmit } = this.props;
-    const { dropDown } = this.state;
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
@@ -111,23 +127,17 @@ class RegistrationForm extends React.Component {
                 />
               );
             })}
-            <TextField
-              id="outlined-name"
-              className={classes.customTextField}
-              fullWidth
-              select
-              margin="normal"
-              variant="outlined"
-              label="I am a:"
-              value={dropDown}
-              onChange={this.handleDropDown}
-            >
-              {ROLES.map(option => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
+            {DROPDOWNS.map(item => {
+              const { [item.name]: val } = this.state;
+              const dropDownProps = {
+                name: item.name,
+                options: item.options,
+                handleDropDown: this.handleDropDown,
+                label: item.label,
+                dropDown: val,
+              };
+              return <DropDown key={item.name} {...dropDownProps} />;
+            })}
             <Button
               variant="contained"
               size="large"
