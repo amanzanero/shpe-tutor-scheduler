@@ -46,6 +46,7 @@ function LandingPage(props) {
     onSetUser,
     hasError,
     errMessage,
+    history,
   } = props;
 
   const onFormSubmit = state => {
@@ -60,6 +61,7 @@ function LandingPage(props) {
       .then(resp => {
         onSetUser(resp.data.data);
         onRegisterUserSuccess();
+        history.push('/home');
       })
       .catch(err => {
         onRegisterUserError(err.message);
@@ -119,6 +121,7 @@ LandingPage.propTypes = {
   onSetUser: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,
   errMessage: PropTypes.string,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default connect(
