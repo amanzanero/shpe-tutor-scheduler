@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+
+import ValidatedTextInput from '../../components/ValidatedTextInput';
 
 const styles = theme => ({
   root: {
@@ -40,25 +41,6 @@ const styles = theme => ({
     paddingBottom: '.2em',
     marginTop: '.5em',
     height: '2.5em',
-  },
-  textField: {
-    '& label.Mui-focused': {
-      color: theme.palette.secondary.light,
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: theme.palette.primary.light,
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.primary.main,
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-    },
   },
 });
 
@@ -120,18 +102,15 @@ class RegistrationForm extends React.Component {
             </Typography>
             {FIELDS.map(textContent => {
               const { [textContent.stateSlug]: val } = this.state;
+              const inputProps = {
+                textContent,
+                val,
+                handleChange: this.handleChange,
+              };
               return (
-                <TextField
-                  id="outlined-name"
-                  label={textContent.text}
-                  className={classes.textField}
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  value={val}
-                  onChange={this.handleChange}
-                  name={textContent.stateSlug}
+                <ValidatedTextInput
                   key={textContent.stateSlug}
+                  {...inputProps}
                 />
               );
             })}
