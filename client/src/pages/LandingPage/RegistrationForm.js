@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+
+import { button, textField } from '../../theme';
+import ValidatedTextInput from '../../components/ValidatedTextInput';
+import DropDown from '../../components/DropDown';
+import MAJORS from './majors';
 
 const styles = theme => ({
   root: {
@@ -26,40 +30,8 @@ const styles = theme => ({
     flex: 1,
     color: theme.palette.primary.main,
   },
-  button: {
-    backgroundColor: theme.palette.primary.light,
-    '&:hover': {
-      background: theme.palette.secondary.main,
-    },
-    '&:focus': {
-      background: theme.palette.secondary.main,
-    },
-    fontSize: 18,
-    textTransform: 'none',
-    paddingTop: '.2em',
-    paddingBottom: '.2em',
-    marginTop: '.5em',
-    height: '2.5em',
-  },
-  textField: {
-    '& label.Mui-focused': {
-      color: theme.palette.secondary.light,
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: theme.palette.primary.light,
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: theme.palette.primary.main,
-      },
-      '&:hover fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: theme.palette.secondary.main,
-      },
-    },
-  },
+  customButton: button,
+  customTextField: textField,
 });
 
 const FIELDS = [
@@ -72,16 +44,31 @@ const FIELDS = [
     stateSlug: 'email_field',
   },
   {
-    text: 'USCID',
-    stateSlug: 'id_field',
-  },
-  {
     text: 'Password',
     stateSlug: 'password_field',
   },
   {
     text: 'Confirm Password',
     stateSlug: 'confirm_field',
+  },
+  {
+    text: 'Grad Year',
+    stateSlug: 'grad_field',
+  },
+];
+
+const ROLES = ['student', 'tutor', 'both'];
+
+const DROPDOWNS = [
+  {
+    name: 'major',
+    label: 'Major',
+    options: MAJORS,
+  },
+  {
+    name: 'role',
+    label: 'I am a:',
+    options: ROLES,
   },
 ];
 
@@ -97,6 +84,14 @@ class RegistrationForm extends React.Component {
         };
       });
     });
+    DROPDOWNS.forEach(dropDown => {
+      this.setState(previousState => {
+        return {
+          ...previousState,
+          [dropDown.name]: '',
+        };
+      });
+    });
   }
 
   handleChange = event => {
@@ -105,8 +100,12 @@ class RegistrationForm extends React.Component {
     });
   };
 
+  handleDropDown = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, onFormSubmit } = this.props;
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
@@ -116,26 +115,35 @@ class RegistrationForm extends React.Component {
             </Typography>
             {FIELDS.map(textContent => {
               const { [textContent.stateSlug]: val } = this.state;
+              const inputProps = {
+                textContent,
+                val,
+                handleChange: this.handleChange,
+              };
               return (
-                <TextField
-                  id="outlined-name"
-                  label={textContent.text}
-                  className={classes.textField}
-                  fullWidth
-                  margin="normal"
-                  variant="outlined"
-                  value={val}
-                  onChange={this.handleChange}
-                  name={textContent.stateSlug}
+                <ValidatedTextInput
                   key={textContent.stateSlug}
+                  {...inputProps}
                 />
               );
+            })}
+            {DROPDOWNS.map(item => {
+              const { [item.name]: val } = this.state;
+              const dropDownProps = {
+                name: item.name,
+                options: item.options,
+                handleDropDown: this.handleDropDown,
+                label: item.label,
+                dropDown: val,
+              };
+              return <DropDown key={item.name} {...dropDownProps} />;
             })}
             <Button
               variant="contained"
               size="large"
               color="primary"
-              className={classes.button}
+              className={classes.customButton}
+              onClick={() => onFormSubmit(this.state)}
             >
               {BUTTON_TEXT}
             </Button>
@@ -148,6 +156,7 @@ class RegistrationForm extends React.Component {
 
 RegistrationForm.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(RegistrationForm);

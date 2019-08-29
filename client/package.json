@@ -2,11 +2,11 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://andrewmanzanero.com/shpe-tutor-scheduler",
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
     "@material-ui/styles": "^4.1.2",
+    "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "is-mobile": "^2.0.1",
     "prop-types": "^15.7.2",

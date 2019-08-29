@@ -20,38 +20,35 @@ const styles = {
   },
 };
 
-const App = props => {
+const App = classes => (
+  <div className={classes.root}>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/home" component={HomePage} />
+      </Router>
+    </ThemeProvider>
+  </div>
+);
+
+const AppWrapper = props => {
   const { classes } = props;
   const { store, persistor } = initStore();
   return (
     <Provider store={store}>
       {persistor ? (
         <PersistGate loading={null} persistor={persistor}>
-          <div className={classes.root}>
-            <ThemeProvider theme={theme}>
-              <Router>
-                <Route path="/" component={LandingPage} />
-                <Route path="/home" component={HomePage} />
-              </Router>
-            </ThemeProvider>
-          </div>
+          {App(classes)}
         </PersistGate>
       ) : (
-        <div className={classes.root}>
-          <ThemeProvider theme={theme}>
-            <Router>
-              <Route path="/" component={LandingPage} />
-              <Route path="/home" component={HomePage} />
-            </Router>
-          </ThemeProvider>
-        </div>
+        App(classes)
       )}
     </Provider>
   );
 };
 
-App.propTypes = {
+AppWrapper.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(AppWrapper);

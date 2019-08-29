@@ -1,10 +1,6 @@
 import { combineReducers } from 'redux';
 import landingPage from './pages/LandingPage/reducer';
-import {
-  USER_REGISTER,
-  USER_REGISTER_SUCCESS,
-  USER_REGISTER_ERROR,
-} from './types';
+import { SET_USER } from './types';
 
 const globalInitialState = {
   user: {},
@@ -14,12 +10,8 @@ const globalInitialState = {
 
 const globalStore = (state = globalInitialState, action) => {
   switch (action.type) {
-    case USER_REGISTER:
-      return { ...state, loading: true };
-    case USER_REGISTER_SUCCESS:
-      return { ...state, user: { ...action.payload }, loading: false };
-    case USER_REGISTER_ERROR:
-      return { ...state, loading: false };
+    case SET_USER:
+      return { ...state, user: action.payload };
     default:
       return state;
   }

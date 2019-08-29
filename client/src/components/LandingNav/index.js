@@ -7,6 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import mobile from 'is-mobile';
 
+import { button } from '../../theme';
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -16,19 +18,7 @@ const styles = theme => ({
     fontSize: 26,
     fontFamily: 'Roboto Slab',
   },
-  button: {
-    backgroundColor: theme.palette.primary.light,
-    '&:hover': {
-      background: theme.palette.secondary.main,
-    },
-    '&:focus': {
-      background: theme.palette.secondary.main,
-    },
-    fontSize: 18,
-    textTransform: 'none',
-    paddingTop: '.2em',
-    paddingBottom: '.2em',
-  },
+  customButton: button,
   margin: {
     margin: '.5em',
   },
@@ -59,7 +49,7 @@ function LandingNav(props) {
           <Button
             size="medium"
             variant="contained"
-            className={`${classes.button} ${classes.margin} ${classes.white}`}
+            className={`${classes.customButton} ${classes.margin} ${classes.white}`}
             onClick={() => onToggleModal()}
           >
             {buttonText}

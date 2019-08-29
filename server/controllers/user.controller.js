@@ -21,6 +21,8 @@ exports.register = async (req, res, next) => {
     res.status(httpStatus.CREATED);
     return res.json(succRes);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error:', error);
     return next(User.checkDuplicateEmailError(error));
   }
 };
@@ -36,6 +38,8 @@ exports.login = async (req, res, next) => {
     res.status(httpStatus.OK);
     return res.json(succRes);
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error:', error);
     return next(error);
   }
 };
@@ -46,7 +50,7 @@ exports.getUserProfile = async (req, res) => {
       User.findOne({ _id: req.user._id })
         .populate('appointments')
         // eslint-disable-next-line prettier/prettier
-      .then((user) => {
+        .then(user => {
           // Do something with the user
           const successResponse = responseObject; // copy
           successResponse.success = 1;
@@ -70,7 +74,7 @@ exports.deleteUser = async (req, res) => {
     return (
       User.findOneAndDelete({ _id: req.user._id })
         // eslint-disable-next-line prettier/prettier
-      .then(() => {
+        .then(() => {
           // Do something with the user
           const successResponse = responseObject; // copy
           successResponse.success = 1;
