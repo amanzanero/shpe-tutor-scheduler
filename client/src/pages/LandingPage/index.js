@@ -9,7 +9,7 @@ import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
 import LoginModal from '../../components/LoginModal';
 import RegistrationForm from './RegistrationForm';
-import { baseUrl } from '../../config/config';
+import baseUrl from '../../config/config';
 
 import {
   toggleModal,
