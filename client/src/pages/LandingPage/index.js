@@ -55,6 +55,9 @@ function LandingPage(props) {
       name: state.name_field,
       email: state.email_field,
       password: state.password_field,
+      major: state.major,
+      role: state.role,
+      gradYear: state.grad_field,
     };
     axios
       .post(`${baseUrl}/api/user/register`, data)

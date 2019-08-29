@@ -24,7 +24,7 @@ const App = classes => (
   <div className={classes.root}>
     <ThemeProvider theme={theme}>
       <Router>
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/" component={LandingPage} />
         <Route path="/home" component={HomePage} />
       </Router>
     </ThemeProvider>
