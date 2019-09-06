@@ -5,6 +5,9 @@ import {
   TOGGLE_LOGIN_MODAL,
   SET_USER,
   USER_REGISTER_ERROR_RESOLVE,
+  USER_LOGIN,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_ERROR,
 } from '../types';
 
 export const userRegister = payload => {
@@ -44,5 +47,25 @@ export const setUser = payload => {
 export const toggleModal = () => {
   return {
     type: TOGGLE_LOGIN_MODAL,
+  };
+};
+
+export const userLogin = payload => {
+  return {
+    type: USER_LOGIN,
+    payload,
+  };
+};
+
+export const userLoginSuccess = () => {
+  return {
+    type: USER_LOGIN_SUCCESS,
+  };
+};
+
+export const userLoginError = payload => {
+  return {
+    type: USER_LOGIN_ERROR,
+    payload,
   };
 };

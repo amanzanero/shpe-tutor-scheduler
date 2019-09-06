@@ -23,11 +23,13 @@ exports.register = async (req, res, next) => {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error:', error);
-    return next(User.checkDuplicateEmailError(error));
+    return res
+      .status(400)
+      .json({ ...responseObject, success: 0, message: error.message });
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const user = await User.findAndGenerateToken(req.body);
     const payload = { sub: user.id };
@@ -39,8 +41,10 @@ exports.login = async (req, res, next) => {
     return res.json(succRes);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error:', error);
-    return next(error);
+    console.error('Error:', error.message);
+    return res
+      .status(400)
+      .json({ ...responseObject, success: 0, message: error.message });
   }
 };
 

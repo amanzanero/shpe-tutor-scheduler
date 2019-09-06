@@ -5,12 +5,11 @@
  */
 
 import React from 'react';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import mobile from 'is-mobile';
@@ -24,21 +23,18 @@ import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const styles = {
-  root: {
-    flexGrow: 1
-  },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
-  }
+    marginRight: 20,
+  },
 };
 
 class UserNav extends React.Component {
   state = {
-    drawerOpen: false
+    drawerOpen: false,
   };
 
   toggleDrawer = open => () => {
@@ -50,7 +46,7 @@ class UserNav extends React.Component {
     const isMobile = mobile();
     const { drawerOpen } = this.state;
     return (
-      <div className={classes.root}>
+      <div>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -65,7 +61,6 @@ class UserNav extends React.Component {
             <Typography variant="h6" color="secondary" className={classes.grow}>
               {isMobile ? 'SHPE Tutoring' : 'SHPE Tutoring and Academics'}
             </Typography>
-            {!isMobile && <Button color="secondary">Login</Button>}
           </Toolbar>
         </AppBar>
         <Drawer open={drawerOpen} onClose={this.toggleDrawer(false)}>
@@ -101,7 +96,7 @@ class UserNav extends React.Component {
 }
 
 UserNav.propTypes = {
-  classes: PropTypes.objectOf(object).isRequired
+  classes: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default withStyles(styles)(UserNav);

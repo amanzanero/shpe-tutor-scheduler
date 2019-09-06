@@ -18,6 +18,9 @@ import {
   userRegisterError,
   setUser,
   userRegistrationErrorResolve,
+  userLogin,
+  userLoginError,
+  userLoginSuccess,
 } from '../../actions';
 
 const styles = {
@@ -42,6 +45,9 @@ function LandingPage(props) {
     onRegisterUser,
     onRegisterUserError,
     onRegisterUserSuccess,
+    onLoginUser,
+    onLoginUserError,
+    onLoginUserSuccess,
     onErrResolve,
     onSetUser,
     hasError,
@@ -67,15 +73,40 @@ function LandingPage(props) {
         history.push('/home');
       })
       .catch(err => {
-        onRegisterUserError(err.message);
+        console.log(err.response.data.message);
+        onRegisterUserError(err.response.data.message);
       });
+  };
+
+  const onSubmitLogin = ({ emailState, passwordState }) => {
+    onLoginUser();
+    const data = {
+      email: emailState,
+      password: passwordState,
+    };
+    axios
+      .post(`${baseUrl}/api/user/login`, data)
+      .then(resp => {
+        onSetUser(resp.data.data);
+        onLoginUserSuccess();
+        history.push('/home');
+      })
+      .catch(err => {
+        onLoginUserError(err.response.data.message);
+      });
+  };
+
+  const loginProps = {
+    onToggleModal,
+    open: isModalOpen,
+    onSubmitLogin,
   };
 
   return (
     <div className={classes.root}>
       <LandingNav onToggleModal={onToggleModal} />
       {isLoading && <LinearProgress className={classes.linearProgress} />}
-      <LoginModal onToggleModal={onToggleModal} open={isModalOpen} />
+      <LoginModal {...loginProps} />
       <div className={classes.pageBody}>
         <RegistrationForm onFormSubmit={onFormSubmit} />
       </div>
@@ -92,8 +123,8 @@ const mapStateToProps = state => {
   return {
     isModalOpen: state.landingPage.modalOpen,
     isLoading: state.landingPage.loading,
-    hasError: state.landingPage.registerError.status,
-    errMessage: state.landingPage.registerError.message,
+    hasError: state.landingPage.pageErr.status,
+    errMessage: state.landingPage.pageErr.message,
   };
 };
 
@@ -105,6 +136,9 @@ const mapDispatchToProps = dispatch => {
     onRegisterUserError: payload => dispatch(userRegisterError(payload)),
     onErrResolve: () => dispatch(userRegistrationErrorResolve()),
     onSetUser: payload => dispatch(setUser(payload)),
+    onLoginUser: payload => dispatch(userLogin(payload)),
+    onLoginUserSuccess: () => dispatch(userLoginSuccess()),
+    onLoginUserError: payload => dispatch(userLoginError(payload)),
   };
 };
 
@@ -120,6 +154,9 @@ LandingPage.propTypes = {
   onRegisterUser: PropTypes.func.isRequired,
   onRegisterUserSuccess: PropTypes.func.isRequired,
   onRegisterUserError: PropTypes.func.isRequired,
+  onLoginUser: PropTypes.func.isRequired,
+  onLoginUserError: PropTypes.func.isRequired,
+  onLoginUserSuccess: PropTypes.func.isRequired,
   onErrResolve: PropTypes.func.isRequired,
   onSetUser: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,

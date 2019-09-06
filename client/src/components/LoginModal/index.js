@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
@@ -49,7 +49,21 @@ const FIELDS = [
   },
 ];
 const FormDialog = props => {
-  const { onToggleModal, open, classes } = props;
+  const { onToggleModal, open, classes, onSubmitLogin } = props;
+
+  const [emailState, setEmail] = useState('');
+  const [passwordState, setPassword] = useState('');
+
+  const stateMap = {
+    email: emailState,
+    password: passwordState,
+  };
+
+  const setStateMap = {
+    email: setEmail,
+    password: setPassword,
+  };
+
   return (
     <div>
       <Dialog
@@ -74,11 +88,15 @@ const FormDialog = props => {
               fullWidth
               id="outlined-dense"
               variant="outlined"
+              value={stateMap[cont.type]}
+              onChange={e => setStateMap[cont.type](e.target.value)}
             />
           ))}
         </DialogContent>
         <DialogActions>
-          <Button>Login</Button>
+          <Button onClick={() => onSubmitLogin({ emailState, passwordState })}>
+            Login
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
@@ -87,6 +105,7 @@ const FormDialog = props => {
 
 FormDialog.propTypes = {
   onToggleModal: PropTypes.func.isRequired,
+  onSubmitLogin: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   classes: PropTypes.objectOf(PropTypes.any).isRequired,
 };
