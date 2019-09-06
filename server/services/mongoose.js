@@ -20,10 +20,10 @@ if (config.env === 'dev') {
 exports.connect = () => {
   let mongoURI;
   switch (config.env) {
-    case 'prod':
+    case 'production':
       mongoURI = config.mongo.uri;
       break;
-    case 'dev':
+    case 'development':
       mongoURI = config.mongo.uri;
       break;
     case 'test':

@@ -12,7 +12,6 @@ const ValidatedTextField = props => {
   const { classes, textContent, handleChange, val, valid } = props;
   return (
     <TextField
-      id="outlined-name"
       label={textContent.text}
       className={classes.textField}
       fullWidth
