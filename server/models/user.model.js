@@ -5,7 +5,7 @@ const APIError = require('../utils/APIError');
 
 const { Schema } = mongoose;
 
-const roles = ['student', 'tutor'];
+const roles = ['student', 'tutor', 'both'];
 
 const userSchema = new Schema(
   {
