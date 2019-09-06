@@ -23,4 +23,14 @@ module.exports = {
       .max(4)
       .required(),
   },
+
+  login: {
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$/)
+      .required(),
+    password: Joi.string()
+      .min(6)
+      .max(128)
+      .required(),
+  },
 };
