@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import landingPage from './pages/LandingPage/reducer';
+import homePage from './pages/HomePage/reducer';
 import { SET_USER } from './types';
 
 const globalInitialState = {
@@ -17,4 +18,4 @@ const globalStore = (state = globalInitialState, action) => {
   }
 };
 
-export default combineReducers({ globalStore, landingPage });
+export default combineReducers({ globalStore, landingPage, homePage });
