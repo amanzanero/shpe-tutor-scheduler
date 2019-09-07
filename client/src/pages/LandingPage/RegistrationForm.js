@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { button, textField } from '../../theme';
 import ValidatedTextInput from '../../components/ValidatedTextInput';
 import DropDown from '../../components/DropDown';
-import MAJORS from './majors';
+import MAJORS from '../../config/majors';
 
 const styles = theme => ({
   root: {
