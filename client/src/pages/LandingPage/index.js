@@ -12,7 +12,7 @@ import RegistrationForm from './RegistrationForm';
 import baseUrl from '../../config/config';
 
 import {
-  toggleModal,
+  toggleLoginModal,
   userRegister,
   userRegisterSuccess,
   userRegisterError,
@@ -130,7 +130,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onToggleModal: () => dispatch(toggleModal()),
+    onToggleModal: () => dispatch(toggleLoginModal()),
     onRegisterUser: payload => dispatch(userRegister(payload)),
     onRegisterUserSuccess: () => dispatch(userRegisterSuccess()),
     onRegisterUserError: payload => dispatch(userRegisterError(payload)),

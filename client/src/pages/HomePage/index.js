@@ -1,8 +1,11 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import UserNav from '../../components/UserNav';
+import { toggleSettingsModal } from '../../actions';
+import SettingsModal from '../../components/SettingsModal';
 
 const styles = {
   root: {
@@ -15,10 +18,15 @@ const styles = {
 };
 
 const HomePage = props => {
-  const { classes } = props;
+  const { classes, onToggleModal, isModalOpen } = props;
+
+  const navProps = { onToggleModal, isModalOpen };
+  const modalProps = { onToggleModal, isModalOpen };
+
   return (
     <React.Fragment>
-      <UserNav />
+      <UserNav {...navProps} />
+      <SettingsModal {...modalProps} />
       <div className={classes.root} />
     </React.Fragment>
   );
@@ -26,6 +34,23 @@ const HomePage = props => {
 
 HomePage.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  onToggleModal: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(HomePage);
+const mapStateToProps = ({ homePage }) => {
+  return {
+    isModalOpen: homePage.settingsOpen,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onToggleModal: () => dispatch(toggleSettingsModal()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(HomePage));

@@ -57,6 +57,7 @@ const landingPage = (state = initState, action) => {
         ...state,
         loading: false,
         pageErr: { status: false, message: '' },
+        modalOpen: false,
       };
     default:
       return state;
