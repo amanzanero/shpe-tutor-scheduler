@@ -22,15 +22,29 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-const styles = {
+const styles = theme => ({
   grow: {
     flexGrow: 1,
+  },
+  text: {
+    flexGrow: 1,
+    fontSize: 26,
+    fontFamily: 'Roboto Slab',
   },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
   },
-};
+  margin: {
+    margin: '.5em',
+  },
+  gold: {
+    color: theme.palette.secondary.light,
+  },
+  white: {
+    color: 'white',
+  },
+});
 
 class UserNav extends React.Component {
   state = {
@@ -44,22 +58,26 @@ class UserNav extends React.Component {
   render() {
     const { classes } = this.props;
     const isMobile = mobile();
+    const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
     const { drawerOpen } = this.state;
     return (
       <div>
         <AppBar position="static">
           <Toolbar>
             <IconButton
-              className={classes.menuButton}
-              color="secondary"
+              className={`${classes.menuButton} ${classes.white}`}
               aria-label="Menu"
               onClick={this.toggleDrawer(true)}
               data-testid="menu-button"
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="secondary" className={classes.grow}>
-              {isMobile ? 'SHPE Tutoring' : 'SHPE Tutoring and Academics'}
+            <Typography
+              variant="h6"
+              className={`${classes.text} ${classes.white}`}
+            >
+              <span className={classes.gold}>SHPE </span>
+              {text}
             </Typography>
           </Toolbar>
         </AppBar>
