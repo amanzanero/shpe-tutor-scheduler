@@ -6,13 +6,12 @@ import { connect } from 'react-redux';
 import UserNav from '../../components/UserNav';
 import { toggleSettingsModal } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
+import Appointments from './Appointments';
 
 const styles = {
   root: {
     background: '#e8e8e8',
     flex: 1,
-  },
-  pageBody: {
     padding: '1em',
   },
 };
@@ -27,7 +26,9 @@ const HomePage = props => {
     <React.Fragment>
       <UserNav {...navProps} />
       <SettingsModal {...modalProps} />
-      <div className={classes.root} />
+      <div className={classes.root}>
+        <Appointments />
+      </div>
     </React.Fragment>
   );
 };
