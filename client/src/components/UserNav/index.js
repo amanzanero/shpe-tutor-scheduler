@@ -21,6 +21,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const styles = theme => ({
   grow: {
@@ -56,7 +57,7 @@ class UserNav extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onToggleModal } = this.props;
     const isMobile = mobile();
     const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
     const { drawerOpen } = this.state;
@@ -91,18 +92,32 @@ class UserNav extends React.Component {
           >
             <div className={classes.list}>
               <List>
-                <ListItem button key="messages">
+                <ListItem
+                  button
+                  key="messages"
+                  onClick={() => console.log('hi')}
+                >
                   <ListItemIcon>
                     <MailIcon />
                   </ListItemIcon>
                   <ListItemText primary="Messages" />
                 </ListItem>
                 <Divider />
-                <ListItem button key="Log In">
+                <ListItem button key="Settings" onClick={onToggleModal}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </ListItem>
+                <ListItem
+                  button
+                  key="Log Out"
+                  onClick={() => console.log('hi')}
+                >
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Log In" />
+                  <ListItemText primary="Log Out" />
                 </ListItem>
               </List>
             </div>
@@ -115,6 +130,7 @@ class UserNav extends React.Component {
 
 UserNav.propTypes = {
   classes: PropTypes.objectOf(PropTypes.any).isRequired,
+  onToggleModal: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(UserNav);

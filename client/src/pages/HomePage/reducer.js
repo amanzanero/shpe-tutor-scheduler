@@ -15,7 +15,7 @@ const initState = {
 const homePage = (state = initState, action) => {
   switch (action.type) {
     case TOGGLE_SETTINGS:
-      return { ...state, settingsOpen: !state.modalOpen };
+      return { ...state, settingsOpen: !state.settingsOpen };
     default:
       return state;
   }

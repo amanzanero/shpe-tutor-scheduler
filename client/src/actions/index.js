@@ -3,6 +3,7 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_ERROR,
   TOGGLE_LOGIN_MODAL,
+  TOGGLE_SETTINGS,
   SET_USER,
   USER_REGISTER_ERROR_RESOLVE,
   USER_LOGIN,
@@ -44,9 +45,15 @@ export const setUser = payload => {
   };
 };
 
-export const toggleModal = () => {
+export const toggleLoginModal = () => {
   return {
     type: TOGGLE_LOGIN_MODAL,
+  };
+};
+
+export const toggleSettingsModal = () => {
+  return {
+    type: TOGGLE_SETTINGS,
   };
 };
 
