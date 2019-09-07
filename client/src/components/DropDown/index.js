@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { textField } from '../../theme';
 
 const styles = {
-  root: textField,
+  root: textField.textField,
 };
 
 const DropDown = props => {
