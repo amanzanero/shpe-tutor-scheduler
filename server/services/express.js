@@ -16,17 +16,20 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 
-if (config.env === 'development') app.use(morgan('dev'));
+app.use(morgan('common'));
 
 // passport
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
 
 // serve react app if we are in production mode
-if (config.env === 'production')
-  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
-
 app.use('/api', apiRouter);
+if (config.env === 'production') {
+  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`));
+  });
+}
 app.use(errorHandler.handleNotFound);
 app.use(errorHandler.handleError);
 
