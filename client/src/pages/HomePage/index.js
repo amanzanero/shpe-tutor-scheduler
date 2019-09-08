@@ -17,16 +17,25 @@ import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
 import baseUrl from '../../config/config';
 
-const styles = {
+const styles = theme => ({
   root: {
-    background: '#e8e8e8',
     flex: 1,
     padding: '1em',
   },
-  linearProgress: {
-    margin: '0 auto',
+  background: {
+    background: '#e8e8e8',
   },
-};
+  progressCircle: {
+    color: theme.palette.primary.main,
+  },
+  progressContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    width: '100vw',
+  },
+});
 
 const HomePage = props => {
   const {
@@ -40,9 +49,6 @@ const HomePage = props => {
     history,
     isLoading,
   } = props;
-
-  const navProps = { onToggleModal, isModalOpen };
-  const modalProps = { onToggleModal, isModalOpen };
 
   useEffect(() => {
     const authorize = async () => {
@@ -66,13 +72,23 @@ const HomePage = props => {
     authorize();
   }, []);
 
-  return (
+  const logOut = () => {
+    localStorage.removeItem('id_token');
+    history.push('/');
+  };
+
+  const navProps = { onToggleModal, isModalOpen, logOut };
+  const modalProps = { onToggleModal, isModalOpen };
+
+  return isLoading ? (
+    <div className={`${classes.progressContainer} ${classes.background}`}>
+      <CircularProgress className={classes.linearProgress} size={100} />
+    </div>
+  ) : (
     <React.Fragment>
       <UserNav {...navProps} />
-      {isLoading && <CircularProgress className={classes.linearProgress} />}
-
-      <SettingsModal {...modalProps} />
-      <div className={classes.root}>
+      <div className={`${classes.root} ${classes.background}`}>
+        <SettingsModal {...modalProps} />
         <Appointments />
       </div>
     </React.Fragment>
@@ -83,6 +99,13 @@ HomePage.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   onToggleModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
+  onGetProfile: PropTypes.func.isRequired,
+  onSetUser: PropTypes.func.isRequired,
+  onGetProfileSuccess: PropTypes.func.isRequired,
+  onGetProfileError: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  history: PropTypes.objectOf(PropTypes.any),
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({ globalStore, homePage }) => {

@@ -68,12 +68,12 @@ function LandingPage(props) {
     axios
       .post(`${baseUrl}/api/user/register`, data)
       .then(resp => {
+        localStorage.setItem('id_token', resp.data.data.token);
         onSetUser(resp.data.data);
         onRegisterUserSuccess();
         history.push('/home');
       })
       .catch(err => {
-        console.log(err.response.data.message);
         onRegisterUserError(err.response.data.message);
       });
   };
@@ -87,7 +87,6 @@ function LandingPage(props) {
     axios
       .post(`${baseUrl}/api/user/login`, data)
       .then(resp => {
-        console.log(resp.data);
         localStorage.setItem('id_token', resp.data.data.token);
         onSetUser(resp.data.data);
         onLoginUserSuccess();

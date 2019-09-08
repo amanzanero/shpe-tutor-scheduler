@@ -51,6 +51,7 @@ const landingPage = (state = initState, action) => {
         ...state,
         loading: false,
         pageErr: { status: true, message: action.payload },
+        modalOpen: false,
       };
     case USER_LOGIN_SUCCESS:
       return {

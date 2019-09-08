@@ -90,7 +90,7 @@ class SettingsModal extends React.Component {
       <div>
         <Dialog
           open={isModalOpen}
-          onClose={onToggleModal}
+          onClose={() => onToggleModal()}
           aria-labelledby="form-dialog-title"
         >
           <div className={classes.titleContainer}>
