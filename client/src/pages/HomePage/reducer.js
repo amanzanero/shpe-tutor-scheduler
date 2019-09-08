@@ -5,7 +5,7 @@ import { TOGGLE_SETTINGS } from '../../types';
 
 const initState = {
   settingsOpen: false,
-  loading: false,
+  loading: true,
   pageErr: {
     status: false,
     message: '',

@@ -8,3 +8,6 @@ export const SET_USER = 'SET_USER';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
+export const GET_PROFILE = 'GET_PROFILE';
+export const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR';
+export const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS';
