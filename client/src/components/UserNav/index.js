@@ -57,7 +57,7 @@ class UserNav extends React.Component {
   };
 
   render() {
-    const { classes, onToggleModal } = this.props;
+    const { classes, onToggleModal, logOut } = this.props;
     const isMobile = mobile();
     const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
     const { drawerOpen } = this.state;
@@ -103,17 +103,13 @@ class UserNav extends React.Component {
                   <ListItemText primary="Messages" />
                 </ListItem>
                 <Divider />
-                <ListItem button key="Settings" onClick={onToggleModal}>
+                <ListItem button key="Settings" onClick={() => onToggleModal()}>
                   <ListItemIcon>
                     <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText primary="Settings" />
                 </ListItem>
-                <ListItem
-                  button
-                  key="Log Out"
-                  onClick={() => console.log('hi')}
-                >
+                <ListItem button key="Log Out" onClick={() => logOut()}>
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>
@@ -131,6 +127,7 @@ class UserNav extends React.Component {
 UserNav.propTypes = {
   classes: PropTypes.objectOf(PropTypes.any).isRequired,
   onToggleModal: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(UserNav);
