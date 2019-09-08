@@ -87,6 +87,8 @@ function LandingPage(props) {
     axios
       .post(`${baseUrl}/api/user/login`, data)
       .then(resp => {
+        console.log(resp.data);
+        localStorage.setItem('id_token', resp.data.data.token);
         onSetUser(resp.data.data);
         onLoginUserSuccess();
         history.push('/home');

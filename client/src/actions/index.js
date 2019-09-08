@@ -9,6 +9,9 @@ import {
   USER_LOGIN,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_ERROR,
+  GET_PROFILE,
+  GET_PROFILE_SUCCESS,
+  GET_PROFILE_ERROR,
 } from '../types';
 
 export const userRegister = payload => {
@@ -74,5 +77,23 @@ export const userLoginError = payload => {
   return {
     type: USER_LOGIN_ERROR,
     payload,
+  };
+};
+
+export const getProfile = () => {
+  return {
+    type: GET_PROFILE,
+  };
+};
+
+export const getProfileSuccess = () => {
+  return {
+    type: GET_PROFILE_SUCCESS,
+  };
+};
+
+export const getProfileError = () => {
+  return {
+    type: GET_PROFILE_ERROR,
   };
 };
