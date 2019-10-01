@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 
-app.use(morgan('common'));
+app.use(morgan('short'));
 
 // passport
 app.use(passport.initialize());
