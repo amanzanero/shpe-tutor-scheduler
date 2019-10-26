@@ -71,6 +71,16 @@ userSchema.method({
   passwordMatches(password) {
     return bcrypt.compareSync(password, this.password);
   },
+
+  addAppointment(apptId) {
+    try {
+      this.appointments.push(apptId);
+      this.save();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(`Error adding appointment to "${this.email}": ${e}`);
+    }
+  },
 });
 
 userSchema.statics = {

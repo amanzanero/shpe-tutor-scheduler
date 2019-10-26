@@ -8,8 +8,6 @@ const User = require('../models/user.model');
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info;
   const logIn = bluebird.promisify(req.logIn);
-  console.log(roles);
-  console.log(user.role); // log user in
   try {
     if (error || !user) throw error;
     await logIn(user, { session: false });
