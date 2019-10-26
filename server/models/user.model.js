@@ -30,6 +30,18 @@ const userSchema = new Schema(
       default: 'student',
       enum: roles,
     },
+    currentCourses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Courses',
+      },
+    ],
+    previousCourses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Courses',
+      },
+    ],
     appointments: [
       {
         type: Schema.Types.ObjectId,
@@ -59,7 +71,16 @@ userSchema.pre('save', async function save(next) {
 userSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'email', 'createdAt', 'role', 'appointments'];
+    const fields = [
+      'id',
+      'name',
+      'email',
+      'createdAt',
+      'role',
+      'currentCourses',
+      'previousCourses',
+      'appointments',
+    ];
 
     fields.forEach(field => {
       transformed[field] = this[field];
