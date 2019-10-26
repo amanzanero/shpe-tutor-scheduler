@@ -21,6 +21,7 @@ const styles = theme => ({
   root: {
     flex: 1,
     padding: '1em',
+    justifyContent: 'center',
   },
   background: {
     background: '#e8e8e8',
@@ -48,8 +49,10 @@ const HomePage = props => {
     onGetProfileError,
     history,
     isLoading,
+    user,
   } = props;
 
+  // first check if user is authorized
   useEffect(() => {
     const authorize = async () => {
       onGetProfile();
@@ -70,6 +73,7 @@ const HomePage = props => {
         });
     };
     authorize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const logOut = () => {
@@ -79,6 +83,11 @@ const HomePage = props => {
 
   const navProps = { onToggleModal, isModalOpen, logOut };
   const modalProps = { onToggleModal, isModalOpen };
+  const apptProps = {
+    apprs: user.appointments,
+    role: user.role,
+    courses: user.currentCourses,
+  };
 
   return isLoading ? (
     <div className={`${classes.progressContainer} ${classes.background}`}>
@@ -89,7 +98,9 @@ const HomePage = props => {
       <UserNav {...navProps} />
       <div className={`${classes.root} ${classes.background}`}>
         <SettingsModal {...modalProps} />
-        <Appointments />
+        {(user.role === 'student' || user.role === 'both') && (
+          <Appointments {...apptProps} />
+        )}
       </div>
     </React.Fragment>
   );
@@ -106,12 +117,14 @@ HomePage.propTypes = {
   // eslint-disable-next-line react/require-default-props
   history: PropTypes.objectOf(PropTypes.any),
   isLoading: PropTypes.bool.isRequired,
+  user: PropTypes.objectOf(PropTypes.any),
 };
 
 const mapStateToProps = ({ globalStore, homePage }) => {
   return {
     isModalOpen: homePage.settingsOpen,
     isLoading: homePage.loading,
+    user: globalStore.user,
   };
 };
 

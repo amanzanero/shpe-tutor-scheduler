@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -34,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function RecipeReviewCard() {
+export default function AppointmentCard() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -42,11 +41,27 @@ export default function RecipeReviewCard() {
     setExpanded(!expanded);
   }
 
+  /**
+   * Mock data for now, will get this via props
+   */
+  const data = {
+    date: 'January 2nd',
+    tutor: '',
+    student: '',
+    guests: '',
+    confirmed: true,
+    course: {
+      name: 'Programming in Python',
+      number: '115',
+      school: 'ITP',
+    },
+  };
+
   return (
     <Card className={classes.card}>
       <CardHeader
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={`${data.course.number} ${data.course.school} ${data.course.name}`}
+        subheader={data.date}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">

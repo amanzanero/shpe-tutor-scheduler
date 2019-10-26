@@ -52,6 +52,7 @@ export const button = {
   paddingBottom: '.2em',
   marginTop: '.5em',
   height: '2.5em',
+  color: 'white',
 };
 
 export default theme;
