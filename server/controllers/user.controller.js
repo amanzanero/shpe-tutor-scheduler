@@ -17,7 +17,12 @@ exports.register = async (req, res, next) => {
     const savedUser = await user.save();
     const succRes = responseObject;
     succRes.message = 'User created.';
-    succRes.data = savedUser.transform();
+    const payload = { sub: user.id };
+    const token = jwt.sign(payload, config.secret);
+    succRes.data = {
+      ...savedUser.transform(),
+      token,
+    };
     res.status(httpStatus.CREATED);
     return res.json(succRes);
   } catch (error) {
