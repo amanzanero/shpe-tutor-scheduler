@@ -54,14 +54,14 @@ const FIELDS = [
   {
     text: 'Password',
     stateSlug: PASSWORD,
-    regex: /^[A-z.*%!@#&]{5,18}$/,
+    regex: /^[A-Za-z1-9.*%!@#&]{5,18}$/,
     error_text:
       'Enter 5-18 characters. Only special characters allowed: ., *, %, !, @, #, &',
   },
   {
     text: 'Confirm Password',
     stateSlug: CONFIRM_PASSWORD,
-    regex: /^[A-z.*%!@#&]{5,18}$/,
+    regex: /^[A-Za-z1-9.*%!@#&]{5,18}$/,
     error_text: 'Password not the same',
   },
   {
@@ -145,7 +145,10 @@ class RegistrationForm extends React.Component {
     const name = e.target.name;
     const value = e.target.value;
     const reg = this.state[`${name}_regex`];
-    const match = reg.test(value);
+    const match =
+      name === CONFIRM_PASSWORD
+        ? value === this.state[`${PASSWORD}_text`]
+        : reg.test(value);
     this.setState(prevState => ({
       ...prevState,
       [`${name}_valid`]: match,
