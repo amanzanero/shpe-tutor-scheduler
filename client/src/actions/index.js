@@ -14,10 +14,9 @@ import {
   GET_PROFILE_ERROR,
 } from '../types';
 
-export const userRegister = payload => {
+export const userRegister = () => {
   return {
     type: USER_REGISTER,
-    payload,
   };
 };
 

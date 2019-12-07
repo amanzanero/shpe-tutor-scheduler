@@ -132,7 +132,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onToggleModal: () => dispatch(toggleLoginModal()),
-    onRegisterUser: payload => dispatch(userRegister(payload)),
+    onRegisterUser: () => dispatch(userRegister()),
     onRegisterUserSuccess: () => dispatch(userRegisterSuccess()),
     onRegisterUserError: payload => dispatch(userRegisterError(payload)),
     onErrResolve: () => dispatch(userRegistrationErrorResolve()),
