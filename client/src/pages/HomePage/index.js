@@ -84,9 +84,9 @@ const HomePage = props => {
   const navProps = { onToggleModal, isModalOpen, logOut };
   const modalProps = { onToggleModal, isModalOpen };
   const apptProps = {
-    apprs: user.appointments,
-    role: user.role,
-    courses: user.currentCourses,
+    appts: user ? user.appointments : null,
+    role: user ? user.role : null,
+    courses: user ? user.currentCourses : null,
   };
 
   return isLoading ? (

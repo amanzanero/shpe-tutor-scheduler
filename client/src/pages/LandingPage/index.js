@@ -57,13 +57,14 @@ function LandingPage(props) {
 
   const onFormSubmit = state => {
     onRegisterUser();
+    console.log(state);
     const data = {
-      name: state.name_field,
-      email: state.email_field,
-      password: state.password_field,
-      major: state.major,
-      role: state.role,
-      gradYear: state.grad_field,
+      name: state.name_field_text,
+      email: state.email_field_text,
+      password: state.password_field_text,
+      major: state.major_text,
+      role: state.role_text,
+      gradYear: state.grad_field_text,
     };
     axios
       .post(`${baseUrl}/api/user/register`, data)
