@@ -11,7 +11,17 @@ const styles = {
 };
 
 const DropDown = props => {
-  const { classes, dropDown, handleDropDown, options, label, name } = props;
+  const {
+    classes,
+    dropDown,
+    handleDropDown,
+    options,
+    label,
+    name,
+    onBlur,
+    valid,
+    error_text,
+  } = props;
   return (
     <TextField
       className={classes.root}
@@ -23,6 +33,9 @@ const DropDown = props => {
       value={dropDown}
       name={name}
       onChange={handleDropDown}
+      onBlur={onBlur}
+      error={!valid}
+      helperText={!valid ? error_text : ''}
     >
       {options.map(option => (
         <MenuItem key={option} value={option}>
