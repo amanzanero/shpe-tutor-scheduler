@@ -12,6 +12,7 @@ import {
   GET_PROFILE,
   GET_PROFILE_SUCCESS,
   GET_PROFILE_ERROR,
+  TOGGLE_ADD_COURSES,
 } from '../types';
 
 export const userRegister = () => {
@@ -94,5 +95,11 @@ export const getProfileSuccess = () => {
 export const getProfileError = () => {
   return {
     type: GET_PROFILE_ERROR,
+  };
+};
+
+export const toggleAddCoursesModal = () => {
+  return {
+    type: TOGGLE_ADD_COURSES,
   };
 };

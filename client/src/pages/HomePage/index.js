@@ -12,6 +12,7 @@ import {
   getProfile,
   getProfileError,
   getProfileSuccess,
+  toggleAddCoursesModal,
 } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
@@ -50,6 +51,8 @@ const HomePage = props => {
     history,
     isLoading,
     user,
+    onToggleAddCourses,
+    isAddCoursesOpen,
   } = props;
 
   // first check if user is authorized
@@ -87,6 +90,8 @@ const HomePage = props => {
     appts: user ? user.appointments : null,
     role: user ? user.role : null,
     courses: user ? user.currentCourses : null,
+    onToggleAddCourses,
+    isAddCoursesOpen,
   };
 
   return isLoading ? (
@@ -125,6 +130,7 @@ const mapStateToProps = ({ globalStore, homePage }) => {
     isModalOpen: homePage.settingsOpen,
     isLoading: homePage.loading,
     user: globalStore.user,
+    isAddCoursesOpen: homePage.addCoursesOpen,
   };
 };
 
@@ -135,6 +141,7 @@ const mapDispatchToProps = dispatch => {
     onGetProfile: () => dispatch(getProfile()),
     onGetProfileSuccess: () => dispatch(getProfileSuccess()),
     onGetProfileError: () => dispatch(getProfileError()),
+    onToggleAddCourses: () => dispatch(toggleAddCoursesModal()),
   };
 };
 

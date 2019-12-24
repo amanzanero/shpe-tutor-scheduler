@@ -6,6 +6,7 @@ import {
   GET_PROFILE,
   GET_PROFILE_SUCCESS,
   GET_PROFILE_ERROR,
+  TOGGLE_ADD_COURSES,
 } from '../../types';
 
 const initState = {
@@ -15,12 +16,23 @@ const initState = {
     status: false,
     message: '',
   },
+  addCoursesOpen: false,
 };
 
 const homePage = (state = initState, action) => {
   switch (action.type) {
     case TOGGLE_SETTINGS:
-      return { ...state, settingsOpen: !state.settingsOpen };
+      return {
+        ...state,
+        settingsOpen: !state.settingsOpen,
+        addCoursesOpen: false,
+      };
+    case TOGGLE_ADD_COURSES:
+      return {
+        ...state,
+        settingsOpen: false,
+        addCoursesOpen: !state.addCoursesOpen,
+      };
     case GET_PROFILE:
       return { ...state, loading: true };
     case GET_PROFILE_SUCCESS:

@@ -2,6 +2,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+
+import AddCourse from './AddCourse';
 import AppointmentCard from '../../components/AppointmentCard';
 import theme, { button } from '../../theme';
 
@@ -19,29 +21,26 @@ const styles = {
 };
 
 const Appointments = props => {
-  const { classes, appts, courses } = props;
+  const {
+    classes,
+    appts,
+    courses,
+    onToggleAddCourses,
+    isAddCoursesOpen,
+  } = props;
 
   const hasCourses = courses && courses.length > 0;
   const NoApptsButton = () => {
-    if (hasCourses)
-      return (
-        <Button
-          size="medium"
-          variant="contained"
-          className={classes.button}
-          // onClick={() => onToggleModal()}
-        >
-          Book an appointment
-        </Button>
-      );
+    let text = hasCourses ? 'Book an appointment' : 'Add courses';
+
     return (
       <Button
         size="medium"
         variant="contained"
         className={classes.button}
-        // onClick={() => onToggleModal()}
+        onClick={() => onToggleAddCourses()}
       >
-        Add courses
+        {text}
       </Button>
     );
   };
@@ -65,6 +64,7 @@ const Appointments = props => {
           ))}
         </React.Fragment>
       )}
+      <AddCourse open={isAddCoursesOpen} toggleModal={onToggleAddCourses} />
     </div>
   );
 };
