@@ -11,7 +11,7 @@ const responseObject = {
   data: {},
 };
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   try {
     const user = new User(req.body);
     const savedUser = await user.save();
@@ -58,6 +58,8 @@ exports.getUserProfile = async (req, res) => {
     return (
       User.findOne({ _id: req.user._id })
         .populate('appointments')
+        .populate('currentCourses')
+        .populate('previousCourses')
         // eslint-disable-next-line prettier/prettier
         .then(user => {
           // Do something with the user

@@ -33,13 +33,13 @@ const userSchema = new Schema(
     currentCourses: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Courses',
+        ref: 'Course',
       },
     ],
     previousCourses: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Courses',
+        ref: 'Course',
       },
     ],
     appointments: [
