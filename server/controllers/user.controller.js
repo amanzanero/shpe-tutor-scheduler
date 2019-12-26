@@ -55,22 +55,19 @@ exports.login = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   try {
-    return (
-      User.findOne({ _id: req.user._id })
-        .populate('appointments')
-        .populate('currentCourses')
-        .populate('previousCourses')
-        // eslint-disable-next-line prettier/prettier
-        .then(user => {
-          // Do something with the user
-          const successResponse = responseObject; // copy
-          successResponse.success = 1;
-          successResponse.message = 'User successfully found';
-          successResponse.data = user.transform(); // schema to json
-          res.status(httpStatus.OK);
-          return res.json(successResponse);
-        })
-    );
+    return User.findOne({ _id: req.user._id })
+      .populate('appointments')
+      .populate('currentCourses')
+      .populate('previousCourses')
+      .exec((err, user) => {
+        if (err) return console.log(err);
+        const successResponse = responseObject; // copy
+        successResponse.success = 1;
+        successResponse.message = 'User successfully found';
+        successResponse.data = user.transform(); // schema to json
+        res.status(httpStatus.OK);
+        return res.json(successResponse);
+      });
   } catch (err) {
     const failureResponse = responseObject;
     failureResponse.success = 0;
