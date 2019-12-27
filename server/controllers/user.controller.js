@@ -39,11 +39,13 @@ exports.login = async (req, res) => {
     const user = await User.findAndGenerateToken(req.body);
     const payload = { sub: user.id };
     const token = jwt.sign(payload, config.secret);
-    const succRes = responseObject;
-    succRes.message = 'User logged in.';
-    succRes.data.token = token;
-    res.status(httpStatus.OK);
-    return res.json(succRes);
+    return res.status(httpStatus.OK).json({
+      ...responseObject,
+      message: 'User logged in.',
+      data: {
+        token,
+      },
+    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error:', error.message);
@@ -65,15 +67,13 @@ exports.getUserProfile = async (req, res) => {
         successResponse.success = 1;
         successResponse.message = 'User successfully found';
         successResponse.data = user.transform(); // schema to json
-        res.status(httpStatus.OK);
-        return res.json(successResponse);
+        return res.status(httpStatus.OK).json(successResponse);
       });
   } catch (err) {
     const failureResponse = responseObject;
     failureResponse.success = 0;
     failureResponse.message = 'Failed to fetch user.';
-    res.status(httpStatus.INTERNAL_SERVER_ERROR);
-    return res.json(failureResponse);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json(failureResponse);
   }
 };
 

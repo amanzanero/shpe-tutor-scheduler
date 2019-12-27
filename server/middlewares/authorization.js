@@ -12,7 +12,7 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
     if (error || !user) throw error;
     await logIn(user, { session: false });
   } catch (e) {
-    return res.json({
+    return res.status(httpStatus.UNAUTHORIZED).json({
       message: error ? error.message : 'Unauthorized',
       status: httpStatus.UNAUTHORIZED,
     });
@@ -20,7 +20,7 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
 
   // see if user is authorized to do the action
   if (!roles.includes(user.role)) {
-    return res.json({
+    return res.status(httpStatus.UNAUTHORIZED).json({
       message: 'Forbidden',
       status: httpStatus.FORBIDDEN,
     });
