@@ -14,17 +14,12 @@ const responseObject = {
 exports.register = async (req, res) => {
   try {
     const user = new User(req.body);
-    const savedUser = await user.save();
-    const succRes = responseObject;
-    succRes.message = 'User created.';
+    await user.save();
     const payload = { sub: user.id };
     const token = jwt.sign(payload, config.secret);
-    succRes.data = {
-      ...savedUser.transform(),
-      token,
-    };
-    res.status(httpStatus.CREATED);
-    return res.json(succRes);
+    return res
+      .status(httpStatus.CREATED)
+      .json({ ...responseObject, message: 'User created', data: { token } });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error:', error);
@@ -42,9 +37,7 @@ exports.login = async (req, res) => {
     return res.status(httpStatus.OK).json({
       ...responseObject,
       message: 'User logged in.',
-      data: {
-        token,
-      },
+      data: { token },
     });
   } catch (error) {
     // eslint-disable-next-line no-console
