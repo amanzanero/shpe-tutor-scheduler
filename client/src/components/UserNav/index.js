@@ -22,6 +22,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';
+import BookIcon from '@material-ui/icons/Collections';
 
 const styles = theme => ({
   grow: {
@@ -57,7 +58,7 @@ class UserNav extends React.Component {
   };
 
   render() {
-    const { classes, onToggleModal, logOut } = this.props;
+    const { classes, onToggleModal, logOut, onToggleAddCourses } = this.props;
     const isMobile = mobile();
     const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
     const { drawerOpen } = this.state;
@@ -108,6 +109,16 @@ class UserNav extends React.Component {
                     <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText primary="Settings" />
+                </ListItem>
+                <ListItem
+                  button
+                  key="Courses"
+                  onClick={() => onToggleAddCourses()}
+                >
+                  <ListItemIcon>
+                    <BookIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Courses" />
                 </ListItem>
                 <ListItem button key="Log Out" onClick={() => logOut()}>
                   <ListItemIcon>
