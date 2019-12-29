@@ -15,6 +15,7 @@ const { PASSWORD, CONFIRM_PASSWORD } = {
   PASSWORD: 'password_field',
   CONFIRM_PASSWORD: 'confirm_field',
 };
+
 const styles = theme => ({
   root: {
     display: 'flex',

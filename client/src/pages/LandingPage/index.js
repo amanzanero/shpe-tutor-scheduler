@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
 import axios from 'axios';
+
 import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
 import LoginModal from '../../components/LoginModal';
@@ -70,7 +70,6 @@ function LandingPage(props) {
       .post(`${baseUrl}/api/user/register`, data)
       .then(resp => {
         localStorage.setItem('id_token', resp.data.data.token);
-        onSetUser(resp.data.data);
         onRegisterUserSuccess();
         history.push('/home');
       })
@@ -89,7 +88,6 @@ function LandingPage(props) {
       .post(`${baseUrl}/api/user/login`, data)
       .then(resp => {
         localStorage.setItem('id_token', resp.data.data.token);
-        onSetUser(resp.data.data);
         onLoginUserSuccess();
         history.push('/home');
       })

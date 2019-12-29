@@ -16,6 +16,7 @@ import {
 } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
+import ManageCourses from './ManageCourses';
 import baseUrl from '../../config/config';
 
 const styles = theme => ({
@@ -84,14 +85,19 @@ const HomePage = props => {
     history.push('/');
   };
 
-  const navProps = { onToggleModal, isModalOpen, logOut };
-  const modalProps = { onToggleModal, isModalOpen };
+  const navProps = { onToggleModal, isModalOpen, logOut, onToggleAddCourses };
+  const modalProps = { onToggleModal, isModalOpen, user };
   const apptProps = {
     appts: user ? user.appointments : null,
     role: user ? user.role : null,
     courses: user ? user.currentCourses : null,
     onToggleAddCourses,
-    isAddCoursesOpen,
+  };
+  const manageCourseProps = {
+    currentCourses: user.currentCourses,
+    previousCourses: user.previousCourses,
+    open: isAddCoursesOpen,
+    toggleModal: onToggleAddCourses,
   };
 
   return isLoading ? (
@@ -103,9 +109,8 @@ const HomePage = props => {
       <UserNav {...navProps} />
       <div className={`${classes.root} ${classes.background}`}>
         <SettingsModal {...modalProps} />
-        {(user.role === 'student' || user.role === 'both') && (
-          <Appointments {...apptProps} />
-        )}
+        <Appointments {...apptProps} />
+        <ManageCourses {...manageCourseProps} />
       </div>
     </React.Fragment>
   );
