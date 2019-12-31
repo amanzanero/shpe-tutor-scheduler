@@ -16,7 +16,7 @@ import {
 } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
-import ManageCourses from './ManageCourses';
+import ManageCourses from '../../components/ManageCourses/ManageCourses';
 import baseUrl from '../../config/config';
 
 const styles = theme => ({
