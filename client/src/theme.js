@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
@@ -54,5 +54,24 @@ export const button = {
   height: '2.5em',
   color: 'white',
 };
+
+export const useButtonStyles = makeStyles(thm => ({
+  root: {
+    backgroundColor: thm.palette.primary.light,
+    '&:hover': {
+      background: thm.palette.secondary.main,
+    },
+    '&:focus': {
+      background: thm.palette.secondary.main,
+    },
+    fontSize: 18,
+    textTransform: 'none',
+    paddingTop: '.2em',
+    paddingBottom: '.2em',
+    marginTop: '.5em',
+    height: '2.5em',
+    color: 'white',
+  },
+}));
 
 export default theme;
