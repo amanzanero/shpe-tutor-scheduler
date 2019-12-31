@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
@@ -10,11 +11,12 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import PlusIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
+import MinusIcon from '@material-ui/icons/MinimizeRounded';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 
-import { DialogActions, DialogContent, DialogTitle } from '../DialogCompose';
+import { DialogContent, DialogTitle } from '../DialogCompose';
 import ListDividers from '../ListDivider';
-import { useButtonStyles } from '../../theme';
+import Chips from './Chips';
 import Courses from '../../courses';
 
 const useStyles = makeStyles(theme => ({
@@ -39,8 +41,9 @@ export default function ManageCourses(props) {
     }),
     {},
   );
-  const [menuOpen, setOpen] = React.useState(initialState);
-  const [courseAdd, setCourseAdd] = React.useState(false);
+  const [menuOpen, setOpen] = useState(initialState);
+  const [courseAdd, setCourseAdd] = useState(false);
+  const [stagedCourses, toggleStagedCourse] = useState([]);
 
   const getNestedOpen = course => menuOpen[`${course}_open`];
 
@@ -63,8 +66,13 @@ export default function ManageCourses(props) {
     });
   }
 
+  function stageCourse(e) {
+    const name = e.target.getAttribute('name');
+  }
+
+  function unstageCourse(e) {}
+
   const classes = useStyles();
-  const buttonClass = useButtonStyles();
 
   return (
     <div>
@@ -78,25 +86,7 @@ export default function ManageCourses(props) {
           Manage Courses
         </DialogTitle>
         <div className={classes.buttonContainer}>
-          <Button
-            size="medium"
-            variant="contained"
-            fullWidth
-            className={buttonClass.root}
-            onClick={handleCourseAddClose}
-          >
-            {!courseAdd ? (
-              <React.Fragment>
-                ADD
-                <PlusIcon />
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                CLOSE
-                <CloseIcon />
-              </React.Fragment>
-            )}
-          </Button>
+          <Chips staged={stagedCourses} remove={unstageCourse} />
         </div>
         <DialogContent>
           <Collapse in={courseAdd} unmountOnExit>
@@ -131,11 +121,32 @@ export default function ManageCourses(props) {
             </DialogContent>
           </React.Fragment>
         )}
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
-          </Button>
-        </DialogActions>
+        <MuiDialogActions>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Button
+                size="medium"
+                variant="outlined"
+                fullWidth
+                color="primary"
+                onClick={handleCourseAddClose}
+              >
+                {!courseAdd ? <PlusIcon /> : <MinusIcon />}
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                size="medium"
+                onClick={handleClose}
+                variant="outlined"
+                color="primary"
+                fullWidth
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        </MuiDialogActions>
       </Dialog>
     </div>
   );

@@ -68,7 +68,6 @@ export const useButtonStyles = makeStyles(thm => ({
     textTransform: 'none',
     paddingTop: '.2em',
     paddingBottom: '.2em',
-    marginTop: '.5em',
     height: '2.5em',
     color: 'white',
   },
