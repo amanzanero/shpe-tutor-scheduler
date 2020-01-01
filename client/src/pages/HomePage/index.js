@@ -13,6 +13,7 @@ import {
   getProfileError,
   getProfileSuccess,
   toggleAddCoursesModal,
+  setCourses,
 } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
@@ -54,17 +55,20 @@ const HomePage = props => {
     user,
     onToggleAddCourses,
     isAddCoursesOpen,
+    onSetCourses,
+    allCourses,
   } = props;
 
   // first check if user is authorized
   useEffect(() => {
+    const token = localStorage.getItem('id_token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const authorize = async () => {
       onGetProfile();
-      const token = localStorage.getItem('id_token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      axios
+      await axios
         .get(`${baseUrl}/api/user/profile`, { headers })
         .then(resp => {
           onSetUser(resp.data.data);
@@ -75,8 +79,16 @@ const HomePage = props => {
           onGetProfileError();
           history.push('/');
         });
+      if (allCourses.length === 0)
+        await axios
+          .get(`${baseUrl}/api/course/current`, { headers })
+          .then(response => {
+            const { courses } = response.data.data;
+            onSetCourses(courses);
+          });
     };
     authorize();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,6 +110,7 @@ const HomePage = props => {
     previousCourses: user.previousCourses,
     open: isAddCoursesOpen,
     toggleModal: onToggleAddCourses,
+    allCourses,
   };
 
   return isLoading ? (
@@ -136,6 +149,7 @@ const mapStateToProps = ({ globalStore, homePage }) => {
     isLoading: homePage.loading,
     user: globalStore.user,
     isAddCoursesOpen: homePage.addCoursesOpen,
+    allCourses: globalStore.courses,
   };
 };
 
@@ -147,6 +161,7 @@ const mapDispatchToProps = dispatch => {
     onGetProfileSuccess: () => dispatch(getProfileSuccess()),
     onGetProfileError: () => dispatch(getProfileError()),
     onToggleAddCourses: () => dispatch(toggleAddCoursesModal()),
+    onSetCourses: payload => dispatch(setCourses(payload)),
   };
 };
 
