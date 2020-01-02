@@ -14,6 +14,7 @@ import {
   getProfileSuccess,
   toggleAddCoursesModal,
   setCourses,
+  updateUser,
 } from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
@@ -62,6 +63,7 @@ const HomePage = props => {
     isAddCoursesOpen,
     onSetCourses,
     allCourses,
+    onUpdateUser,
   } = props;
 
   // first check if user is authorized
@@ -106,7 +108,9 @@ const HomePage = props => {
         },
         { headers },
       );
-      console.log(response.data);
+      const { updatedCourses } = response.data;
+      console.log(updatedCourses);
+      onUpdateUser('currentCourses', updatedCourses);
     } catch (err) {
       const { response } = err;
       console.log(response);
@@ -179,6 +183,7 @@ const mapDispatchToProps = dispatch => {
     onGetProfileError: () => dispatch(getProfileError()),
     onToggleAddCourses: () => dispatch(toggleAddCoursesModal()),
     onSetCourses: payload => dispatch(setCourses(payload)),
+    onUpdateUser: (field, data) => dispatch(updateUser(field, data)),
   };
 };
 

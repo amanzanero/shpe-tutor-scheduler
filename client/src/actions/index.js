@@ -14,6 +14,7 @@ import {
   GET_PROFILE_ERROR,
   TOGGLE_ADD_COURSES,
   SET_COURSES,
+  UPDATE_USER,
 } from '../types';
 
 export const userRegister = () => {
@@ -109,5 +110,13 @@ export const setCourses = payload => {
   return {
     type: SET_COURSES,
     payload,
+  };
+};
+
+export const updateUser = (field, data) => {
+  return {
+    type: UPDATE_USER,
+    field,
+    data,
   };
 };
