@@ -15,16 +15,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Chips({ courses, remove }) {
+export default function Chips({ staged, remove, courseHash }) {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
-      {courses.map((course, index) => (
+      {staged.map((course, index) => (
         <Chip
-          label={`${course.dept}-${course.code}`}
-          key={`${course.dept}${course.code}${index}`}
-          onDelete={remove}
+          label={courseHash(course)}
+          key={`${course.school}${course.number}${index}`}
+          onDelete={() => remove(course)}
         />
       ))}
     </div>

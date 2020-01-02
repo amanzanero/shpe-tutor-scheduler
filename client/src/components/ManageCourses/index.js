@@ -1,40 +1,22 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import PlusIcon from '@material-ui/icons/Add';
 import MinusIcon from '@material-ui/icons/MinimizeRounded';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import { DialogContent, DialogTitle } from '../DialogCompose';
 import ListDividers from '../ListDivider';
+import NestedList from '../NestedList';
 import Chips from './Chips';
-import Courses from '../../courses';
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-  buttonContainer: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-}));
 
 export default function ManageCourses(props) {
-  const { currentCourses, open, toggleModal } = props;
-  const initialState = Object.keys(Courses).reduce(
+  const { currentCourses, open, toggleModal, allCourses } = props;
+  const initialState = Object.keys(allCourses).reduce(
     (prev, curr) => ({
       ...prev,
       [`${curr}_open`]: false,
@@ -46,6 +28,9 @@ export default function ManageCourses(props) {
   const [stagedCourses, toggleStagedCourse] = useState([]);
 
   const getNestedOpen = course => menuOpen[`${course}_open`];
+  const courseHash = course => {
+    return `${course.school}-${course.number}`;
+  };
 
   const handleMenuClick = e => {
     e.persist();
@@ -66,13 +51,21 @@ export default function ManageCourses(props) {
     });
   }
 
-  function stageCourse(e) {
-    const name = e.target.getAttribute('name');
+  function stageCourse(school, index) {
+    const course = allCourses[school][index];
+    var exists = false;
+    stagedCourses.forEach(curr => {
+      if (courseHash(curr) === courseHash(course)) exists = true;
+    });
+    if (exists) return;
+    toggleStagedCourse(prev => [...prev, course]);
   }
 
-  function unstageCourse(e) {}
-
-  const classes = useStyles();
+  function unstageCourse(course) {
+    toggleStagedCourse(prevState => {
+      return prevState.filter(item => courseHash(item) !== courseHash(course));
+    });
+  }
 
   return (
     <div>
@@ -85,30 +78,37 @@ export default function ManageCourses(props) {
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Manage Courses
         </DialogTitle>
-        <div className={classes.buttonContainer}>
-          <Chips staged={stagedCourses} remove={unstageCourse} />
-        </div>
+        {Object.keys(allCourses).length > 0 && (
+          <Chips
+            staged={stagedCourses}
+            remove={unstageCourse}
+            courseHash={courseHash}
+          />
+        )}
         <DialogContent>
           <Collapse in={courseAdd} unmountOnExit>
-            {Object.keys(Courses).map(school => {
-              const nestedOpen = getNestedOpen(school);
-              return (
-                <React.Fragment key={school}>
-                  <ListItem button onClick={handleMenuClick} name={school}>
-                    <ListItemText primary={school} name={school} />
-                    {nestedOpen ? (
-                      <ExpandLess name={school} />
-                    ) : (
-                      <ExpandMore name={school} />
-                    )}
-                  </ListItem>
-                  <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
-                    <ListDividers nested={true} courses={Courses[school]} />
-                  </Collapse>
-                  <Divider />
-                </React.Fragment>
-              );
-            })}
+            {Object.keys(allCourses).length > 0 &&
+              Object.keys(allCourses).map(school => {
+                const nestedOpen = getNestedOpen(school);
+                return (
+                  <React.Fragment key={school}>
+                    <NestedList
+                      onClick={handleMenuClick}
+                      name={school}
+                      open={nestedOpen}
+                    />
+                    <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
+                      <ListDividers
+                        nested={true}
+                        courses={allCourses[school]}
+                        onClick={stageCourse}
+                        courseHash={courseHash}
+                      />
+                    </Collapse>
+                    <Divider />
+                  </React.Fragment>
+                );
+              })}
           </Collapse>
         </DialogContent>
         {currentCourses.length > 0 && (
