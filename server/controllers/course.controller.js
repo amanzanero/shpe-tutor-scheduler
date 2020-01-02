@@ -69,16 +69,19 @@ exports.getCurrentTermCourses = async (req, res) => {
   }
 };
 
-exports.addUserCurrentCourse = async (req, res) => {
+exports.addUserCurrentCourse = async function addUserCurrentCourse(req, res) {
   try {
     const { user, body } = req;
-    await User.updateOne(
+    const updatedUser = await User.findOneAndUpdate(
       { _id: user.id },
-      { $push: { currentCourses: body.courseID } },
-    );
-    return res
-      .status(httpStatus.OK)
-      .json({ message: 'success', ...responseObject });
+      { $addToSet: { currentCourses: { $each: [...body.courseIDs] } } },
+    )
+      .populate('currentCourses')
+      .exec();
+    return res.status(httpStatus.OK).json({
+      message: 'success',
+      updatedCourses: updatedUser.transform().currentCourses,
+    });
   } catch (err) {
     console.log(err.message);
     const failRes = { ...responseObject, success: 0, message: err.message };

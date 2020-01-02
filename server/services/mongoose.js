@@ -34,10 +34,12 @@ exports.connect = () => {
       break;
   }
   console.log('Mongo URL:', mongoURI);
+
   mongoose.connect(mongoURI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     keepAlive: 1,
+    useFindAndModify: false,
   });
 
   return mongoose.connection;

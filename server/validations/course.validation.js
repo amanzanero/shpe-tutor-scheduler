@@ -19,7 +19,7 @@ module.exports = {
   },
   addCourse: {
     body: {
-      courseID: Joi.objectId().required(),
+      courseIDs: Joi.array().items(Joi.objectId()),
     },
   },
 };
