@@ -155,7 +155,6 @@ LandingPage.propTypes = {
   onLoginUserError: PropTypes.func.isRequired,
   onLoginUserSuccess: PropTypes.func.isRequired,
   onErrResolve: PropTypes.func.isRequired,
-  onSetUser: PropTypes.func.isRequired,
   hasError: PropTypes.bool.isRequired,
   errMessage: PropTypes.string,
   history: PropTypes.objectOf(PropTypes.any).isRequired,

@@ -17,7 +17,7 @@ const TUTOR = {
   email: 'amanzane@gmail.edu',
   name: 'Andrew Manzanero',
   password: '123456789',
-  role: 'tutor',
+  role: 'admin',
   id: '',
   token: '',
 };
@@ -65,7 +65,8 @@ describe('Course Module', () => {
       number: '101',
       school: 'BISC',
     };
-    const route = '/api/course/add';
+    const route = '/api/course';
+    console.log(TUTOR.token);
     chai
       .request(app)
       .post(route)

@@ -93,7 +93,7 @@ describe('Appointment module', () => {
 
   it('Delete: It should return HTTP_OK', done => {
     const apptDelBody = {
-      id: `${appt.id}`,
+      id: `${appt._id}`,
     };
     chai
       .request(app)

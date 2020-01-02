@@ -59,10 +59,10 @@ exports.makeAppointment = async (req, res, next) => {
 exports.deleteAppointment = async (req, res, next) => {
   try {
     return Appointment.findByIdAndDelete(req.body.id).then(() => {
-      res.status(httpStatus.OK);
-      const succRes = responseObject;
-      succRes.message = 'Appointment successfully deleted.';
-      return res.json(succRes);
+      return res.status(httpStatus.OK).json({
+        ...responseObject,
+        message: 'Appointment successfully deleted.',
+      });
     });
   } catch (err) {
     return next(err);
