@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ListDividers = ({ courses, onClick, courseHash }) => {
+const ListDividers = ({ courses, clickable, onClick, hash }) => {
   const classes = useStyles();
   return (
     <List
@@ -29,27 +29,29 @@ const ListDividers = ({ courses, onClick, courseHash }) => {
     >
       {courses.map((course, index) => {
         return (
-          <React.Fragment key={courseHash(course)}>
+          <React.Fragment key={hash(course)}>
             <Divider />
             <ListItem className={classes.nested}>
               <ListItemText>
-                <Typography variant={'body1'}>{courseHash(course)}</Typography>
+                <Typography variant={'body1'}>{hash(course)}</Typography>
               </ListItemText>
-              <Button
-                name={courseHash(course)}
-                onClick={() =>
-                  onClick({
-                    school: course.school,
-                    index: index,
-                    text: courseHash(course),
-                  })
-                }
-                variant="outlined"
-                key={index}
-                id={index}
-              >
-                <PlusIcon name={courseHash(course)} />
-              </Button>
+              {clickable && (
+                <Button
+                  name={hash(course)}
+                  onClick={() =>
+                    onClick({
+                      school: course.school,
+                      index: index,
+                      text: hash(course),
+                    })
+                  }
+                  variant="outlined"
+                  key={index}
+                  id={index}
+                >
+                  <PlusIcon name={hash(course)} />
+                </Button>
+              )}
             </ListItem>
           </React.Fragment>
         );

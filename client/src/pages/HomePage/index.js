@@ -41,6 +41,11 @@ const styles = theme => ({
   },
 });
 
+const token = localStorage.getItem('id_token');
+const headers = {
+  Authorization: `Bearer ${token}`,
+};
+
 const HomePage = props => {
   const {
     classes,
@@ -61,15 +66,10 @@ const HomePage = props => {
 
   // first check if user is authorized
   useEffect(() => {
-    const token = localStorage.getItem('id_token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
     const authorize = async () => {
       onGetProfile();
       await axios
-        .get(`${baseUrl}/api/user/profile`, { headers })
+        .get(`${baseUrl}/user/profile`, { headers })
         .then(resp => {
           onSetUser(resp.data.data);
           onGetProfileSuccess();
@@ -81,7 +81,7 @@ const HomePage = props => {
         });
       if (allCourses.length === 0)
         await axios
-          .get(`${baseUrl}/api/course/current`, { headers })
+          .get(`${baseUrl}/course/current`, { headers })
           .then(response => {
             const { courses } = response.data.data;
             onSetCourses(courses);
@@ -95,6 +95,22 @@ const HomePage = props => {
   const logOut = () => {
     localStorage.removeItem('id_token');
     history.push('/');
+  };
+
+  const addCourses = async courseData => {
+    try {
+      const response = await axios.put(
+        `${baseUrl}/course/userCurrent`,
+        {
+          courseIDs: courseData,
+        },
+        { headers },
+      );
+      console.log(response.data);
+    } catch (err) {
+      const { response } = err;
+      console.log(response);
+    }
   };
 
   const navProps = { onToggleModal, isModalOpen, logOut, onToggleAddCourses };
@@ -111,6 +127,7 @@ const HomePage = props => {
     open: isAddCoursesOpen,
     toggleModal: onToggleAddCourses,
     allCourses,
+    addCourses,
   };
 
   return isLoading ? (

@@ -15,7 +15,7 @@ import NestedList from '../NestedList';
 import Chips from './Chips';
 
 export default function ManageCourses(props) {
-  const { currentCourses, open, toggleModal, allCourses } = props;
+  const { currentCourses, open, toggleModal, allCourses, addCourses } = props;
   const initialState = Object.keys(allCourses).reduce(
     (prev, curr) => ({
       ...prev,
@@ -28,10 +28,7 @@ export default function ManageCourses(props) {
   const [stagedCourses, toggleStagedCourse] = useState([]);
 
   const getNestedOpen = course => menuOpen[`${course}_open`];
-  const courseHash = course => {
-    return `${course.school}-${course.number}`;
-  };
-
+  const courseHash = course => `${course.school}-${course.number}`;
   const handleMenuClick = name => {
     const target = `${name}_open`;
     setOpen(prev => ({ ...prev, [target]: !prev[target] }));
@@ -68,6 +65,16 @@ export default function ManageCourses(props) {
     });
   }
 
+  async function onSave() {
+    if (stagedCourses.length === 0) return;
+    const courseData = stagedCourses.reduce((prev, curr) => {
+      const course = allCourses[curr.school][curr.index];
+      return [...prev, course._id];
+    }, []);
+    await addCourses(courseData);
+    handleClose();
+  }
+
   return (
     <div>
       <Dialog
@@ -83,7 +90,7 @@ export default function ManageCourses(props) {
           <Chips
             staged={stagedCourses}
             remove={unstageCourse}
-            courseHash={courseHash}
+            hash={courseHash}
           />
         )}
         <DialogContent>
@@ -103,7 +110,8 @@ export default function ManageCourses(props) {
                         nested={true}
                         courses={allCourses[school]}
                         onClick={stageCourse}
-                        courseHash={courseHash}
+                        clickable
+                        hash={courseHash}
                       />
                     </Collapse>
                     <Divider />
@@ -118,7 +126,7 @@ export default function ManageCourses(props) {
               <Typography>My classes</Typography>
             </DialogContent>
             <DialogContent dividers>
-              <ListDividers courses={currentCourses} />
+              <ListDividers courses={currentCourses} hash={courseHash} />
             </DialogContent>
           </React.Fragment>
         )}
@@ -138,7 +146,7 @@ export default function ManageCourses(props) {
             <Grid item xs={6}>
               <Button
                 size="medium"
-                onClick={handleClose}
+                onClick={onSave}
                 variant="outlined"
                 color="primary"
                 fullWidth

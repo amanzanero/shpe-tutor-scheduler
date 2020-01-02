@@ -65,7 +65,7 @@ function LandingPage(props) {
       gradYear: state.grad_field_text,
     };
     axios
-      .post(`${baseUrl}/api/user/register`, data)
+      .post(`${baseUrl}/user/register`, data)
       .then(resp => {
         localStorage.setItem('id_token', resp.data.data.token);
         onRegisterUserSuccess();
@@ -83,7 +83,7 @@ function LandingPage(props) {
       password: passwordState,
     };
     axios
-      .post(`${baseUrl}/api/user/login`, data)
+      .post(`${baseUrl}/user/login`, data)
       .then(resp => {
         localStorage.setItem('id_token', resp.data.data.token);
         onLoginUserSuccess();
