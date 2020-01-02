@@ -9,19 +9,27 @@ const errorHandler = require('../middlewares/error-handler');
 const apiRouter = require('../routes/api');
 const config = require('../config');
 const passportJwt = require('../services/passport');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 
-if (config.env !== 'test') app.use(morgan('combined'));
+app.use(morgan('short'));
 
 // passport
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
 
+// serve react app if we are in production mode
 app.use('/api', apiRouter);
+if (config.env === 'production') {
+  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`));
+  });
+}
 app.use(errorHandler.handleNotFound);
 app.use(errorHandler.handleError);
 

@@ -4,6 +4,7 @@
 
 const httpStatus = require('http-status');
 const Appointment = require('../models/appointment.model');
+const User = require('../models/user.model');
 
 const responseObject = {
   success: 1,
@@ -13,24 +14,43 @@ const responseObject = {
 
 exports.makeAppointment = async (req, res, next) => {
   try {
-    const populateQuery = [
-      { path: 'tutor', model: 'User', select: 'email name' },
-      { path: 'student', model: 'User', select: 'email name' },
-    ];
+    // check if users exist
+    const { student, tutor } = req.body;
+    const exists = await User.find({ _id: { $in: [student, tutor] } });
+    if (exists.length < 2) {
+      return res.status(httpStatus.FAILED_DEPENDENCY).json({
+        ...responseObject,
+        success: 0,
+        message: 'One or both users do not exist.',
+      });
+    }
 
-    // save appointment and find in database then populate
+    // create appt
     const appt = new Appointment(req.body);
     const savedAppt = await appt.save();
-    const responseAppt = await Appointment.findById(savedAppt.id).populate(
-      populateQuery,
-    );
+
+    // add appointment id to users
+    let studObj, tutObj;
+    exists.forEach(usr => {
+      const usrObj = { name: usr.name, email: usr.email };
+      if (usr.id === student) {
+        studObj = usrObj;
+      } else {
+        tutObj = usrObj;
+      }
+      usr.addAppointment(savedAppt.id);
+    });
 
     // build object to respond with
-    const succRes = responseObject;
-    succRes.message = 'Appointment created.';
-    succRes.data = await responseAppt.transform();
-    res.status(httpStatus.CREATED);
-    return res.json(succRes);
+    return res.status(httpStatus.CREATED).json({
+      ...responseObject,
+      message: 'Appointment created.',
+      data: {
+        ...savedAppt.toObject(),
+        student: studObj,
+        tutor: tutObj,
+      },
+    });
   } catch (err) {
     return next(err);
   }
@@ -39,10 +59,10 @@ exports.makeAppointment = async (req, res, next) => {
 exports.deleteAppointment = async (req, res, next) => {
   try {
     return Appointment.findByIdAndDelete(req.body.id).then(() => {
-      res.status(httpStatus.OK);
-      const succRes = responseObject;
-      succRes.message = 'Appointment successfully deleted.';
-      return res.json(succRes);
+      return res.status(httpStatus.OK).json({
+        ...responseObject,
+        message: 'Appointment successfully deleted.',
+      });
     });
   } catch (err) {
     return next(err);

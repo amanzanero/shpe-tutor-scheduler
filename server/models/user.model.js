@@ -5,7 +5,7 @@ const APIError = require('../utils/APIError');
 
 const { Schema } = mongoose;
 
-const roles = ['student', 'tutor'];
+const roles = ['student', 'tutor', 'both', 'admin'];
 
 const userSchema = new Schema(
   {
@@ -30,6 +30,18 @@ const userSchema = new Schema(
       default: 'student',
       enum: roles,
     },
+    currentCourses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Course',
+      },
+    ],
+    previousCourses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Course',
+      },
+    ],
     appointments: [
       {
         type: Schema.Types.ObjectId,
@@ -59,7 +71,16 @@ userSchema.pre('save', async function save(next) {
 userSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'email', 'createdAt', 'role', 'appointments'];
+    const fields = [
+      'id',
+      'name',
+      'email',
+      'createdAt',
+      'role',
+      'currentCourses',
+      'previousCourses',
+      'appointments',
+    ];
 
     fields.forEach(field => {
       transformed[field] = this[field];
@@ -70,6 +91,16 @@ userSchema.method({
 
   passwordMatches(password) {
     return bcrypt.compareSync(password, this.password);
+  },
+
+  addAppointment(apptId) {
+    try {
+      this.appointments.push(apptId);
+      this.save();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(`Error adding appointment to "${this.email}": ${e}`);
+    }
   },
 });
 

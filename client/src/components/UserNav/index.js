@@ -5,12 +5,11 @@
  */
 
 import React from 'react';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import mobile from 'is-mobile';
@@ -22,23 +21,36 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import BookIcon from '@material-ui/icons/Collections';
 
-const styles = {
-  root: {
-    flexGrow: 1
-  },
+const styles = theme => ({
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
+  },
+  text: {
+    flexGrow: 1,
+    fontSize: 26,
+    fontFamily: 'Roboto Slab',
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20
-  }
-};
+    marginRight: 20,
+  },
+  margin: {
+    margin: '.5em',
+  },
+  gold: {
+    color: theme.palette.secondary.light,
+  },
+  white: {
+    color: 'white',
+  },
+});
 
 class UserNav extends React.Component {
   state = {
-    drawerOpen: false
+    drawerOpen: false,
   };
 
   toggleDrawer = open => () => {
@@ -46,26 +58,29 @@ class UserNav extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, onToggleModal, logOut, onToggleAddCourses } = this.props;
     const isMobile = mobile();
+    const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
     const { drawerOpen } = this.state;
     return (
-      <div className={classes.root}>
+      <div>
         <AppBar position="static">
           <Toolbar>
             <IconButton
-              className={classes.menuButton}
-              color="secondary"
+              className={`${classes.menuButton} ${classes.white}`}
               aria-label="Menu"
               onClick={this.toggleDrawer(true)}
               data-testid="menu-button"
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="secondary" className={classes.grow}>
-              {isMobile ? 'SHPE Tutoring' : 'SHPE Tutoring and Academics'}
+            <Typography
+              variant="h6"
+              className={`${classes.text} ${classes.white}`}
+            >
+              <span className={classes.gold}>SHPE </span>
+              {text}
             </Typography>
-            {!isMobile && <Button color="secondary">Login</Button>}
           </Toolbar>
         </AppBar>
         <Drawer open={drawerOpen} onClose={this.toggleDrawer(false)}>
@@ -78,18 +93,38 @@ class UserNav extends React.Component {
           >
             <div className={classes.list}>
               <List>
-                <ListItem button key="messages">
+                <ListItem
+                  button
+                  key="messages"
+                  onClick={() => console.log('hi')}
+                >
                   <ListItemIcon>
                     <MailIcon />
                   </ListItemIcon>
                   <ListItemText primary="Messages" />
                 </ListItem>
                 <Divider />
-                <ListItem button key="Log In">
+                <ListItem button key="Settings" onClick={() => onToggleModal()}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </ListItem>
+                <ListItem
+                  button
+                  key="Courses"
+                  onClick={() => onToggleAddCourses()}
+                >
+                  <ListItemIcon>
+                    <BookIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Courses" />
+                </ListItem>
+                <ListItem button key="Log Out" onClick={() => logOut()}>
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Log In" />
+                  <ListItemText primary="Log Out" />
                 </ListItem>
               </List>
             </div>
@@ -101,7 +136,9 @@ class UserNav extends React.Component {
 }
 
 UserNav.propTypes = {
-  classes: PropTypes.objectOf(object).isRequired
+  classes: PropTypes.objectOf(PropTypes.any).isRequired,
+  onToggleModal: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(UserNav);

@@ -20,10 +20,10 @@ if (config.env === 'dev') {
 exports.connect = () => {
   let mongoURI;
   switch (config.env) {
-    case 'prod':
+    case 'production':
       mongoURI = config.mongo.uri;
       break;
-    case 'dev':
+    case 'development':
       mongoURI = config.mongo.uri;
       break;
     case 'test':
@@ -34,10 +34,12 @@ exports.connect = () => {
       break;
   }
   console.log('Mongo URL:', mongoURI);
+
   mongoose.connect(mongoURI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     keepAlive: 1,
+    useFindAndModify: false,
   });
 
   return mongoose.connection;

@@ -11,57 +11,62 @@ const responseObject = {
   data: {},
 };
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
   try {
     const user = new User(req.body);
-    const savedUser = await user.save();
-    const succRes = responseObject;
-    succRes.message = 'User created.';
-    succRes.data = savedUser.transform();
-    res.status(httpStatus.CREATED);
-    return res.json(succRes);
+    await user.save();
+    const payload = { sub: user.id };
+    const token = jwt.sign(payload, config.secret);
+    return res
+      .status(httpStatus.CREATED)
+      .json({ ...responseObject, message: 'User created', data: { token } });
   } catch (error) {
-    return next(User.checkDuplicateEmailError(error));
+    // eslint-disable-next-line no-console
+    console.error('Error:', error);
+    return res
+      .status(400)
+      .json({ ...responseObject, success: 0, message: error.message });
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const user = await User.findAndGenerateToken(req.body);
     const payload = { sub: user.id };
     const token = jwt.sign(payload, config.secret);
-    const succRes = responseObject;
-    succRes.message = 'User logged in.';
-    succRes.data.token = token;
-    res.status(httpStatus.OK);
-    return res.json(succRes);
+    return res.status(httpStatus.OK).json({
+      ...responseObject,
+      message: 'User logged in.',
+      data: { token },
+    });
   } catch (error) {
-    return next(error);
+    // eslint-disable-next-line no-console
+    console.error('Error:', error.message);
+    return res
+      .status(400)
+      .json({ ...responseObject, success: 0, message: error.message });
   }
 };
 
 exports.getUserProfile = async (req, res) => {
   try {
-    return (
-      User.findOne({ _id: req.user._id })
-        .populate('appointments')
-        // eslint-disable-next-line prettier/prettier
-      .then((user) => {
-          // Do something with the user
-          const successResponse = responseObject; // copy
-          successResponse.success = 1;
-          successResponse.message = 'User successfully found';
-          successResponse.data = user.transform(); // schema to json
-          res.status(httpStatus.OK);
-          return res.json(successResponse);
-        })
-    );
+    return User.findOne({ _id: req.user._id })
+      .populate('appointments')
+      .populate('currentCourses')
+      .populate('previousCourses')
+      .exec((err, user) => {
+        if (err) return console.log(err);
+        const successResponse = responseObject; // copy
+        successResponse.success = 1;
+        successResponse.message = 'User successfully found';
+        successResponse.data = user.transform(); // schema to json
+        return res.status(httpStatus.OK).json(successResponse);
+      });
   } catch (err) {
     const failureResponse = responseObject;
     failureResponse.success = 0;
     failureResponse.message = 'Failed to fetch user.';
-    res.status(httpStatus.INTERNAL_SERVER_ERROR);
-    return res.json(failureResponse);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json(failureResponse);
   }
 };
 
@@ -70,7 +75,7 @@ exports.deleteUser = async (req, res) => {
     return (
       User.findOneAndDelete({ _id: req.user._id })
         // eslint-disable-next-line prettier/prettier
-      .then(() => {
+        .then(() => {
           // Do something with the user
           const successResponse = responseObject; // copy
           successResponse.success = 1;
