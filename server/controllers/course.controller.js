@@ -43,11 +43,20 @@ exports.getCurrentTermCourses = async (req, res) => {
           message: 'Server error.',
         });
       }
+      const courseData = doc.reduce(
+        (prev, curr) => ({
+          ...prev,
+          [curr.school]: prev[curr.school]
+            ? [...prev[curr.school], curr]
+            : [curr],
+        }),
+        {},
+      );
       return res.status(200).json({
         ...responseObject,
         message: 'Success',
         data: {
-          courses: doc,
+          courses: courseData,
         },
       });
     });
