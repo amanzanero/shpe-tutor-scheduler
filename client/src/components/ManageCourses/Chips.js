@@ -5,10 +5,9 @@ import Chip from '@material-ui/core/Chip';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'left',
     flexWrap: 'wrap',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    margin: theme.spacing(2),
     '& > *': {
       margin: theme.spacing(0.5),
     },
@@ -17,12 +16,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function Chips({ staged, remove, courseHash }) {
   const classes = useStyles();
+  const keyHash = (c, i) => `${c.school}${c.number}${i}`;
   return (
     <div className={classes.root}>
       {staged.map((course, index) => (
         <Chip
-          label={courseHash(course)}
-          key={`${course.school}${course.number}${index}`}
+          label={course.text}
+          key={keyHash(course, index)}
           onDelete={() => remove(course)}
         />
       ))}

@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import PlusIcon from '@material-ui/icons/Add';
@@ -11,7 +12,6 @@ import PlusIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -32,10 +32,18 @@ const ListDividers = ({ courses, onClick, courseHash }) => {
           <React.Fragment key={courseHash(course)}>
             <Divider />
             <ListItem className={classes.nested}>
-              <ListItemText primary={courseHash(course)} />
+              <ListItemText>
+                <Typography variant={'body1'}>{courseHash(course)}</Typography>
+              </ListItemText>
               <Button
                 name={courseHash(course)}
-                onClick={() => onClick(course.school, index)}
+                onClick={() =>
+                  onClick({
+                    school: course.school,
+                    index: index,
+                    text: courseHash(course),
+                  })
+                }
                 variant="outlined"
                 key={index}
                 id={index}

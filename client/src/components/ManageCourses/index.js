@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import PlusIcon from '@material-ui/icons/Add';
-import MinusIcon from '@material-ui/icons/MinimizeRounded';
+import MinusIcon from '@material-ui/icons/Remove';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import { DialogContent, DialogTitle } from '../DialogCompose';
@@ -32,9 +32,8 @@ export default function ManageCourses(props) {
     return `${course.school}-${course.number}`;
   };
 
-  const handleMenuClick = e => {
-    e.persist();
-    const target = `${e.target.getAttribute('name')}_open`;
+  const handleMenuClick = name => {
+    const target = `${name}_open`;
     setOpen(prev => ({ ...prev, [target]: !prev[target] }));
   };
 
@@ -51,19 +50,21 @@ export default function ManageCourses(props) {
     });
   }
 
-  function stageCourse(school, index) {
-    const course = allCourses[school][index];
+  const courseComp = (c1, c2) =>
+    c1.school === c2.school && c1.index === c2.index;
+
+  function stageCourse(courseInfo) {
     var exists = false;
     stagedCourses.forEach(curr => {
-      if (courseHash(curr) === courseHash(course)) exists = true;
+      if (courseComp(curr, courseInfo)) exists = true;
     });
     if (exists) return;
-    toggleStagedCourse(prev => [...prev, course]);
+    toggleStagedCourse(prev => [...prev, courseInfo]);
   }
 
   function unstageCourse(course) {
     toggleStagedCourse(prevState => {
-      return prevState.filter(item => courseHash(item) !== courseHash(course));
+      return prevState.filter(item => !courseComp(course, item));
     });
   }
 
