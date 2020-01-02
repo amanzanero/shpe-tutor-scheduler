@@ -75,6 +75,7 @@ exports.addUserCurrentCourse = async function addUserCurrentCourse(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { _id: user.id },
       { $addToSet: { currentCourses: { $each: [...body.courseIDs] } } },
+      { new: true },
     )
       .populate('currentCourses')
       .exec();
