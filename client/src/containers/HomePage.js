@@ -88,7 +88,7 @@ function HomePage(props) {
   };
 
   const addCourses = async courseData => {
-    const headers = getAuth;
+    const headers = getAuth();
     onAddCourses();
     try {
       const response = await axios.put(
@@ -102,8 +102,7 @@ function HomePage(props) {
       onUpdateUser('currentCourses', updatedCourses);
       onAddCoursesSuccess();
     } catch (err) {
-      const { response } = err;
-      console.log(response);
+      console.log(err);
       onAddCoursesError();
     }
   };
