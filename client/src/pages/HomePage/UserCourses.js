@@ -36,8 +36,8 @@ export default function UserCourses({ courses }) {
               const { school, number, name } = course;
               const text = `${school}-${number}`;
               return (
-                <Grid item xs={6} sm={3}>
-                  <ClassCard key={text} heading={text} subHeading={name} />
+                <Grid item xs={6} sm={3} key={text}>
+                  <ClassCard heading={text} subHeading={name} />
                 </Grid>
               );
             })}

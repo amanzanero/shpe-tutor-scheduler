@@ -1,13 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import UserNav from '../../components/UserNav';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
 import ManageCourses from '../../components/ManageCourses';
 import UserCourses from './UserCourses';
+import ProgressCircle from '../../components/ProgressCircle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,16 +16,6 @@ const useStyles = makeStyles(theme => ({
   },
   background: {
     background: '#e8e8e8',
-  },
-  progressCircle: {
-    color: theme.palette.primary.main,
-  },
-  progressContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    width: '100vw',
   },
 }));
 
@@ -65,9 +54,7 @@ const HomePage = props => {
   };
 
   return isLoading ? (
-    <div className={`${classes.progressContainer} ${classes.background}`}>
-      <CircularProgress className={classes.linearProgress} size={100} />
-    </div>
+    <ProgressCircle />
   ) : (
     <React.Fragment>
       <UserNav {...navProps} />
@@ -79,20 +66,6 @@ const HomePage = props => {
       </div>
     </React.Fragment>
   );
-};
-
-HomePage.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  onToggleModal: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
-  onGetProfile: PropTypes.func.isRequired,
-  onSetUser: PropTypes.func.isRequired,
-  onGetProfileSuccess: PropTypes.func.isRequired,
-  onGetProfileError: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/require-default-props
-  history: PropTypes.objectOf(PropTypes.any),
-  isLoading: PropTypes.bool.isRequired,
-  user: PropTypes.objectOf(PropTypes.any),
 };
 
 export default HomePage;

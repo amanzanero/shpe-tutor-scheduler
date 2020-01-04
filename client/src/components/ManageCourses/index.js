@@ -9,6 +9,7 @@ import { DialogContent, DialogTitle } from '../DialogCompose';
 import ListDividers from '../ListDivider';
 import NestedList from '../NestedList';
 import Chips from './Chips';
+import ProgressCircle from '../ProgressCircle';
 
 export default function ManageCourses(props) {
   const { open, toggleModal, allCourses, addCourses, loading } = props;
@@ -68,6 +69,31 @@ export default function ManageCourses(props) {
     }
   }
 
+  const modalContent = () =>
+    Object.keys(allCourses).length > 0 &&
+    Object.keys(allCourses).map(school => {
+      const nestedOpen = getNestedOpen(school);
+      return (
+        <React.Fragment key={school}>
+          <NestedList
+            onClick={handleMenuClick}
+            name={school}
+            open={nestedOpen}
+          />
+          <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
+            <ListDividers
+              nested={true}
+              courses={allCourses[school]}
+              onClick={stageCourse}
+              clickable
+              hash={courseHash}
+            />
+          </Collapse>
+          <Divider />
+        </React.Fragment>
+      );
+    });
+
   return (
     <div>
       <Dialog
@@ -87,29 +113,7 @@ export default function ManageCourses(props) {
           />
         )}
         <DialogContent>
-          {Object.keys(allCourses).length > 0 &&
-            Object.keys(allCourses).map(school => {
-              const nestedOpen = getNestedOpen(school);
-              return (
-                <React.Fragment key={school}>
-                  <NestedList
-                    onClick={handleMenuClick}
-                    name={school}
-                    open={nestedOpen}
-                  />
-                  <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
-                    <ListDividers
-                      nested={true}
-                      courses={allCourses[school]}
-                      onClick={stageCourse}
-                      clickable
-                      hash={courseHash}
-                    />
-                  </Collapse>
-                  <Divider />
-                </React.Fragment>
-              );
-            })}
+          {loading ? <ProgressCircle /> : modalContent()}
         </DialogContent>
         <MuiDialogActions>
           <Button
