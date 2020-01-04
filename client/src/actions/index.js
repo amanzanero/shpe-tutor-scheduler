@@ -15,6 +15,9 @@ import {
   TOGGLE_ADD_COURSES,
   SET_COURSES,
   UPDATE_USER,
+  ADD_COURSES,
+  ADD_COURSES_SUCCESS,
+  ADD_COURSES_ERROR,
 } from '../types';
 
 export const userRegister = () => {
@@ -118,5 +121,23 @@ export const updateUser = (field, data) => {
     type: UPDATE_USER,
     field,
     data,
+  };
+};
+
+export const addCourses = () => {
+  return {
+    type: ADD_COURSES,
+  };
+};
+
+export const addCoursesSuccess = () => {
+  return {
+    type: ADD_COURSES_SUCCESS,
+  };
+};
+
+export const addCoursesError = () => {
+  return {
+    type: ADD_COURSES_ERROR,
   };
 };

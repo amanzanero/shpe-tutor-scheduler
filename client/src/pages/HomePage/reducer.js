@@ -7,11 +7,15 @@ import {
   GET_PROFILE_SUCCESS,
   GET_PROFILE_ERROR,
   TOGGLE_ADD_COURSES,
+  ADD_COURSES,
+  ADD_COURSES_SUCCESS,
+  ADD_COURSES_ERROR,
 } from '../../types';
 
 const initState = {
   settingsOpen: false,
   loading: true,
+  addCoursesLoading: false,
   pageErr: {
     status: false,
     message: '',
@@ -39,6 +43,12 @@ const homePage = (state = initState, action) => {
       return { ...state, loading: false };
     case GET_PROFILE_ERROR:
       return { ...state, loading: false };
+    case ADD_COURSES:
+      return { ...state, addCoursesLoading: true };
+    case ADD_COURSES_SUCCESS:
+      return { ...state, addCoursesLoading: false };
+    case ADD_COURSES_ERROR:
+      return { ...state, addCoursesLoading: false };
     default:
       return state;
   }

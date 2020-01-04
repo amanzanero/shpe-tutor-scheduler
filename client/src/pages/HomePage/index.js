@@ -1,27 +1,15 @@
-import React, { useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import axios from 'axios';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import UserNav from '../../components/UserNav';
-import {
-  toggleSettingsModal,
-  setUser,
-  getProfile,
-  getProfileError,
-  getProfileSuccess,
-  toggleAddCoursesModal,
-  setCourses,
-  updateUser,
-} from '../../actions';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
 import ManageCourses from '../../components/ManageCourses';
-import baseUrl from '../../config/config';
+import UserCourses from './UserCourses';
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flex: 1,
     padding: '1em',
@@ -40,82 +28,23 @@ const styles = theme => ({
     height: '100vh',
     width: '100vw',
   },
-});
-
-const token = localStorage.getItem('id_token');
-const headers = {
-  Authorization: `Bearer ${token}`,
-};
+}));
 
 const HomePage = props => {
   const {
-    classes,
     onToggleModal,
     isModalOpen,
-    onGetProfile,
-    onSetUser,
-    onGetProfileSuccess,
-    onGetProfileError,
-    history,
     isLoading,
     user,
     onToggleAddCourses,
+    isAddCoursesLoading,
     isAddCoursesOpen,
-    onSetCourses,
     allCourses,
-    onUpdateUser,
+    addCourses,
+    logOut,
   } = props;
 
-  // first check if user is authorized
-  useEffect(() => {
-    const authorize = async () => {
-      onGetProfile();
-      await axios
-        .get(`${baseUrl}/user/profile`, { headers })
-        .then(resp => {
-          onSetUser(resp.data.data);
-          onGetProfileSuccess();
-        })
-        .catch(err => {
-          console.log(err);
-          onGetProfileError();
-          history.push('/');
-        });
-      if (allCourses.length === 0)
-        await axios
-          .get(`${baseUrl}/course/current`, { headers })
-          .then(response => {
-            const { courses } = response.data.data;
-            onSetCourses(courses);
-          });
-    };
-    authorize();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const logOut = () => {
-    localStorage.removeItem('id_token');
-    history.push('/');
-  };
-
-  const addCourses = async courseData => {
-    try {
-      const response = await axios.put(
-        `${baseUrl}/course/userCurrent`,
-        {
-          courseIDs: courseData,
-        },
-        { headers },
-      );
-      const { updatedCourses } = response.data;
-      console.log(updatedCourses);
-      onUpdateUser('currentCourses', updatedCourses);
-    } catch (err) {
-      const { response } = err;
-      console.log(response);
-    }
-  };
+  const classes = useStyles();
 
   const navProps = { onToggleModal, isModalOpen, logOut, onToggleAddCourses };
   const modalProps = { onToggleModal, isModalOpen, user };
@@ -132,6 +61,7 @@ const HomePage = props => {
     toggleModal: onToggleAddCourses,
     allCourses,
     addCourses,
+    loading: isAddCoursesLoading,
   };
 
   return isLoading ? (
@@ -144,6 +74,7 @@ const HomePage = props => {
       <div className={`${classes.root} ${classes.background}`}>
         <SettingsModal {...modalProps} />
         <Appointments {...apptProps} />
+        <UserCourses courses={user.currentCourses} />
         <ManageCourses {...manageCourseProps} />
       </div>
     </React.Fragment>
@@ -164,30 +95,4 @@ HomePage.propTypes = {
   user: PropTypes.objectOf(PropTypes.any),
 };
 
-const mapStateToProps = ({ globalStore, homePage }) => {
-  return {
-    isModalOpen: homePage.settingsOpen,
-    isLoading: homePage.loading,
-    user: globalStore.user,
-    isAddCoursesOpen: homePage.addCoursesOpen,
-    allCourses: globalStore.courses,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onToggleModal: () => dispatch(toggleSettingsModal()),
-    onSetUser: payload => dispatch(setUser(payload)),
-    onGetProfile: () => dispatch(getProfile()),
-    onGetProfileSuccess: () => dispatch(getProfileSuccess()),
-    onGetProfileError: () => dispatch(getProfileError()),
-    onToggleAddCourses: () => dispatch(toggleAddCoursesModal()),
-    onSetCourses: payload => dispatch(setCourses(payload)),
-    onUpdateUser: (field, data) => dispatch(updateUser(field, data)),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(HomePage));
+export default HomePage;

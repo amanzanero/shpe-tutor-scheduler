@@ -8,7 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import initStore from '../../config/store';
 
-import HomePage from '../HomePage';
+import HomePage from '../../containers/HomePage';
 import LandingPage from '../LandingPage';
 import theme from '../../theme';
 
