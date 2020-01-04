@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import UserNav from '../../components/UserNav';
 import SettingsModal from '../../components/SettingsModal';
 import Appointments from './Appointments';
-import ManageCourses from '../../components/ManageCourses';
+import ManageCourses from './ManageCourses';
 import UserCourses from './UserCourses';
 import ProgressCircle from '../../components/ProgressCircle';
 

@@ -7,10 +7,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 
-import { textField } from '../../theme';
-import ValidatedTextInput from '../ValidatedTextInput';
-import DropDown from '../DropDown';
-import MAJORS from '../../config/majors';
+import { textField } from '../theme';
+import ValidatedTextInput from './ValidatedTextInput';
+import DropDown from './DropDown';
+import MAJORS from '../config/majors';
 
 const styles = theme => ({
   titleContainer: {
