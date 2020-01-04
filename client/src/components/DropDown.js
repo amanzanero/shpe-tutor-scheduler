@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { textField } from '../../theme';
+import { textField } from '../theme';
 
 const styles = {
   root: textField.textField,

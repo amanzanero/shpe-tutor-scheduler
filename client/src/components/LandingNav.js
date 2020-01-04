@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import mobile from 'is-mobile';
 
-import { button } from '../../theme';
+import { button } from '../theme';
 
 const styles = theme => ({
   root: {

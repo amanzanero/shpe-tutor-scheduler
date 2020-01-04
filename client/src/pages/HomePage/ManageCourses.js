@@ -6,7 +6,7 @@ import Collapse from '@material-ui/core/Collapse';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import { DialogContent, DialogTitle } from '../../components/DialogCompose';
-import ListDividers from '../../components/ListDivider';
+import ListDividers from '../../components/ListDividers';
 import NestedList from '../../components/NestedList';
 import Chips from '../../components/Chips';
 import ProgressCircle from '../../components/ProgressCircle';
