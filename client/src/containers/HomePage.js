@@ -19,11 +19,6 @@ import {
 
 import HomePageComp from '../pages/HomePage';
 
-const token = localStorage.getItem('id_token');
-const headers = {
-  Authorization: `Bearer ${token}`,
-};
-
 function HomePage(props) {
   const {
     onToggleModal,
@@ -46,7 +41,16 @@ function HomePage(props) {
     onAddCoursesError,
   } = props;
 
+  const getAuth = () => {
+    const token = localStorage.getItem('id_token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return headers;
+  };
+
   const pageLoad = async () => {
+    const headers = getAuth();
     onGetProfile();
     try {
       const response = await axios.get(`${baseUrl}/user/profile`, {
@@ -84,8 +88,9 @@ function HomePage(props) {
   };
 
   const addCourses = async courseData => {
+    const headers = getAuth;
+    onAddCourses();
     try {
-      onAddCourses();
       const response = await axios.put(
         `${baseUrl}/course/userCurrent`,
         {
