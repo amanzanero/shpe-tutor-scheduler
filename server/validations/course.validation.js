@@ -10,7 +10,8 @@ module.exports = {
     body: {
       name: Joi.string().required(),
       number: Joi.string()
-        .max(3)
+        .min(3)
+        .max(5)
         .required(),
       school: Joi.string()
         .max(4)
