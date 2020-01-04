@@ -5,11 +5,11 @@ import Divider from '@material-ui/core/Divider';
 import Collapse from '@material-ui/core/Collapse';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 
-import { DialogContent, DialogTitle } from '../DialogCompose';
-import ListDividers from '../ListDivider';
-import NestedList from '../NestedList';
-import Chips from './Chips';
-import ProgressCircle from '../ProgressCircle';
+import { DialogContent, DialogTitle } from '../../components/DialogCompose';
+import ListDividers from '../../components/ListDivider';
+import NestedList from '../../components/NestedList';
+import Chips from '../../components/Chips';
+import ProgressCircle from '../../components/ProgressCircle';
 
 export default function ManageCourses(props) {
   const { open, toggleModal, allCourses, addCourses, loading } = props;
