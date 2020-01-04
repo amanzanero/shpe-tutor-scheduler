@@ -22,10 +22,12 @@ app.use(morgan('short'));
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
 
+if (config.env === 'production') {
+  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
+}
 // serve react app if we are in production mode
 app.use('/api', apiRouter);
 if (config.env === 'production') {
-  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`));
   });
