@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import UserNav from '../components/UserNav';
 import {
@@ -8,7 +9,7 @@ import {
   userLogout,
 } from '../actions';
 
-export default function Nav({ history }) {
+export default function Nav({ children }) {
   const dispatch = useDispatch();
   const onToggleModal = useCallback(() => dispatch(toggleSettingsModal()), [
     dispatch,
@@ -18,6 +19,8 @@ export default function Nav({ history }) {
     [dispatch],
   );
   const onUserLogout = useCallback(() => dispatch(userLogout()), [dispatch]);
+
+  let history = useHistory();
 
   const logOut = () => {
     localStorage.removeItem('id_token');
@@ -31,5 +34,5 @@ export default function Nav({ history }) {
 
   const navProps = { onToggleModal, logOut, onToggleAddCourses, navigateHome };
 
-  return <UserNav {...navProps} />;
+  return <UserNav {...navProps}>{children}</UserNav>;
 }

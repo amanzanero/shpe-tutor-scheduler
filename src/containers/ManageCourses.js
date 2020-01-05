@@ -53,17 +53,19 @@ function ManageCoursesContainer(props) {
     }
   };
 
-  const manageCourseProps = {
-    currentCourses: user.currentCourses,
-    previousCourses: user.previousCourses,
-    open: isAddCoursesOpen,
-    toggleModal: onToggleAddCourses,
-    allCourses,
-    addCourses,
-    loading: isAddCoursesLoading,
-  };
+  const manageCourseProps = !user
+    ? null
+    : {
+        currentCourses: user.currentCourses,
+        previousCourses: user.previousCourses,
+        open: isAddCoursesOpen,
+        toggleModal: onToggleAddCourses,
+        allCourses,
+        addCourses,
+        loading: isAddCoursesLoading,
+      };
 
-  return <ManageCourses {...manageCourseProps} />;
+  return user && <ManageCourses {...manageCourseProps} />;
 }
 
 const mapStateToProps = ({ globalStore, homePage }) => {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
@@ -50,8 +51,8 @@ function LandingPage(props) {
     onErrResolve,
     hasError,
     errMessage,
-    history,
   } = props;
+  let history = useHistory();
 
   const onFormSubmit = state => {
     onRegisterUser();
@@ -72,26 +73,24 @@ function LandingPage(props) {
         history.push('/home');
       })
       .catch(err => {
-        onRegisterUserError(err.response.data.message);
+        onRegisterUserError(err.message);
       });
   };
 
-  const onSubmitLogin = ({ emailState, passwordState }) => {
+  const onSubmitLogin = async ({ emailState, passwordState }) => {
     onLoginUser();
     const data = {
       email: emailState,
       password: passwordState,
     };
-    axios
-      .post(`${baseUrl}/user/login`, data)
-      .then(resp => {
-        localStorage.setItem('id_token', resp.data.data.token);
-        onLoginUserSuccess();
-        history.push('/home');
-      })
-      .catch(err => {
-        onLoginUserError(err.response.data.message);
-      });
+    try {
+      const response = await axios.post(`${baseUrl}/user/login`, data);
+      localStorage.setItem('id_token', response.data.data.token);
+      onLoginUserSuccess();
+      history.push('/home');
+    } catch (err) {
+      onLoginUserError(err.message);
+    }
   };
 
   const loginProps = {

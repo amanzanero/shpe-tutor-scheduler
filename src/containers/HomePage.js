@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import baseUrl from '../config/config';
 import {
@@ -20,7 +21,6 @@ function HomePage(props) {
     onSetUser,
     onGetProfileSuccess,
     onGetProfileError,
-    history,
     isLoading,
     user,
     onToggleAddCourses,
@@ -36,8 +36,12 @@ function HomePage(props) {
     return headers;
   };
 
-  const pageLoad = async () => {
+  let history = useHistory();
+
+  const pageLoad = useCallback(async () => {
     const headers = getAuth();
+    onGetProfile();
+
     try {
       const response = await axios.get(`${baseUrl}/user/profile`, {
         headers,
@@ -61,7 +65,8 @@ function HomePage(props) {
         console.log(err);
       }
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // first check if user is authorized
   useEffect(() => {
