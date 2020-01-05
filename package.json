@@ -1,25 +1,53 @@
 {
   "name": "shpe-tutor-scheduler",
+  "author": "Andrew Manzanero",
+  "license": "ISC",
   "version": "1.0.0",
   "description": "Webapp for SHPE Students at studynights!",
   "main": "index.js",
   "scripts": {
-    "prestart": "cross-env NODE_ENV=production npm run build --prefix client",
+    "prestart": "cross-env NODE_ENV=production npm run build",
     "start": "cross-env NODE_ENV=production node server",
-    "dev": "concurrently \"npm run dev:server\" \"npm run client\"",
-    "dev:server": "cross-env NODE_ENV=development ./node_modules/.bin/nodemon --watch server server",
-    "client": "npm start --prefix client",
-    "lint": "npm run lint:server && npm run lint --prefix client",
-    "lint:server": "./node_modules/.bin/eslint server/*.js",
-    "test": "npm run test:server && cd client && npm test",
+    "client": "react-scripts start",
+    "build": "react-scripts build",
+    "test:client": "react-scripts test",
     "test:server": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --exit",
-    "postinstall": "cd client && npm install",
-    "predev:deploy": "npm run build --prefix client",
-    "dev:deploy": "gh-pages -d client/build"
+    "eject": "react-scripts eject",
+    "lint:client": "./node_modules/.bin/eslint src/*.js",
+    "lint:server": "./node_modules/.bin/eslint server/*.js",
+    "server": "cross-env NODE_ENV=development ./node_modules/.bin/nodemon --watch server server",
+    "test": "npm run test:server && npm run test:client"
   },
-  "author": "Andrew Manzanero",
-  "license": "ISC",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
+    "@material-ui/core": "^4.1.1",
+    "@material-ui/icons": "^4.2.0",
+    "@material-ui/styles": "^4.1.2",
+    "axios": "^0.19.0",
+    "classnames": "^2.2.6",
+    "is-mobile": "^2.0.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.1",
+    "redux-persist": "^5.10.0",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
@@ -30,7 +58,6 @@
     "express-validation": "^1.0.2",
     "helmet": "^3.11.0",
     "http-status": "^1.0.1",
-    "is-mobile": "^2.0.0",
     "joi": "^14.3.1",
     "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^8.1.1",
