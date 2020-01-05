@@ -43,3 +43,13 @@ export const addUserCourses = async data => {
   );
   return response.data.courses;
 };
+
+export const registerUser = async data => {
+  const response = await axios.post(`${baseUrl}/user/register`, data);
+  Cookies.set('id_token', response.data.data.token);
+};
+
+export const loginUser = async data => {
+  const response = await axios.post(`${baseUrl}/user/login`, data);
+  Cookies.set('id_token', response.data.data.token);
+};

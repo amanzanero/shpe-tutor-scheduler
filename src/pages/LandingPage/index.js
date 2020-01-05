@@ -3,14 +3,12 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
 import LoginModal from '../../components/LoginModal';
 import RegistrationForm from './RegistrationForm';
-import baseUrl from '../../config/config';
 
 import {
   toggleLoginModal,
@@ -22,6 +20,7 @@ import {
   userLoginError,
   userLoginSuccess,
 } from '../../actions';
+import { registerUser, loginUser } from '../../utils/api';
 
 const styles = {
   root: {
@@ -54,9 +53,8 @@ function LandingPage(props) {
   } = props;
   let history = useHistory();
 
-  const onFormSubmit = state => {
+  const onFormSubmit = async state => {
     onRegisterUser();
-    console.log(state);
     const data = {
       name: state.name_field_text,
       email: state.email_field_text,
@@ -65,16 +63,13 @@ function LandingPage(props) {
       role: state.role_text,
       gradYear: state.grad_field_text,
     };
-    axios
-      .post(`${baseUrl}/user/register`, data)
-      .then(resp => {
-        localStorage.setItem('id_token', resp.data.data.token);
-        onRegisterUserSuccess();
-        history.push('/home');
-      })
-      .catch(err => {
-        onRegisterUserError(err.message);
-      });
+    try {
+      await registerUser(data);
+      onRegisterUserSuccess();
+      history.push('/home');
+    } catch (err) {
+      onRegisterUserError(err.message);
+    }
   };
 
   const onSubmitLogin = async ({ emailState, passwordState }) => {
@@ -84,8 +79,7 @@ function LandingPage(props) {
       password: passwordState,
     };
     try {
-      const response = await axios.post(`${baseUrl}/user/login`, data);
-      localStorage.setItem('id_token', response.data.data.token);
+      await loginUser(data);
       onLoginUserSuccess();
       history.push('/home');
     } catch (err) {
