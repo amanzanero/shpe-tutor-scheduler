@@ -16,18 +16,21 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 
-app.use(morgan('short'));
+const isProduciton = config.env === 'production';
+
+if (isProduciton) app.use(morgan('combined'));
+else app.use(morgan('dev'));
 
 // passport
 app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
 
-if (config.env === 'production') {
+if (isProduciton) {
   app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
 }
 // serve react app if we are in production mode
 app.use('/api', apiRouter);
-if (config.env === 'production') {
+if (isProduciton) {
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`));
   });
