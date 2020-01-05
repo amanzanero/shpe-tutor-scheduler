@@ -6,7 +6,7 @@
   "description": "Webapp for SHPE Students at studynights!",
   "main": "index.js",
   "scripts": {
-    "prestart": "cross-env NODE_ENV=production npm run build --prefix client",
+    "prestart": "cross-env NODE_ENV=production npm run build",
     "start": "cross-env NODE_ENV=production node server",
     "client": "react-scripts start",
     "build": "react-scripts build",
