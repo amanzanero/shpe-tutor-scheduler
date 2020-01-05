@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-import baseUrl from '../config/config';
 import {
   setUser,
   getProfile,
@@ -12,6 +10,7 @@ import {
   toggleAddCoursesModal,
   setCourses,
 } from '../actions';
+import { fetchProfile, fetchAllCourses } from '../utils/api';
 
 import HomePageComp from '../pages/HomePage';
 
@@ -28,51 +27,35 @@ function HomePage(props) {
     allCourses,
   } = props;
 
-  const getAuth = () => {
-    const token = localStorage.getItem('id_token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    return headers;
-  };
-
   let history = useHistory();
-
-  const pageLoad = useCallback(async () => {
-    const headers = getAuth();
-    onGetProfile();
-
-    try {
-      const response = await axios.get(`${baseUrl}/user/profile`, {
-        headers,
-      });
-      onSetUser(response.data.data);
-      onGetProfileSuccess();
-    } catch (err) {
-      console.log('$$$ERROR:', err.message);
-      history.push('/');
-      onGetProfileError();
-      return;
-    }
-    if (allCourses.length === 0) {
-      try {
-        const response = await axios.get(`${baseUrl}/course/current`, {
-          headers,
-        });
-        const { courses } = response.data.data;
-        onSetCourses(courses);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // first check if user is authorized
   useEffect(() => {
+    const pageLoad = async () => {
+      onGetProfile();
+      try {
+        const usr = await fetchProfile();
+        onSetUser(usr);
+        onGetProfileSuccess();
+      } catch (err) {
+        console.log('$$$ERROR:', err.message);
+        history.push('/');
+        onGetProfileError();
+        return;
+      }
+      if (allCourses.length === 0) {
+        try {
+          const courses = await fetchAllCourses();
+          onSetCourses(courses);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    };
+
     onGetProfile();
     pageLoad();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const homePageProps = { isLoading, user, onToggleAddCourses };
