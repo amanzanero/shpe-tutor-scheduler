@@ -38,7 +38,6 @@ function HomePage(props) {
 
   const pageLoad = async () => {
     const headers = getAuth();
-    onGetProfile();
     try {
       const response = await axios.get(`${baseUrl}/user/profile`, {
         headers,
@@ -46,9 +45,10 @@ function HomePage(props) {
       onSetUser(response.data.data);
       onGetProfileSuccess();
     } catch (err) {
-      console.log(err);
-      onGetProfileError();
+      console.log('$$$ERROR:', err.message);
       history.push('/');
+      onGetProfileError();
+      return;
     }
     if (allCourses.length === 0) {
       try {
@@ -65,11 +65,13 @@ function HomePage(props) {
 
   // first check if user is authorized
   useEffect(() => {
+    onGetProfile();
     pageLoad();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const homePageProps = { isLoading, user, onToggleAddCourses };
+
   return <HomePageComp {...homePageProps} />;
 }
 

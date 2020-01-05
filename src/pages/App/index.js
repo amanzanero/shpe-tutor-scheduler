@@ -2,9 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 
 import initStore from '../../config/store';
 
@@ -43,20 +41,10 @@ const App = () => {
 };
 
 export default function AppWrapper() {
-  const { store, persistor } = initStore();
+  const store = initStore();
   return (
     <Provider store={store}>
-      {persistor ? (
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      ) : (
-        <App />
-      )}
+      <App />
     </Provider>
   );
 }
-
-AppWrapper.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-};

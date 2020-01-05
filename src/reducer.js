@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import landingPage from './pages/LandingPage/reducer';
 import homePage from './pages/HomePage/reducer';
-import { SET_USER, SET_COURSES, UPDATE_USER } from './types';
+import { SET_USER, SET_COURSES, UPDATE_USER, USER_LOGOUT } from './types';
 
 const globalInitialState = {
   user: {},
@@ -23,6 +23,11 @@ const globalStore = (state = globalInitialState, action) => {
           ...state.user,
           [action.field]: action.data,
         },
+      };
+    case USER_LOGOUT:
+      return {
+        ...state,
+        user: {},
       };
     default:
       return state;

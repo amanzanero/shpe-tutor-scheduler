@@ -29,10 +29,12 @@ const HomePage = ({ isLoading, user, onToggleAddCourses }) => {
   return isLoading ? (
     <ProgressCircle />
   ) : (
-    <div className={`${classes.root} ${classes.background}`}>
-      <Appointments {...apptProps} />
-      <UserCourses courses={user.currentCourses} />
-    </div>
+    user && (
+      <div className={`${classes.root} ${classes.background}`}>
+        <Appointments {...apptProps} />
+        <UserCourses courses={user.currentCourses} />
+      </div>
+    )
   );
 };
 

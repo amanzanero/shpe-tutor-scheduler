@@ -2,7 +2,11 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import UserNav from '../components/UserNav';
-import { toggleSettingsModal, toggleAddCoursesModal } from '../actions';
+import {
+  toggleSettingsModal,
+  toggleAddCoursesModal,
+  userLogout,
+} from '../actions';
 
 export default function Nav({ history }) {
   const dispatch = useDispatch();
@@ -13,8 +17,11 @@ export default function Nav({ history }) {
     () => dispatch(toggleAddCoursesModal()),
     [dispatch],
   );
+  const onUserLogout = useCallback(() => dispatch(userLogout()), [dispatch]);
+
   const logOut = () => {
     localStorage.removeItem('id_token');
+    onUserLogout();
     history.push('/');
   };
 
