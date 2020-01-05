@@ -26,13 +26,13 @@ app.use(passport.initialize());
 passport.use('jwt', passportJwt.jwt);
 
 if (isProduciton) {
-  app.use(express.static(path.resolve(`${__dirname}/../../client/build/`)));
+  app.use(express.static(path.resolve(`${__dirname}/../../build/`)));
 }
 // serve react app if we are in production mode
 app.use('/api', apiRouter);
 if (isProduciton) {
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(`${__dirname}/../../client/build/index.html`));
+    res.sendFile(path.resolve(`${__dirname}/../../build/index.html`));
   });
 }
 app.use(errorHandler.handleNotFound);
