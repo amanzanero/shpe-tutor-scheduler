@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import UserNav from '../components/UserNav';
 import {
@@ -23,7 +24,7 @@ export default function Nav({ children }) {
   let history = useHistory();
 
   const logOut = () => {
-    localStorage.removeItem('id_token');
+    Cookies.remove('id_token');
     onUserLogout();
     history.push('/');
   };
