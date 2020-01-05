@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -92,40 +92,38 @@ const DROPDOWNS = [
 
 const BUTTON_TEXT = 'Submit';
 
-class RegistrationForm extends React.Component {
-  componentWillMount() {
-    FIELDS.forEach(textContent => {
-      this.setState(previousState => {
-        return {
-          ...previousState,
-          [`${textContent.stateSlug}_text`]: '',
-          [`${textContent.stateSlug}_valid`]: true,
-          [`${textContent.stateSlug}_regex`]: textContent.regex,
-        };
-      });
-    });
-    DROPDOWNS.forEach(dropDown => {
-      this.setState(previousState => {
-        return {
-          ...previousState,
-          [`${dropDown.name}_text`]: '',
-          [`${dropDown.name}_valid`]: true,
-        };
-      });
-    });
+function RegistrationForm(props) {
+  const fieldState = FIELDS.reduce(
+    (prev, curr) => ({
+      ...prev,
+      [`${curr.stateSlug}_text`]: '',
+      [`${curr.stateSlug}_valid`]: true,
+      [`${curr.stateSlug}_regex`]: curr.regex,
+    }),
+    {},
+  );
+  const dropDownState = DROPDOWNS.reduce(
+    (prev, curr) => ({
+      ...prev,
+      [`${curr.name}_text`]: '',
+      [`${curr.name}_valid`]: true,
+    }),
+    {},
+  );
 
-    this.setState(prevState => ({ ...prevState, buttonValid: false }));
-  }
+  const initialState = { ...fieldState, ...dropDownState, buttonValid: false };
 
-  handleChange = event => {
+  const [fields, setFields] = useState(initialState);
+
+  const handleChange = event => {
     const { name, value } = event.target;
-    this.setState(prevState => ({
+    setFields(prevState => ({
       ...prevState,
       [`${name}_text`]: value,
     }));
   };
 
-  validateButton = state => {
+  const validateButton = state => {
     var fieldsFull = FIELDS.reduce((acc, curr) => {
       return (
         acc &&
@@ -142,101 +140,96 @@ class RegistrationForm extends React.Component {
     return fieldsFull && dropDownsFull;
   };
 
-  onBlurText = e => {
+  const onBlurText = e => {
     const name = e.target.name;
     const value = e.target.value;
-    const reg = this.state[`${name}_regex`];
+    const reg = fields[`${name}_regex`];
     const match =
       name === CONFIRM_PASSWORD
-        ? value === this.state[`${PASSWORD}_text`]
+        ? value === fields[`${PASSWORD}_text`]
         : reg.test(value);
-    this.setState(prevState => ({
+    setFields(prevState => ({
       ...prevState,
       [`${name}_valid`]: match,
     }));
-    this.setState(prevState => ({
+    setFields(prevState => ({
       ...prevState,
-      buttonValid: this.validateButton(prevState),
+      buttonValid: validateButton(prevState),
     }));
   };
 
-  onBlurDrop = e => {
+  const onBlurDrop = e => {
     const name = e.target.name;
-    this.setState(prevState => ({
+    setFields(prevState => ({
       ...prevState,
       [`${name}_valid`]: e.target.value !== '',
     }));
-    this.setState(prevState => ({
+    setFields(prevState => ({
       ...prevState,
-      buttonValid: this.validateButton(prevState),
+      buttonValid: validateButton(prevState),
     }));
   };
 
-  handleDropDown = event => {
-    this.setState({ [`${event.target.name}_text`]: event.target.value });
+  const handleDropDown = event => {
+    setFields({ [`${event.target.name}_text`]: event.target.value });
   };
 
-  render() {
-    const { classes, onFormSubmit } = this.props;
-    return (
-      <div className={classes.root}>
-        <Card className={classes.card}>
-          <CardContent className={classes.content}>
-            <Typography className={classes.header} variant="h4">
-              Get Started!
-            </Typography>
-            {FIELDS.map(textContent => {
-              const text = this.state[`${textContent.stateSlug}_text`];
-              const valid = this.state[`${textContent.stateSlug}_valid`];
-              const inputProps = {
-                textContent,
-                val: text,
-                handleChange: this.handleChange,
-                onBlur: this.onBlurText,
-                valid,
-                type:
-                  textContent.stateSlug === PASSWORD ||
-                  textContent.stateSlug === CONFIRM_PASSWORD
-                    ? 'password'
-                    : null,
-                error_text: textContent.error_text,
-              };
-              return (
-                <ValidatedTextInput
-                  key={textContent.stateSlug}
-                  {...inputProps}
-                />
-              );
-            })}
-            {DROPDOWNS.map(item => {
-              const text = this.state[`${item.name}_text`];
-              const valid = this.state[`${item.name}_valid`];
-              const dropDownProps = {
-                name: item.name,
-                options: item.options,
-                handleDropDown: this.handleDropDown,
-                label: item.label,
-                dropDown: text,
-                onBlur: this.onBlurDrop,
-                valid,
-              };
-              return <DropDown key={item.name} {...dropDownProps} />;
-            })}
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              disabled={!this.state.buttonValid}
-              className={classes.customButton}
-              onClick={() => onFormSubmit(this.state)}
-            >
-              {BUTTON_TEXT}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const { classes, onFormSubmit } = props;
+  return (
+    <div className={classes.root}>
+      <Card className={classes.card}>
+        <CardContent className={classes.content}>
+          <Typography className={classes.header} variant="h4">
+            Get Started!
+          </Typography>
+          {FIELDS.map(textContent => {
+            const text = fields[`${textContent.stateSlug}_text`];
+            const valid = fields[`${textContent.stateSlug}_valid`];
+            const inputProps = {
+              textContent,
+              val: text,
+              handleChange: handleChange,
+              onBlur: onBlurText,
+              valid,
+              type:
+                textContent.stateSlug === PASSWORD ||
+                textContent.stateSlug === CONFIRM_PASSWORD
+                  ? 'password'
+                  : null,
+              error_text: textContent.error_text,
+            };
+            return (
+              <ValidatedTextInput key={textContent.stateSlug} {...inputProps} />
+            );
+          })}
+          {DROPDOWNS.map(item => {
+            const text = fields[`${item.name}_text`];
+            const valid = fields[`${item.name}_valid`];
+            const dropDownProps = {
+              name: item.name,
+              options: item.options,
+              handleDropDown: handleDropDown,
+              label: item.label,
+              dropDown: text,
+              onBlur: onBlurDrop,
+              valid,
+            };
+            return <DropDown key={item.name} {...dropDownProps} />;
+          })}
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            disabled={!fields.buttonValid}
+            className={classes.customButton}
+            onClick={() => onFormSubmit(fields)}
+          >
+            {BUTTON_TEXT}
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 RegistrationForm.propTypes = {
