@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import UserNav from '../components/UserNav';
 import { toggleSettingsModal, toggleAddCoursesModal } from '../actions';
 
-export default function Nav({ history, children }) {
+export default function Nav({ history }) {
   const dispatch = useDispatch();
   const onToggleModal = useCallback(() => dispatch(toggleSettingsModal()), [
     dispatch,
@@ -18,7 +18,11 @@ export default function Nav({ history, children }) {
     history.push('/');
   };
 
-  const navProps = { onToggleModal, logOut, onToggleAddCourses };
+  const navigateHome = () => {
+    history.push('/home');
+  };
 
-  return <UserNav {...navProps}>{children}</UserNav>;
+  const navProps = { onToggleModal, logOut, onToggleAddCourses, navigateHome };
+
+  return <UserNav {...navProps} />;
 }

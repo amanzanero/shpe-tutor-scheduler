@@ -33,10 +33,9 @@ const App = () => {
         <Settings />
         <Router>
           <Route exact path="/" component={LandingPage} />
-          <Nav>
-            <Route path="/home" component={HomePage} />
-            <Route path="/appointments" component={ManageAppointments} />
-          </Nav>
+          <Route path="/" component={Nav} />
+          <Route path="/home" component={HomePage} />
+          <Route path="/appointments" component={ManageAppointments} />
         </Router>
       </ThemeProvider>
     </div>

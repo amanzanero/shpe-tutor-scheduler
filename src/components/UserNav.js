@@ -4,8 +4,7 @@
  *
  */
 
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -48,110 +47,90 @@ const styles = theme => ({
   },
 });
 
-class UserNav extends React.Component {
-  state = {
-    drawerOpen: false,
-  };
+function UserNav(props) {
+  const {
+    classes,
+    onToggleModal,
+    logOut,
+    onToggleAddCourses,
+    children,
+    navigateHome,
+  } = props;
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = mobile();
+  const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
+  const toggleDrawerOpen = () => setDrawerOpen(prev => !prev);
 
-  toggleDrawer = open => () => {
-    this.setState({ drawerOpen: open });
-  };
-
-  render() {
-    const {
-      classes,
-      onToggleModal,
-      logOut,
-      onToggleAddCourses,
-      children,
-    } = this.props;
-    const isMobile = mobile();
-    const text = isMobile ? 'Tutors' : 'Tutoring and Academics';
-    const { drawerOpen } = this.state;
-    return (
-      <Fragment>
-        <div>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton
-                className={`${classes.menuButton} ${classes.white}`}
-                aria-label="Menu"
-                onClick={this.toggleDrawer(true)}
-                data-testid="menu-button"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                className={`${classes.text} ${classes.white}`}
-              >
-                <span className={classes.gold}>SHPE </span>
-                {text}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Drawer open={drawerOpen} onClose={this.toggleDrawer(false)}>
-            <div
-              tabIndex={0}
-              role="button"
-              onClick={this.toggleDrawer(false)}
-              onKeyDown={this.toggleDrawer(false)}
-              data-testid="drawer"
+  return (
+    <Fragment>
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={`${classes.menuButton} ${classes.white}`}
+              aria-label="Menu"
+              onClick={toggleDrawerOpen}
+              data-testid="menu-button"
             >
-              <div className={classes.list}>
-                <List>
-                  <ListItem
-                    button
-                    key="messages"
-                    onClick={() => console.log('hi')}
-                  >
-                    <ListItemIcon>
-                      <MailIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Messages" />
-                  </ListItem>
-                  <Divider />
-                  <ListItem
-                    button
-                    key="Settings"
-                    onClick={() => onToggleModal()}
-                  >
-                    <ListItemIcon>
-                      <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Settings" />
-                  </ListItem>
-                  <ListItem
-                    button
-                    key="Courses"
-                    onClick={() => onToggleAddCourses()}
-                  >
-                    <ListItemIcon>
-                      <BookIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Courses" />
-                  </ListItem>
-                  <ListItem button key="Log Out" onClick={() => logOut()}>
-                    <ListItemIcon>
-                      <ExitToAppIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Log Out" />
-                  </ListItem>
-                </List>
-              </div>
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              className={`${classes.text} ${classes.white}`}
+              onClick={navigateHome}
+            >
+              <span className={classes.gold}>SHPE </span>
+              {text}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer open={drawerOpen} onClose={toggleDrawerOpen}>
+          <div
+            tabIndex={0}
+            role="button"
+            onClick={toggleDrawerOpen}
+            onKeyDown={toggleDrawerOpen}
+            data-testid="drawer"
+          >
+            <div className={classes.list}>
+              <List>
+                <ListItem
+                  button
+                  key="messages"
+                  onClick={() => console.log('hi')}
+                >
+                  <ListItemIcon>
+                    <MailIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Messages" />
+                </ListItem>
+                <Divider />
+                <ListItem button key="Settings" onClick={onToggleModal}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
+                </ListItem>
+                <ListItem button key="Courses" onClick={onToggleAddCourses}>
+                  <ListItemIcon>
+                    <BookIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Courses" />
+                </ListItem>
+                <ListItem button key="Log Out" onClick={logOut}>
+                  <ListItemIcon>
+                    <ExitToAppIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Log Out" />
+                </ListItem>
+              </List>
             </div>
-          </Drawer>
-        </div>
-        {children}
-      </Fragment>
-    );
-  }
+          </div>
+        </Drawer>
+      </div>
+      {children}
+    </Fragment>
+  );
 }
-
-UserNav.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.any).isRequired,
-  onToggleModal: PropTypes.func.isRequired,
-  logOut: PropTypes.func.isRequired,
-};
 
 export default withStyles(styles)(UserNav);
