@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
-import baseUrl from '../config/config';
 import {
   toggleAddCoursesModal,
   updateUser,
@@ -11,6 +9,7 @@ import {
   addCoursesError,
 } from '../actions';
 import ManageCourses from '../components/ManageCourses';
+import { addUserCourses } from '../utils/api';
 
 function ManageCoursesContainer(props) {
   const {
@@ -25,26 +24,10 @@ function ManageCoursesContainer(props) {
     onAddCoursesError,
   } = props;
 
-  const getAuth = () => {
-    const token = localStorage.getItem('id_token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    return headers;
-  };
-
   const addCourses = async courseData => {
-    const headers = getAuth();
     onAddCourses();
     try {
-      const response = await axios.put(
-        `${baseUrl}/course/userCurrent`,
-        {
-          courseIDs: courseData,
-        },
-        { headers },
-      );
-      const { updatedCourses } = response.data;
+      const updatedCourses = await addUserCourses(courseData);
       onUpdateUser('currentCourses', updatedCourses);
       onAddCoursesSuccess();
     } catch (err) {

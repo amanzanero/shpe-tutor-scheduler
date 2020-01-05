@@ -1,7 +1,11 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-import { getSession } from './Authenticator';
 import baseUrl from '../config/config';
+
+const getSession = () => Cookies.get('id_token');
+
+export const clearSession = () => Cookies.remove('id_token');
 
 const getAuth = () => {
   const token = getSession();
@@ -26,4 +30,16 @@ export const fetchAllCourses = async () => {
   });
   const { courses } = response.data.data;
   return courses;
+};
+
+export const addUserCourses = async data => {
+  const headers = getAuth();
+  const response = await axios.put(
+    `${baseUrl}/course/userCurrent`,
+    {
+      courseIDs: data,
+    },
+    { headers },
+  );
+  return response.data.courses;
 };

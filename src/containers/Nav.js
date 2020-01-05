@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import UserNav from '../components/UserNav';
 import {
@@ -9,6 +8,7 @@ import {
   toggleAddCoursesModal,
   userLogout,
 } from '../actions';
+import { clearSession } from '../utils/Authenticator';
 
 export default function Nav({ children }) {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function Nav({ children }) {
   let history = useHistory();
 
   const logOut = () => {
-    Cookies.remove('id_token');
+    clearSession();
     onUserLogout();
     history.push('/');
   };
