@@ -9,7 +9,7 @@ import initStore from '../../config/store';
 import HomePage from '../../containers/HomePage';
 import LandingPage from '../LandingPage';
 import theme from '../../theme';
-import ManageAppointments from '../ManageAppointments';
+import Appointments from '../../containers/Appointments';
 import Nav from '../../containers/Nav';
 import ManageCourses from '../../containers/ManageCourses';
 import Settings from '../../containers/Settings';
@@ -37,11 +37,7 @@ const App = () => {
             <Route path="/" component={Nav} />
           </Switch>
           <PrivateRoute exact path="/home" component={HomePage} />
-          <PrivateRoute
-            exact
-            path="/appointments"
-            component={ManageAppointments}
-          />
+          <PrivateRoute exact path="/appointments" component={Appointments} />
         </Router>
       </ThemeProvider>
     </div>

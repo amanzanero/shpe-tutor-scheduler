@@ -1,87 +1,33 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
-import {
-  setUser,
-  getProfile,
-  getProfileError,
-  getProfileSuccess,
-  toggleAddCoursesModal,
-  setCourses,
-} from '../actions';
-import { fetchProfile, fetchAllCourses } from '../utils/api';
+import { toggleAddCoursesModal } from '../actions';
 
 import HomePageComp from '../pages/HomePage';
+import User from './User';
 
 function HomePage(props) {
-  const {
-    onGetProfile,
-    onSetUser,
-    onGetProfileSuccess,
-    onGetProfileError,
-    isLoading,
-    user,
-    onToggleAddCourses,
-    onSetCourses,
-    allCourses,
-  } = props;
-
-  let history = useHistory();
-
-  const pageLoad = useCallback(async () => {
-    onGetProfile();
-    try {
-      const usr = await fetchProfile();
-      onSetUser(usr);
-      onGetProfileSuccess();
-    } catch (err) {
-      console.log('$$$ERROR:', err.message);
-      history.push('/');
-      onGetProfileError();
-      return;
-    }
-    if (allCourses.length === 0) {
-      try {
-        const courses = await fetchAllCourses();
-        onSetCourses(courses);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }, [
-    allCourses,
-    onGetProfile,
-    onGetProfileSuccess,
-    onSetUser,
-    history,
-    onGetProfileError,
-    onSetCourses,
-  ]);
-
-  if (!user && !isLoading) pageLoad();
+  const { isLoading, user, onToggleAddCourses } = props;
 
   const homePageProps = { isLoading, user, onToggleAddCourses };
 
-  return <HomePageComp {...homePageProps} />;
+  return (
+    <User>
+      <HomePageComp {...homePageProps} />
+    </User>
+  );
 }
 
 const mapStateToProps = ({ globalStore, homePage }) => {
   return {
     isLoading: homePage.loading,
     user: globalStore.user,
-    allCourses: globalStore.courses,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetUser: payload => dispatch(setUser(payload)),
-    onGetProfile: () => dispatch(getProfile()),
-    onGetProfileSuccess: () => dispatch(getProfileSuccess()),
-    onGetProfileError: () => dispatch(getProfileError()),
     onToggleAddCourses: () => dispatch(toggleAddCoursesModal()),
-    onSetCourses: payload => dispatch(setCourses(payload)),
   };
 };
 
