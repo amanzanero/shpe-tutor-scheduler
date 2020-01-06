@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -29,34 +29,29 @@ function HomePage(props) {
 
   let history = useHistory();
 
-  // first check if user is authorized
-  useEffect(() => {
-    const pageLoad = async () => {
-      onGetProfile();
-      try {
-        const usr = await fetchProfile();
-        onSetUser(usr);
-        onGetProfileSuccess();
-      } catch (err) {
-        console.log('$$$ERROR:', err.message);
-        history.push('/');
-        onGetProfileError();
-        return;
-      }
-      if (allCourses.length === 0) {
-        try {
-          const courses = await fetchAllCourses();
-          onSetCourses(courses);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    };
-
+  const pageLoad = async () => {
     onGetProfile();
-    pageLoad();
-  }, []);
+    try {
+      const usr = await fetchProfile();
+      onGetProfileSuccess();
+      onSetUser(usr);
+    } catch (err) {
+      console.log('$$$ERROR:', err.message);
+      history.push('/');
+      onGetProfileError();
+      return;
+    }
+    if (allCourses.length === 0) {
+      try {
+        const courses = await fetchAllCourses();
+        onSetCourses(courses);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  if (!user) pageLoad();
 
   const homePageProps = { isLoading, user, onToggleAddCourses };
 

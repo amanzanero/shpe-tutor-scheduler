@@ -35,8 +35,8 @@ const App = () => {
             <Route exact path="/" component={LandingPage} />
             <Route path="/" component={Nav} />
           </Switch>
-          <Route path="/home" component={HomePage} />
-          <Route path="/appointments" component={ManageAppointments} />
+          <Route exact path="/home" component={HomePage} />
+          <Route exact path="/appointments" component={ManageAppointments} />
         </Router>
       </ThemeProvider>
     </div>

@@ -4,7 +4,7 @@ import homePage from './pages/HomePage/reducer';
 import { SET_USER, SET_COURSES, UPDATE_USER, USER_LOGOUT } from './types';
 
 const globalInitialState = {
-  user: {},
+  user: null,
   error: '',
   loading: false,
   courses: [],
@@ -27,7 +27,7 @@ const globalStore = (state = globalInitialState, action) => {
     case USER_LOGOUT:
       return {
         ...state,
-        user: {},
+        user: null,
       };
     default:
       return state;
