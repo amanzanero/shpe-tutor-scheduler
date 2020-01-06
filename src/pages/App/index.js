@@ -13,6 +13,7 @@ import ManageAppointments from '../ManageAppointments';
 import Nav from '../../containers/Nav';
 import ManageCourses from '../../containers/ManageCourses';
 import Settings from '../../containers/Settings';
+import PrivateRoute from './PrivateRoute';
 
 const useStyles = makeStyles({
   root: {
@@ -35,8 +36,12 @@ const App = () => {
             <Route exact path="/" component={LandingPage} />
             <Route path="/" component={Nav} />
           </Switch>
-          <Route exact path="/home" component={HomePage} />
-          <Route exact path="/appointments" component={ManageAppointments} />
+          <PrivateRoute exact path="/home" component={HomePage} />
+          <PrivateRoute
+            exact
+            path="/appointments"
+            component={ManageAppointments}
+          />
         </Router>
       </ThemeProvider>
     </div>
