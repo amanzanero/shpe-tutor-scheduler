@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -29,12 +29,12 @@ function HomePage(props) {
 
   let history = useHistory();
 
-  const pageLoad = async () => {
+  const pageLoad = useCallback(async () => {
     onGetProfile();
     try {
       const usr = await fetchProfile();
-      onGetProfileSuccess();
       onSetUser(usr);
+      onGetProfileSuccess();
     } catch (err) {
       console.log('$$$ERROR:', err.message);
       history.push('/');
@@ -49,9 +49,17 @@ function HomePage(props) {
         console.log(err);
       }
     }
-  };
+  }, [
+    allCourses,
+    onGetProfile,
+    onGetProfileSuccess,
+    onSetUser,
+    history,
+    onGetProfileError,
+    onSetCourses,
+  ]);
 
-  if (!user) pageLoad();
+  if (!user && !isLoading) pageLoad();
 
   const homePageProps = { isLoading, user, onToggleAddCourses };
 

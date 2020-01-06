@@ -14,7 +14,7 @@ import {
 
 const initState = {
   settingsOpen: false,
-  loading: true,
+  loading: false,
   addCoursesLoading: false,
   pageErr: {
     status: false,
