@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Appointments from './Appointments';
 import UserCourses from './UserCourses';
 import ProgressCircle from '../../components/ProgressCircle';
+import useUser from '../../containers/useUser';
+import { useDispatch } from 'react-redux';
+import { toggleAddCoursesModal } from '../../actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,8 +19,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const HomePage = ({ isLoading, user, onToggleAddCourses }) => {
+const HomePage = props => {
   const classes = useStyles();
+  const { isLoading, user } = useUser();
+  const dispatch = useDispatch();
+  const onToggleAddCourses = useCallback(
+    () => dispatch(toggleAddCoursesModal()),
+    [dispatch],
+  );
 
   const apptProps = {
     appts: user ? user.appointments : null,

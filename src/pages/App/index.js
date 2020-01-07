@@ -6,10 +6,10 @@ import { Provider } from 'react-redux';
 
 import initStore from '../../config/store';
 
-import HomePage from '../../containers/HomePage';
+import HomePage from '../HomePage';
 import LandingPage from '../LandingPage';
 import theme from '../../theme';
-import Appointments from '../../containers/Appointments';
+import Appointments from '../ManageAppointments';
 import Nav from '../../containers/Nav';
 import ManageCourses from '../../containers/ManageCourses';
 import Settings from '../../containers/Settings';
