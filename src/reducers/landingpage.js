@@ -10,7 +10,7 @@ import {
   USER_LOGIN,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_ERROR,
-} from '../../types';
+} from '../types';
 
 const initState = {
   modalOpen: false,

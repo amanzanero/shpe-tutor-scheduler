@@ -10,7 +10,7 @@ import {
   ADD_COURSES,
   ADD_COURSES_SUCCESS,
   ADD_COURSES_ERROR,
-} from '../../types';
+} from '../types';
 
 const initState = {
   settingsOpen: false,

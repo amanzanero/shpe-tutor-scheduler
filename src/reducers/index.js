@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import landingPage from './pages/LandingPage/reducer';
-import homePage from './pages/HomePage/reducer';
-import { SET_USER, SET_COURSES, UPDATE_USER, USER_LOGOUT } from './types';
+import landingPage from './landingpage';
+import homePage from './homepage';
+import { SET_USER, SET_COURSES, UPDATE_USER, USER_LOGOUT } from '../types';
 
 const globalInitialState = {
   user: null,

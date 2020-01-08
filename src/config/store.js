@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { createStore } from 'redux';
-import rootReducer from '../reducer';
+import rootReducer from '../reducers';
 
 const initStore = () => {
   let store;

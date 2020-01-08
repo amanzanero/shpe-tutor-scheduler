@@ -6,12 +6,12 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { Button } from '@material-ui/core';
-import useUser from '../../containers/useUser';
+import { useFetchUser } from '../../utils/Hooks';
 import ProgressCircle from '../../components/ProgressCircle';
 
 export default function ManageAppointments() {
   // The first commit of Material-UI
-  const { isLoading } = useUser();
+  const { isLoading } = useFetchUser();
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   // const { appointments, currentCourses } = user;

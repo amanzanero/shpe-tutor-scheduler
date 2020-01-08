@@ -41,7 +41,7 @@ export const addUserCourses = async data => {
     },
     { headers },
   );
-  return response.data.courses;
+  return response.data.updatedCourses;
 };
 
 export const registerUser = async data => {
