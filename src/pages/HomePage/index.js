@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Appointments from './Appointments';
 import UserCourses from './UserCourses';
 import ProgressCircle from '../../components/ProgressCircle';
-import { useFetchUser } from '../../utils/Hooks';
+import { useFetchUser } from '../../Hooks';
 import { useDispatch } from 'react-redux';
 import { toggleAddCoursesModal } from '../../actions';
 

@@ -6,7 +6,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { Button } from '@material-ui/core';
-import { useFetchUser } from '../../utils/Hooks';
+import { useFetchUser } from '../../Hooks';
 import ProgressCircle from '../../components/ProgressCircle';
 
 export default function ManageAppointments() {
