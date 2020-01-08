@@ -6,16 +6,20 @@ import {
   USER_REGISTER,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_ERROR,
-  USER_REGISTER_ERROR_RESOLVE,
   USER_LOGIN,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_ERROR,
+  LANDING_PAGE_ERROR_RESOLVE,
 } from '../types';
 
 const initState = {
   modalOpen: false,
   loading: false,
-  pageErr: {
+  loginError: {
+    status: false,
+    message: '',
+  },
+  registerError: {
     status: false,
     message: '',
   },
@@ -26,39 +30,51 @@ const landingPage = (state = initState, action) => {
     case TOGGLE_LOGIN_MODAL:
       return { ...state, modalOpen: !state.modalOpen };
     case USER_REGISTER:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+        registerError: { ...initState.registerError },
+        loginError: { status: true, message: action.payload },
+      };
     case USER_REGISTER_ERROR:
       return {
         ...state,
         loading: false,
-        pageErr: { status: true, message: action.payload },
-      };
-    case USER_REGISTER_ERROR_RESOLVE:
-      return {
-        ...state,
-        pageErr: { status: false, message: '' },
+        registerError: { status: true, message: action.payload },
       };
     case USER_REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        pageErr: { status: false, message: '' },
+        registerError: { status: false, message: '' },
       };
     case USER_LOGIN:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+        registerError: { ...initState.registerError },
+        loginError: { ...initState.loginError },
+      };
     case USER_LOGIN_ERROR:
       return {
         ...state,
         loading: false,
-        pageErr: { status: true, message: action.payload },
+        loginError: { status: true, message: action.payload },
+        registerError: { ...initState.registerError },
         modalOpen: false,
       };
     case USER_LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
-        pageErr: { status: false, message: '' },
+        loginError: { status: false, message: '' },
         modalOpen: false,
+      };
+    case LANDING_PAGE_ERROR_RESOLVE:
+      return {
+        ...state,
+        registerError: { ...initState.registerError },
+        loginError: { ...initState.loginError },
       };
     default:
       return state;

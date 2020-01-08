@@ -5,7 +5,6 @@ import {
   TOGGLE_LOGIN_MODAL,
   TOGGLE_SETTINGS,
   SET_USER,
-  USER_REGISTER_ERROR_RESOLVE,
   USER_LOGIN,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_ERROR,
@@ -19,6 +18,7 @@ import {
   ADD_COURSES_SUCCESS,
   ADD_COURSES_ERROR,
   USER_LOGOUT,
+  LANDING_PAGE_ERROR_RESOLVE,
 } from '../types';
 
 export const userRegister = () => {
@@ -38,12 +38,6 @@ export const userRegisterError = payload => {
   return {
     type: USER_REGISTER_ERROR,
     payload,
-  };
-};
-
-export const userRegistrationErrorResolve = () => {
-  return {
-    type: USER_REGISTER_ERROR_RESOLVE,
   };
 };
 
@@ -83,6 +77,12 @@ export const userLoginError = payload => {
   return {
     type: USER_LOGIN_ERROR,
     payload,
+  };
+};
+
+export const landingPageErrorResolve = () => {
+  return {
+    type: LANDING_PAGE_ERROR_RESOLVE,
   };
 };
 
