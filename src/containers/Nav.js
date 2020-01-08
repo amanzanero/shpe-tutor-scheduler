@@ -10,7 +10,7 @@ import {
 } from '../actions';
 import { clearSession } from '../utils/Authenticator';
 
-export default function Nav({ children }) {
+export default function Nav() {
   const dispatch = useDispatch();
   const onToggleModal = useCallback(() => dispatch(toggleSettingsModal()), [
     dispatch,
@@ -35,5 +35,5 @@ export default function Nav({ children }) {
 
   const navProps = { onToggleModal, logOut, onToggleAddCourses, navigateHome };
 
-  return <UserNav {...navProps}>{children}</UserNav>;
+  return <UserNav {...navProps} />;
 }

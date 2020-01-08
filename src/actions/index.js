@@ -19,6 +19,9 @@ import {
   ADD_COURSES_ERROR,
   USER_LOGOUT,
   LANDING_PAGE_ERROR_RESOLVE,
+  LOAD_COURSES,
+  LOAD_COURSES_ERROR,
+  LOAD_COURSES_SUCCESS,
 } from '../types';
 
 export const userRegister = () => {
@@ -145,4 +148,16 @@ export const addCoursesError = () => {
 
 export const userLogout = () => ({
   type: USER_LOGOUT,
+});
+
+export const loadCourses = () => ({
+  type: LOAD_COURSES,
+});
+
+export const loadCoursesSuccess = () => ({
+  type: LOAD_COURSES_SUCCESS,
+});
+
+export const loadCoursesError = () => ({
+  type: LOAD_COURSES_ERROR,
 });

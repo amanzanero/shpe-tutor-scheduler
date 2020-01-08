@@ -10,12 +10,15 @@ import {
   ADD_COURSES,
   ADD_COURSES_SUCCESS,
   ADD_COURSES_ERROR,
+  LOAD_COURSES,
+  LOAD_COURSES_SUCCESS,
+  LOAD_COURSES_ERROR,
 } from '../types';
 
 const initState = {
   settingsOpen: false,
   loading: false,
-  addCoursesLoading: false,
+  manageCoursesLoadingLoading: false,
   pageErr: {
     status: false,
     message: '',
@@ -44,11 +47,17 @@ const homePage = (state = initState, action) => {
     case GET_PROFILE_ERROR:
       return { ...state, loading: false };
     case ADD_COURSES:
-      return { ...state, addCoursesLoading: true };
+      return { ...state, manageCoursesLoading: true };
     case ADD_COURSES_SUCCESS:
-      return { ...state, addCoursesLoading: false };
+      return { ...state, manageCoursesLoading: false };
     case ADD_COURSES_ERROR:
-      return { ...state, addCoursesLoading: false };
+      return { ...state, manageCoursesLoading: false };
+    case LOAD_COURSES:
+      return { ...state, manageCoursesLoading: true };
+    case LOAD_COURSES_SUCCESS:
+      return { ...state, manageCoursesLoading: false };
+    case LOAD_COURSES_ERROR:
+      return { ...state, manageCoursesLoading: false };
     default:
       return state;
   }

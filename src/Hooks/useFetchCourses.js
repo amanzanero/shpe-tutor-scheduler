@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setCourses } from '../actions';
+import {
+  setCourses,
+  loadCourses,
+  loadCoursesError,
+  loadCoursesSuccess,
+} from '../actions';
 import { fetchAllCourses } from '../utils/api';
 
 /**
@@ -11,30 +16,35 @@ import { fetchAllCourses } from '../utils/api';
 const useFetchClasses = props => {
   const dispatch = useDispatch();
   const onSetCourses = payload => dispatch(setCourses(payload));
+  const onLoadCourses = payload => dispatch(loadCourses(payload));
+  const onLoadCoursesSuccess = payload => dispatch(loadCoursesSuccess(payload));
+  const onLoadCoursesError = payload => dispatch(loadCoursesError(payload));
 
-  const { isLoading, user, allCourses } = useSelector(
+  const { isLoading, allCourses, open } = useSelector(
     ({ globalStore, homePage }) => ({
-      isLoading: homePage.loading,
+      isLoading: homePage.manageCoursesLoading,
       allCourses: globalStore.courses,
+      open: homePage.addCoursesOpen,
     }),
   );
 
   useEffect(() => {
     const loadCourses = async () => {
-      if (allCourses.length === 0 && !isLoading) {
-        try {
-          const courses = await fetchAllCourses();
-          onSetCourses(courses);
-        } catch (err) {
-          console.log(err);
-        }
+      onLoadCourses();
+      try {
+        const courses = await fetchAllCourses();
+        onSetCourses(courses);
+        onLoadCoursesSuccess();
+      } catch (err) {
+        console.log(err);
+        onLoadCoursesError();
       }
     };
-    if (!user && !isLoading) loadCourses();
+    if (allCourses.length === 0 && !isLoading && open) loadCourses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  }, [isLoading, open]);
 
-  return { isLoading, courses: allCourses };
+  return { coursesLoading: isLoading, allCourses };
 };
 
 export default useFetchClasses;
