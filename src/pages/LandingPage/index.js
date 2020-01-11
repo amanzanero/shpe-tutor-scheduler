@@ -3,13 +3,12 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 import ErrorPopUp from '../../components/ErrorPopUp';
 import LandingNav from '../../components/LandingNav';
 import LoginModal from '../../components/LoginModal';
 import RegistrationForm from './RegistrationForm';
-import baseUrl from '../../config/config';
 
 import {
   toggleLoginModal,
@@ -21,6 +20,7 @@ import {
   userLoginError,
   userLoginSuccess,
 } from '../../actions';
+import { registerUser, loginUser } from '../../utils/api';
 
 const styles = {
   root: {
@@ -50,12 +50,11 @@ function LandingPage(props) {
     onErrResolve,
     hasError,
     errMessage,
-    history,
   } = props;
+  let history = useHistory();
 
-  const onFormSubmit = state => {
+  const onFormSubmit = async state => {
     onRegisterUser();
-    console.log(state);
     const data = {
       name: state.name_field_text,
       email: state.email_field_text,
@@ -64,34 +63,28 @@ function LandingPage(props) {
       role: state.role_text,
       gradYear: state.grad_field_text,
     };
-    axios
-      .post(`${baseUrl}/user/register`, data)
-      .then(resp => {
-        localStorage.setItem('id_token', resp.data.data.token);
-        onRegisterUserSuccess();
-        history.push('/home');
-      })
-      .catch(err => {
-        onRegisterUserError(err.response.data.message);
-      });
+    try {
+      await registerUser(data);
+      onRegisterUserSuccess();
+      history.push('/home');
+    } catch (err) {
+      onRegisterUserError(err.message);
+    }
   };
 
-  const onSubmitLogin = ({ emailState, passwordState }) => {
+  const onSubmitLogin = async ({ emailState, passwordState }) => {
     onLoginUser();
     const data = {
       email: emailState,
       password: passwordState,
     };
-    axios
-      .post(`${baseUrl}/user/login`, data)
-      .then(resp => {
-        localStorage.setItem('id_token', resp.data.data.token);
-        onLoginUserSuccess();
-        history.push('/home');
-      })
-      .catch(err => {
-        onLoginUserError(err.response.data.message);
-      });
+    try {
+      await loginUser(data);
+      onLoginUserSuccess();
+      history.push('/home');
+    } catch (err) {
+      onLoginUserError(err.message);
+    }
   };
 
   const loginProps = {

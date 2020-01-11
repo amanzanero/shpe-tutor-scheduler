@@ -2,6 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
 
 import AppointmentCard from '../../components/AppointmentCard';
 import theme, { button } from '../../theme';
@@ -21,17 +22,21 @@ const styles = {
 
 const Appointments = props => {
   const { classes, appts, courses, onToggleAddCourses } = props;
+  const history = useHistory();
 
   const hasCourses = courses && courses.length > 0;
   const NoApptsButton = () => {
-    let text = hasCourses ? 'Book an appointment' : 'Add courses';
+    const text = hasCourses ? 'Book an appointment' : 'Add courses';
+    const clickAction = hasCourses
+      ? () => history.push('/appointments')
+      : onToggleAddCourses;
 
     return (
       <Button
         size="medium"
         variant="contained"
         className={classes.button}
-        onClick={() => onToggleAddCourses()}
+        onClick={clickAction}
       >
         {text}
       </Button>

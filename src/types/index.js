@@ -17,3 +17,4 @@ export const SET_COURSES = 'SET_COURSES';
 export const ADD_COURSES = 'ADD_COURSES';
 export const ADD_COURSES_SUCCESS = 'ADD_COURSES_SUCCESS';
 export const ADD_COURSES_ERROR = 'ADD_COURSES_ERROR';
+export const USER_LOGOUT = 'USER_LOGOUT';

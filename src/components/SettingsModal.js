@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
@@ -54,84 +54,81 @@ const DROPDOWNS = [
   },
 ];
 
-class SettingsModal extends React.Component {
-  componentWillMount() {
-    FIELDS.forEach(textContent => {
-      this.setState(previousState => {
-        return {
-          ...previousState,
-          [textContent.stateSlug]: '',
-        };
-      });
-    });
-    DROPDOWNS.forEach(dropDown => {
-      this.setState(previousState => {
-        return {
-          ...previousState,
-          [dropDown.name]: '',
-        };
-      });
-    });
-  }
+function SettingsModal(props) {
+  const fieldState = FIELDS.reduce(
+    (prev, curr) => ({
+      ...prev,
+      [curr.stateSlug]: '',
+    }),
+    {},
+  );
+  const dropDownState = DROPDOWNS.reduce(
+    (prev, curr) => ({ ...prev, [curr.name]: '' }),
+    {},
+  );
 
-  handleChange = event => {
-    this.setState({
+  const initialState = {
+    ...fieldState,
+    ...dropDownState,
+  };
+
+  const [field, setField] = useState(initialState);
+
+  const handleChange = event => {
+    setField(prev => ({
+      ...prev,
       [event.target.name]: event.target.value,
-    });
+    }));
   };
 
-  handleDropDown = event => {
-    this.setState({ [event.target.name]: event.target.value });
+  const handleDropDown = event => {
+    setField(prev => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  render() {
-    const { classes, isModalOpen, onToggleModal } = this.props;
-    return (
-      <div>
-        <Dialog
-          open={isModalOpen}
-          onClose={() => onToggleModal()}
-          aria-labelledby="form-dialog-title"
-        >
-          <div className={classes.titleContainer}>
-            <Typography variant="h4" className={classes.title}>
-              User Profile
-            </Typography>
-          </div>
-          <DialogContent>
-            {FIELDS.map(textContent => {
-              const { [textContent.stateSlug]: val } = this.state;
-              const inputProps = {
-                textContent,
-                val,
-                handleChange: this.handleChange,
-              };
-              return (
-                <ValidatedTextInput
-                  key={textContent.stateSlug}
-                  {...inputProps}
-                />
-              );
-            })}
-            {DROPDOWNS.map(item => {
-              const { [item.name]: val } = this.state;
-              const dropDownProps = {
-                name: item.name,
-                options: item.options,
-                handleDropDown: this.handleDropDown,
-                label: item.label,
-                dropDown: val,
-              };
-              return <DropDown key={item.name} {...dropDownProps} />;
-            })}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => console.log('hi')}>Update</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
-  }
+  const { classes, isModalOpen, onToggleModal } = props;
+
+  return (
+    <div>
+      <Dialog
+        open={isModalOpen}
+        onClose={() => onToggleModal()}
+        aria-labelledby="form-dialog-title"
+      >
+        <div className={classes.titleContainer}>
+          <Typography variant="h4" className={classes.title}>
+            User Profile
+          </Typography>
+        </div>
+        <DialogContent>
+          {FIELDS.map(textContent => {
+            const { [textContent.stateSlug]: val } = field;
+            const inputProps = {
+              textContent,
+              val,
+              handleChange: handleChange,
+            };
+            return (
+              <ValidatedTextInput key={textContent.stateSlug} {...inputProps} />
+            );
+          })}
+          {DROPDOWNS.map(item => {
+            const { [item.name]: val } = field;
+            const dropDownProps = {
+              name: item.name,
+              options: item.options,
+              handleDropDown: handleDropDown,
+              label: item.label,
+              dropDown: val,
+            };
+            return <DropDown key={item.name} {...dropDownProps} />;
+          })}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => console.log('hi')}>Update</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 }
 
 SettingsModal.propTypes = {

@@ -35,5 +35,7 @@ stats.json
 # postman stuff
 docs/postman
 
+server/scripts
+
 
 

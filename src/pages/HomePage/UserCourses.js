@@ -25,25 +25,23 @@ const useStyles = makeStyles(theme => ({
 export default function UserCourses({ courses }) {
   const classes = useStyles();
   return (
-    courses.length > 0 && (
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Typography className={classes.text} variant="h4">
-            My Courses:
-          </Typography>
-          <Grid container spacing={2}>
-            {courses.map(course => {
-              const { school, number, name } = course;
-              const text = `${school}-${number}`;
-              return (
-                <Grid item xs={6} sm={3} key={text}>
-                  <ClassCard heading={text} subHeading={name} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Paper>
-      </div>
-    )
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Typography className={classes.text} variant="h4">
+          My Courses:
+        </Typography>
+        <Grid container spacing={2}>
+          {courses.map(course => {
+            const { school, number, name } = course;
+            const text = `${school}-${number}`;
+            return (
+              <Grid item xs={6} sm={3} key={text}>
+                <ClassCard heading={text} subHeading={name} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Paper>
+    </div>
   );
 }

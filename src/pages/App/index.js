@@ -1,54 +1,54 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 
 import initStore from '../../config/store';
 
 import HomePage from '../../containers/HomePage';
 import LandingPage from '../LandingPage';
 import theme from '../../theme';
+import Appointments from '../../containers/Appointments';
+import Nav from '../../containers/Nav';
+import ManageCourses from '../../containers/ManageCourses';
+import Settings from '../../containers/Settings';
+import PrivateRoute from './PrivateRoute';
 
-const styles = {
+const useStyles = makeStyles({
   root: {
     height: '100vh',
     display: 'flex',
     flexFlow: 'column',
   },
-};
+});
 
-const App = classes => (
-  <div className={classes.root}>
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/home" component={HomePage} />
-      </Router>
-    </ThemeProvider>
-  </div>
-);
+const App = () => {
+  const classes = useStyles();
 
-const AppWrapper = props => {
-  const { classes } = props;
-  const { store, persistor } = initStore();
   return (
-    <Provider store={store}>
-      {persistor ? (
-        <PersistGate loading={null} persistor={persistor}>
-          {App(classes)}
-        </PersistGate>
-      ) : (
-        App(classes)
-      )}
-    </Provider>
+    <div className={classes.root}>
+      <ThemeProvider theme={theme}>
+        <ManageCourses />
+        <Settings />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/" component={Nav} />
+          </Switch>
+          <PrivateRoute exact path="/home" component={HomePage} />
+          <PrivateRoute exact path="/appointments" component={Appointments} />
+        </Router>
+      </ThemeProvider>
+    </div>
   );
 };
 
-AppWrapper.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-};
-
-export default withStyles(styles)(AppWrapper);
+export default function AppWrapper() {
+  const store = initStore();
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
