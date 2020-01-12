@@ -126,7 +126,7 @@ export const loadCoursesError = () => ({
   type: LOAD_COURSES_ERROR,
 });
 
-export const openCouseOptions = payload => ({
+export const openCourseOptions = payload => ({
   type: OPEN_COURSE_OPTIONS,
   payload,
 });

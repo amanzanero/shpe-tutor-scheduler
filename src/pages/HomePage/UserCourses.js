@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function UserCourses({ courses }) {
+export default function UserCourses({ courses, openModal }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -34,9 +34,10 @@ export default function UserCourses({ courses }) {
           {courses.map(course => {
             const { school, number, name } = course;
             const text = `${school}-${number}`;
+            const click = () => openModal(course);
             return (
               <Grid item xs={6} sm={3} key={text}>
-                <ClassCard heading={text} subHeading={name} />
+                <ClassCard heading={text} subHeading={name} onClick={click} />
               </Grid>
             );
           })}
