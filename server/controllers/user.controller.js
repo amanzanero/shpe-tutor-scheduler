@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
     const user = new User(req.body);
     await user.save();
     const payload = { sub: user.id };
-    const token = jwt.sign(payload, config.secret);
+    const token = jwt.sign(payload, config.secret, { expiresIn: '2d' });
     return res
       .status(httpStatus.CREATED)
       .json({ ...responseObject, message: 'User created', data: { token } });
@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findAndGenerateToken(req.body);
     const payload = { sub: user.id };
-    const token = jwt.sign(payload, config.secret);
+    const token = jwt.sign(payload, config.secret, { expiresIn: '2d' });
     return res.status(httpStatus.OK).json({
       ...responseObject,
       message: 'User logged in.',
