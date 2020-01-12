@@ -33,13 +33,13 @@ exports.connect = () => {
       mongoURI = config.mongo.testURI;
       break;
   }
-  console.log('Mongo URL:', mongoURI);
 
   mongoose.connect(mongoURI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     keepAlive: 1,
     useFindAndModify: false,
+    useUnifiedTopology: true,
   });
 
   return mongoose.connection;
