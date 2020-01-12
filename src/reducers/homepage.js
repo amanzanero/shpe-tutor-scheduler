@@ -13,10 +13,16 @@ import {
   LOAD_COURSES,
   LOAD_COURSES_SUCCESS,
   LOAD_COURSES_ERROR,
+  CLOSE_COURSE_OPTIONS,
+  OPEN_COURSE_OPTIONS,
 } from '../types';
 
 const initState = {
   settingsOpen: false,
+  courseOptions: {
+    open: false,
+    course: null,
+  },
   loading: false,
   manageCoursesLoadingLoading: false,
   pageErr: {
@@ -33,12 +39,28 @@ const homePage = (state = initState, action) => {
         ...state,
         settingsOpen: !state.settingsOpen,
         addCoursesOpen: false,
+        courseOptionsOpen: false,
       };
     case TOGGLE_ADD_COURSES:
       return {
         ...state,
         settingsOpen: false,
+        courseOptionsOpen: false,
         addCoursesOpen: !state.addCoursesOpen,
+      };
+    case CLOSE_COURSE_OPTIONS:
+      return {
+        ...state,
+        settingsOpen: false,
+        courseOptionsOpen: { ...initState.courseOptions },
+        addCoursesOpen: false,
+      };
+    case OPEN_COURSE_OPTIONS:
+      return {
+        ...state,
+        settingsOpen: false,
+        courseOptionsOpen: { open: true, course: action.payload },
+        addCoursesOpen: false,
       };
     case GET_PROFILE:
       return { ...state, loading: true };
